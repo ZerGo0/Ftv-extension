@@ -1,13 +1,17 @@
 <script lang="ts">
   import { getAuthToken, getFanslyAccount } from "../../providers/fansly";
 
-  // export let siteDocument: Document;
-  // export let siteWindow: Window;
-  export let siteLocalStorage: Storage;
+  interface Props {
+    // siteDocument: Document;
+    // siteWindow: Window;
+    siteLocalStorage: Storage;
+  }
+
+  let { siteLocalStorage }: Props = $props();
 
   let authToken: string;
   let startedAt: number = 0;
-  let uptime: number | undefined;
+  let uptime: number | undefined = $state();
 
   onMount(async () => {
     if (!authToken) {

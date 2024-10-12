@@ -1,3 +1,4 @@
+import { mount, unmount } from "svelte";
 import "~/assets/tailwind.css";
 import Uptime from "../lib/components/app/Uptime.svelte";
 
@@ -25,7 +26,7 @@ export default defineContentScript({
           append: "last",
           anchor: elem,
           onMount: (container) => {
-            const app = new Uptime({
+            const app = mount(Uptime, {
               target: container,
               props: {
                 // siteDocument: document,
@@ -38,7 +39,8 @@ export default defineContentScript({
             return app;
           },
           onRemove: (app) => {
-            app?.$destroy();
+            // @ts-ignore https://svelte-5-preview.vercel.app/docs/breaking-changes
+            unmount(app);
           },
         });
 
