@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getAuthToken, getFanslyAccount } from "../../providers/fansly";
+  import { fanslyProvider } from "@/lib/providers/fansly";
 
   interface Props {
     // siteDocument: Document;
@@ -9,22 +9,12 @@
 
   let { siteLocalStorage }: Props = $props();
 
-  let authToken: string;
   let startedAt: number = 0;
   let uptime: number | undefined = $state();
 
   onMount(async () => {
-    if (!authToken) {
-      authToken = getAuthToken(siteLocalStorage);
-
-      if (!authToken || authToken.length === 0) {
-        console.error("Could not get auth token");
-        return;
-      }
-    }
-
     const username = window.location.pathname.split("/")[2];
-    const accountResp = await getFanslyAccount(username, authToken);
+    const accountResp = await fanslyProvider.getFanslyAccount(username);
     if (!accountResp) {
       console.error("Could not get account response");
       return;

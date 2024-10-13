@@ -1,5 +1,7 @@
 import EmoteButton from "@/lib/components/app/EmoteButton.svelte";
+import { emoteStore } from "@/lib/emotes/emotes.svelte";
 import { waitForElement } from "@/lib/helpers";
+import { fanslyProvider } from "@/lib/providers/fansly";
 import { mount, unmount } from "svelte";
 import "~/assets/tailwind.css";
 
@@ -32,6 +34,21 @@ export default defineContentScript({
           return;
         }
 
+        emoteStore.reset();
+
+        let twitchUserId: string = "";
+        const chatroomId = await fanslyProvider.getChatroomId();
+        if (chatroomId) {
+          twitchUserId = await getTwitchId(chatroomId);
+          if (!twitchUserId) {
+            console.error("Could not get twitch user id");
+          }
+        }
+
+        console.log(
+          `Loaded (ChatroomId: ${chatroomId} | TwitchId: ${twitchUserId})`
+        );
+
         const chatInputElements = document.querySelectorAll(
           "app-chat-room > .chat-footer > *"
         );
@@ -46,30 +63,49 @@ export default defineContentScript({
           return;
         }
 
-        const ui = await createShadowRootUi(ctx, {
-          name: "ftv-emotes-ui",
-          position: "inline",
-          append: "last",
-          anchor: chatInput,
-          onMount: (container) => {
-            const app = mount(EmoteButton, {
-              target: container,
-              props: {
-                siteDocument: document,
-                siteWindow: window,
-                siteLocalStorage: localStorage,
-              },
-            });
-            return app;
-          },
-          onRemove: (app) => {
-            // @ts-ignore https://svelte-5-preview.vercel.app/docs/breaking-changes
-            unmount(app);
-          },
-        });
-
+        const ui = await createUi(ctx, chatInput);
         ui.mount();
       });
     }).observe(document.body, { childList: true, subtree: true });
   },
 });
+
+async function createUi(ctx: any, chatInput: Element) {
+  return await createShadowRootUi(ctx, {
+    name: "ftv-emotes-ui",
+    position: "inline",
+    append: "last",
+    anchor: chatInput,
+    onMount: (container) => {
+      const app = mount(EmoteButton, {
+        target: container,
+        props: {
+          siteDocument: document,
+          siteWindow: window,
+          siteLocalStorage: localStorage,
+        },
+      });
+      return app;
+    },
+    onRemove: (app) => {
+      // @ts-ignore https://svelte-5-preview.vercel.app/docs/breaking-changes
+      unmount(app);
+    },
+  });
+}
+
+async function getTwitchId(fanslyId: string): Promise<string> {
+  const resp = await fetch(`https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`);
+  if (!resp.ok) {
+    console.error("Twitch Id request failed", resp);
+    return "";
+  }
+
+  const twitchId = await resp.text();
+  if (!twitchId) {
+    console.error("Could not parse twitch id response");
+    return "";
+  }
+
+  return twitchId;
+}
