@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fanslyProvider } from "@/lib/providers/fansly";
+  import { fanslyApi } from "@/lib/api/fansly.svelte";
 
   interface Props {
     // siteDocument: Document;
@@ -14,7 +14,7 @@
 
   onMount(async () => {
     const username = window.location.pathname.split("/")[2];
-    const accountResp = await fanslyProvider.getFanslyAccount(username);
+    const accountResp = await fanslyApi.getFanslyAccount(username);
     if (!accountResp) {
       console.error("Could not get account response");
       return;

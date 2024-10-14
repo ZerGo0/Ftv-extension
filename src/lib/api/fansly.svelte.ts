@@ -1,13 +1,11 @@
-class FanslyProvider {
-  private window: Window;
-  private localStorage: Storage;
-  private authToken: string;
+class FanslyApi {
+  // NOTE: This class needs to called the first time outside of the shadow root
+  // because it needs to access the proper window object
+  private window: Window = window;
+  private localStorage: Storage = localStorage;
+  private authToken: string = "";
 
-  constructor(window: Window, localStorage: Storage) {
-    // TODO: this gets called whenever a component calls it, which is not ideal
-    // idk if the shadow root also replaces the window object (probably not, mabye? ...)
-    this.window = window;
-    this.localStorage = localStorage;
+  constructor() {
     this.authToken = this.getAuthToken();
   }
 
@@ -49,6 +47,12 @@ class FanslyProvider {
   }
 
   getAuthToken(): string {
+    if (this.authToken && this.authToken !== "") {
+      return this.authToken;
+    }
+
+    console.log("Getting auth token from local storage");
+
     const session = this.localStorage.getItem("session_active_session");
     if (!session) {
       console.error("Could not find session in local storage");
@@ -117,4 +121,4 @@ class FanslyProvider {
   }
 }
 
-export const fanslyProvider = new FanslyProvider(window, localStorage);
+export const fanslyApi = new FanslyApi();

@@ -1,5 +1,4 @@
 import type { Emote } from "../../types";
-import * as h from "../helper";
 
 export class Provider {
   name: string;
@@ -13,7 +12,10 @@ export class Provider {
   }
 
   async fetchEmotes(): Promise<Emote[]> {
-    h.error("fetchEmotes function not overwritten by provider:", this.name);
+    console.error(
+      "fetchEmotes function not overwritten by provider:",
+      this.name
+    );
     return [];
   }
 }

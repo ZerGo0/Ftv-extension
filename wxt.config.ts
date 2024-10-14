@@ -6,6 +6,10 @@ export default defineConfig({
   modules: ["@wxt-dev/module-svelte"],
   runner: {
     chromiumArgs: ["--user-data-dir=./private/.dev-profile"],
-    startUrls: ["https://fansly.com/live/zergo0_bot"],
+    startUrls: [
+      "https://fansly.com/live/zergo0_bot",
+      "https://fansly.com/creator/streaming",
+      "https://fansly.com/chatroom/408830844350771200",
+    ],
   },
 });
