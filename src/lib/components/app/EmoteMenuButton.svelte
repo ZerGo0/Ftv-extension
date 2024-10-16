@@ -14,7 +14,11 @@
 
   let shadowRoot: ShadowRoot =
     document.querySelector("ftv-emotes-ui")!.shadowRoot!;
-  let twitchUserIconUrl = "TODO";
+  let twitchUserIconUrl = $derived(
+    emoteProviderStore.provdiers.length > 0
+      ? emoteProviderStore.provdiers[0].iconUrl
+      : ""
+  );
   let visibleProviders: number[] = [];
   let selectedProvider = $state(0);
   let emotesContainer: HTMLDivElement;
@@ -74,7 +78,7 @@
       searchbarInput.dispatchEvent(new Event("input"));
 
       setTimeout(() => {
-        onScrollToProvider(childIndex);
+        onScrollToProvider(idx);
       }, 100);
       return;
     }
