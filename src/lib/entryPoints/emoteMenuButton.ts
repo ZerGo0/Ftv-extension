@@ -1,9 +1,9 @@
 import { mount } from "svelte";
-import EmoteButton from "../components/app/EmoteButton.svelte";
+import EmoteMenuButton from "../components/app/EmoteMenuButton.svelte";
 
 const attachedClass = "ftv-emotes-attached";
 
-export async function emoteButton(ctx: any, mutation: MutationRecord) {
+export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
   const chatInputElements = document.querySelectorAll(
     "app-chat-room > .chat-footer > *"
   );
@@ -30,13 +30,9 @@ export async function emoteButton(ctx: any, mutation: MutationRecord) {
     append: "last",
     anchor: chatInput,
     onMount: (container) => {
-      const app = mount(EmoteButton, {
+      const app = mount(EmoteMenuButton, {
         target: container,
-        props: {
-          siteDocument: document,
-          siteWindow: window,
-          siteLocalStorage: localStorage,
-        },
+        props: {},
       });
       return app;
     },

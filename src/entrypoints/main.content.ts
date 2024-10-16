@@ -11,7 +11,7 @@ import {
   chatUsernameAutoComplete,
   usernames,
 } from "@/lib/entryPoints/chatUsernameAutoComplete";
-import { emoteButton } from "@/lib/entryPoints/emoteButton";
+import { emoteMenuButton } from "@/lib/entryPoints/emoteMenuButton";
 import { uptime } from "@/lib/entryPoints/uptime";
 
 const attachedClass = "ftv-attached";
@@ -26,7 +26,7 @@ export default defineContentScript({
       mutations.forEach(async (mutation) => {
         handleFirstInit(mutation);
 
-        emoteButton(ctx, mutation);
+        emoteMenuButton(ctx, mutation);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
       });

@@ -1,38 +1,41 @@
 <script lang="ts">
   import { Provider } from "@/lib/emotes/providers/provider";
+  import { createEventDispatcher } from "svelte";
 
   interface Props {
     category: Provider;
     index: number;
     twitchUserIconUrl: string;
-    selectedCategory: number;
+    selectedProvider: number;
   }
 
   let {
     category: provider,
     index,
     twitchUserIconUrl,
-    selectedCategory,
+    selectedProvider: selectedProvider,
   }: Props = $props();
 
-  function scrollToCategory(index: number) {
-    console.log(index);
+  const dispatch = createEventDispatcher();
+
+  function scrollToProvider(index: number) {
+    dispatch("scrollToProvider", { index });
   }
 </script>
 
 {#if provider.emotes.length > 0}
   <div class="button-container w-full flex flex-grow items-center">
     <button
-      class="category-button w-full h-full flex flex-grow justify-center items-center {index ===
-      selectedCategory
+      class="provider-button w-full h-full flex flex-grow justify-center items-center {index ===
+      selectedProvider
         ? 'backdrop-brightness-90'
         : 'backdrop-brightness-125 hover:backdrop-brightness-90 active:backdrop-brightness-80 ease-in-out duration-200'}"
       title={provider.name}
-      disabled={index === selectedCategory}
-      onclick={() => scrollToCategory(index)}
+      disabled={index === selectedProvider}
+      onclick={() => scrollToProvider(index)}
     >
-      {#if index === selectedCategory}
-        <div class="w-0.5 h-full bg-fblueactive absolute left-0"></div>
+      {#if index === selectedProvider}
+        <div class="w-0.5 h-full bg-primary absolute left-0"></div>
       {/if}
       {#if twitchUserIconUrl}
         <img
