@@ -2,6 +2,15 @@
 
 An emote extension for Fansly which adds support for emotes from popular emote extensions.
 
+## TODO
+
+- [ ] Display emotes in chatbox
+- [ ] Fill username cache based on the chatbox
+- [ ] Add pronouns modal
+- [ ] Chrome permissions check (https://github.com/GoogleChromeLabs/extension-update-testing-tool)
+- [ ] Move repo to private account and delete this org
+- [ ] Releate update
+
 ## Features
 
 - 300+ emote slots
