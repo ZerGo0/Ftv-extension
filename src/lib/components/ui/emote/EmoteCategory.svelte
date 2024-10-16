@@ -20,7 +20,7 @@
 </script>
 
 {#if provider.emotes.length > 0 || provider.name === "Search Result Emotes"}
-  <div class="emote-provider w-full" data-index={index}>
+  <div class="w-full" data-index={index} id="emote-category-{index}">
     <EmoteCategoryHeader
       {provider}
       {twitchUserIconUrl}
@@ -30,7 +30,7 @@
 
     <div
       class="emotes w-full flex flex-1 flex-grow flex-wrap justify-start align-middle mb-2 mt-2"
-      id="emotes"
+      id="emote-category-emotes"
     >
       {#each provider.emotes as emote}
         <EmoteButton {emote} />

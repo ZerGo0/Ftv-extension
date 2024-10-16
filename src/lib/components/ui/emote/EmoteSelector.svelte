@@ -24,7 +24,7 @@
 </script>
 
 {#if provider.emotes.length > 0}
-  <div class="button-container w-full flex flex-grow items-center">
+  <div class="w-full flex flex-grow items-center" id="emote-selector-{index}">
     <button
       class="provider-button w-full h-full flex flex-grow justify-center items-center {index ===
       selectedProvider
@@ -33,6 +33,7 @@
       title={provider.name}
       disabled={index === selectedProvider}
       onclick={() => scrollToProvider(index)}
+      id="emote-selector-button"
     >
       {#if index === selectedProvider}
         <div class="w-0.5 h-full bg-primary absolute left-0"></div>

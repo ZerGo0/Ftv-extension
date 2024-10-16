@@ -96,14 +96,19 @@
 
 <Popover.Root portal={null} closeOnOutsideClick={false}>
   <Popover.Trigger asChild let:builder>
-    <main class="ml-1 flex items-center">
-      <Button builders={[builder]} variant="icon" size="clear">
+    <div class="ml-1 flex items-center" id="emote-menu-button-container">
+      <Button
+        builders={[builder]}
+        variant="icon"
+        size="clear"
+        id="emote-menu-button"
+      >
         <SmileIcon size="20" />
       </Button>
-    </main>
+    </div>
   </Popover.Trigger>
-  <Popover.Content class="right-0 bottom-[2.5em]">
-    <header class="flex justify-between items-center mb-2">
+  <Popover.Content class="right-0 translate-y-[-107%]" strategy={"fixed"}>
+    <header class="flex justify-between items-center mb-2" id="emote-header">
       <Input
         placeholder="Search emotes"
         class="w-full"
@@ -113,7 +118,7 @@
     </header>
 
     <div
-      class="emotes-body flex overflow-hidden text-primary h-full"
+      class="flex overflow-hidden text-fansly-font-1 h-full"
       id="emotes-body"
     >
       <div
@@ -140,10 +145,13 @@
           {/each}
         {/if}
       </div>
-      <div class="flex flex-col border border-l-0 rounded-r-lg">
+      <div
+        class="flex flex-col border border-l-0 rounded-r-lg"
+        id="emote-selector"
+      >
         <div
           class="w-12 h-full flex flex-col overflow-y-auto no-scroll"
-          id="category-selector"
+          id="category-selector-container"
         >
           {#each emoteProviderStore.provdiers as provider, i}
             <EmoteSelector
@@ -158,7 +166,8 @@
           {/each}
         </div>
         <div
-          class="category-selector-actions flex flex-col justify-center items-center text-primary"
+          class="flex flex-col justify-center items-center text-primary border-t"
+          id="category-selector-actions"
         >
           <SetPronounsButton />
         </div>

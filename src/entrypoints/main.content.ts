@@ -26,7 +26,7 @@ export default defineContentScript({
       mutations.forEach(async (mutation) => {
         handleFirstInit(mutation);
 
-        emoteMenuButton(ctx, mutation);
+        emoteMenuButton(ctx);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
       });
@@ -54,10 +54,6 @@ async function handleFirstInit(mutation: MutationRecord) {
   const chatroomId = await fanslyApi.getChatroomId();
   if (chatroomId) {
     twitchUserId = await zergo0Api.getTwitchId(chatroomId);
-    if (!twitchUserId) {
-      console.error("Could not get twitch user id");
-      return;
-    }
   }
 
   console.log(`Loaded (ChatroomId: ${chatroomId} | TwitchId: ${twitchUserId})`);

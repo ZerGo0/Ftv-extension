@@ -45,11 +45,11 @@
 </script>
 
 {#if uptime}
-  <main class="ml-2 font-bold">
-    <span>
+  <div class="ml-2 font-bold" id="uptime-container">
+    <span class="text-fansly-font-1" id="uptime-text">
       {formatUptime(uptime)}
     </span>
-  </main>
+  </div>
 {/if}
 
 <style>

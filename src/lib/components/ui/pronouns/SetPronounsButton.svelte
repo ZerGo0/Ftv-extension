@@ -129,12 +129,13 @@
   // }
 </script>
 
-<div class="set-pronouns-button-container bg-fwhite w-full">
+<div class=" bg-fwhite w-full" id="set-pronouns-button-container">
   <!-- onclick={openModal} -->
   <button
     class="set-pronouns-button w-full flex justify-center items-center backdrop-brightness-125 hover:backdrop-brightness-90 active:backdrop-brightness-90 ease-in-out duration-200"
     title="Set your chat pronouns"
     aria-label="Set your chat pronouns"
+    id="set-pronouns-button"
   >
     <svg
       width="20px"
@@ -153,56 +154,5 @@
   </button>
 </div>
 
-<!-- <Modal bind:showModal>
-  <h2 slot="header">Set your chat pronouns</h2>
-
-  <div class="flex flex-row gap-4 justify-between">
-    <div class="flex flex-col w-full items-center">
-      <label for="subject">Subject</label>
-      <select id="subject" class="w-full p-2 mt-2">
-        {#each pronouns as pronoun}
-          <option value={pronoun.id}>{pronoun.subject}</option>
-        {/each}
-      </select>
-    </div>
-    <div class="flex flex-col w-full items-center">
-      <label for="object">Object</label>
-      <select id="object" class="w-full p-2 mt-2">
-        {#each pronouns as pronoun}
-          <option value={pronoun.id}>{pronoun.object}</option>
-        {/each}
-      </select>
-    </div>
-  </div>
-  <div class="space-y-2 mt-2">
-    <button
-      id="setbutton"
-      class="w-full pt-2 pb-2 block text-white bg-green-500 hover:bg-green-900 rounded-lg"
-      on:click={handleSetPronouns}
-    >
-      Set
-    </button>
-    <button
-      id="removebutton"
-      class="w-full pt-2 pb-2 block text-white bg-red-500 hover:bg-red-900 rounded-lg"
-      on:click={handleRemovePronouns}
-    >
-      Remove
-    </button>
-    {#if errored}
-      <p class="text-red-500">
-        Could not set pronouns, please try again later or contact support
-      </p>
-    {/if}
-  </div>
-</Modal> -->
-
 <style>
-  #setbutton:active {
-    transform: scale(0.95);
-  }
-
-  #removebutton:active {
-    transform: scale(0.95);
-  }
 </style>

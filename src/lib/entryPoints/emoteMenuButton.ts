@@ -3,18 +3,16 @@ import EmoteMenuButton from "../components/app/EmoteMenuButton.svelte";
 
 const attachedClass = "ftv-emotes-attached";
 
-export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
+export async function emoteMenuButton(ctx: any) {
   const chatInputElements = document.querySelectorAll(
     "app-chat-room > .chat-footer > *"
   );
   if (!chatInputElements || chatInputElements.length === 0) {
-    console.error("Could not find chat input container");
     return;
   }
 
   const chatInput = chatInputElements[chatInputElements.length - 1];
   if (!chatInput) {
-    console.error("Could not find chat input");
     return;
   }
 

@@ -29,14 +29,18 @@
 </script>
 
 <div
-  class="emote-provider-sticky-container sticky top-0 flex justify-center bg-[#1b1c21] z-10"
+  class="sticky top-0 flex justify-center bg-[#1b1c21] z-10"
   id="emote-provider-sticky-container"
 >
   <div
     class="flex flex-grow justify-center items-center h-10 pl-2 backdrop-brightness-125 rounded-b-md shadow-md"
     use:actionWhenInViewport
+    id="emote-provider-header"
   >
-    <div class="flex align-middle items-center w-6 h-6 select-none">
+    <div
+      class="flex align-middle items-center w-6 h-6 select-none"
+      id="emote-provider-icon"
+    >
       {#if twitchUserIconUrl}
         <img loading="lazy" src={twitchUserIconUrl} alt={provider.name} />
         <img
@@ -51,6 +55,8 @@
         <SearchIcon size="20" />
       {/if}
     </div>
-    <span class="ml-2 font-semibold">{provider.name}</span>
+    <span class="ml-2 font-semibold" id="emote-provider-name"
+      >{provider.name}</span
+    >
   </div>
 </div>

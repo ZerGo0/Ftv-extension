@@ -17,6 +17,7 @@ const config = {
       colors: {
         "fansly-blue-1": "#279eff",
         "fansly-darkblue-1": "#637395",
+        "fansly-font-1": "#d6dce8",
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
         ring: "hsl(var(--ring) / <alpha-value>)",
