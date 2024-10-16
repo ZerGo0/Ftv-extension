@@ -14,6 +14,7 @@
 
   let shadowRoot: ShadowRoot =
     document.querySelector("ftv-emotes-ui")!.shadowRoot!;
+  let panelOpen = $state(false);
   let twitchUserIconUrl = $derived(
     emoteProviderStore.provdiers.length > 0
       ? emoteProviderStore.provdiers[0].iconUrl
@@ -26,6 +27,16 @@
   let searchResult: Emote[] = $derived(
     searchTerm.length > 0 ? emoteStore.search(searchTerm) : []
   );
+  let emoteButtonElm: HTMLButtonElement;
+  let bottom = $state(0);
+  let right = $state(0);
+
+  onMount(() => {
+    emoteButtonElm = shadowRoot.querySelector(
+      "#emote-menu-button"
+    ) as HTMLButtonElement;
+    readjustPosition();
+  });
 
   function isUserProvider(providerName: string): boolean {
     if (providerName.includes("User")) {
@@ -92,9 +103,55 @@
       behavior: "smooth",
     });
   }
+
+  // NOTE: Scrolling in mobile size is kinda scuffed, because the div
+  // itself gets scrolled, not the window...
+  function readjustPosition() {
+    adjustBottom();
+    adjustRight();
+  }
+
+  function adjustBottom() {
+    if (!emoteButtonElm) {
+      return;
+    }
+
+    const screenheight = window.innerHeight;
+    const emoteButtonRect = emoteButtonElm.getBoundingClientRect();
+    console.log(screenheight - emoteButtonRect.top);
+    if (screenheight - emoteButtonRect.top >= 0) {
+      bottom = screenheight - emoteButtonRect.top + 10;
+    } else {
+      bottom = emoteButtonRect.top - screenheight + 10;
+    }
+  }
+
+  function adjustRight() {
+    if (!emoteButtonElm) {
+      return;
+    }
+
+    const screenwidth = window.innerWidth;
+    const emoteButtonRect = emoteButtonElm.getBoundingClientRect();
+    right = screenwidth - emoteButtonRect.right - 10;
+  }
+
+  function onWindowClick(e: MouseEvent) {
+    const targetElement = e.target as HTMLElement;
+    if (panelOpen && targetElement?.tagName !== "FTV-EMOTES-UI") {
+      panelOpen = false;
+    }
+  }
 </script>
 
-<Popover.Root portal={null} closeOnOutsideClick={false}>
+<svelte:window on:scroll={() => (panelOpen = false)} onclick={onWindowClick} />
+
+<Popover.Root
+  portal={null}
+  closeOnOutsideClick={false}
+  bind:open={panelOpen}
+  onOpenChange={readjustPosition}
+>
   <Popover.Trigger asChild let:builder>
     <div class="ml-1 flex items-center" id="emote-menu-button-container">
       <Button
@@ -107,7 +164,11 @@
       </Button>
     </div>
   </Popover.Trigger>
-  <Popover.Content class="right-0 translate-y-[-107%]" strategy={"fixed"}>
+  <Popover.Content
+    class=""
+    style="position: fixed; bottom: {bottom}px; right: {right}px;"
+    strategy={"fixed"}
+  >
     <header class="flex justify-between items-center mb-2" id="emote-header">
       <Input
         placeholder="Search emotes"
