@@ -6,6 +6,27 @@
   }
 
   let { emote }: Props = $props();
+
+  let chatInput: HTMLTextAreaElement | null = null;
+
+  function onEmoteClick(emoteName: string) {
+    if (!chatInput) {
+      chatInput = document.querySelector(
+        "app-chat-room > .chat-footer > * > .message-input-container > textarea"
+      );
+
+      if (!chatInput) {
+        const chatFooter = document.querySelector(
+          "app-chat-room > .chat-footer"
+        );
+        console.error("Could not find chat input?", chatFooter);
+        return;
+      }
+    }
+
+    chatInput.value += emoteName + " ";
+    chatInput.dispatchEvent(new Event("input"));
+  }
 </script>
 
 <div
@@ -17,6 +38,7 @@
     class="emote-button h-10 w-full flex flex-grow justify-center items-center"
     title={emote.name}
     id="emote-button"
+    onclick={() => onEmoteClick(emote.name)}
   >
     <img loading="lazy" class="emote p-1" src={emote.url} alt={emote.name} />
   </button>
