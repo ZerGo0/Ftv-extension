@@ -1,5 +1,5 @@
 const attachedClass = "ftv-chat-username-auto-complete-attached";
-export const usernames = new Map<string, string>();
+export const usernamesCache = new Map<string, string>();
 
 let originalUsername: string | null = null;
 
@@ -44,15 +44,13 @@ export async function chatUsernameAutoComplete(
         break;
     }
   });
-
-  console.log("chatUsernameAutoComplete loaded");
 }
 
 function autoCompleteUsername(
   inputUsername: string,
   chatInput: HTMLTextAreaElement
 ) {
-  if (usernames.size === 0) {
+  if (usernamesCache.size === 0) {
     return;
   }
 
@@ -64,7 +62,7 @@ function autoCompleteUsername(
   }
 
   // Get all usernames that start with the input username
-  const matchingUsernames = Array.from(usernames).filter((username) =>
+  const matchingUsernames = Array.from(usernamesCache).filter((username) =>
     username[0].startsWith(usernameWithoutAt.toLowerCase())
   );
 

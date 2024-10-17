@@ -3,8 +3,6 @@ import { emoteStore } from "../emotes/emotes.svelte";
 const attachedClass = "ftv-chat-emotes-attached";
 
 export function chatEmotes() {
-  // TODO: check reliability/consistency of this selector
-  // old version used waitForElement
   const chatContainer = document.querySelector(
     "app-chat-room > * .chat-container"
   );

@@ -7,10 +7,11 @@ import { Ffz, FfzUser } from "@/lib/emotes/providers/ffz";
 import { Provider as EmoteProvider } from "@/lib/emotes/providers/provider";
 import { SevenTv, SevenTvUser } from "@/lib/emotes/providers/seventv";
 import { Twitch, TwitchUser } from "@/lib/emotes/providers/twitch";
+import { accountCard, pronounsCache } from "@/lib/entryPoints/accountCard";
 import { chatEmotes } from "@/lib/entryPoints/chatEmotes";
 import {
   chatUsernameAutoComplete,
-  usernames,
+  usernamesCache,
 } from "@/lib/entryPoints/chatUsernameAutoComplete";
 import { emoteMenuButton } from "@/lib/entryPoints/emoteMenuButton";
 import { uptime } from "@/lib/entryPoints/uptime";
@@ -30,6 +31,7 @@ export default defineContentScript({
         handleFirstInit(mutation);
 
         chatEmotes();
+        accountCard();
         emoteMenuButton(ctx);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
@@ -52,7 +54,8 @@ async function handleFirstInit(mutation: MutationRecord) {
 
   emoteStore.reset();
   emoteProviderStore.reset();
-  usernames.clear();
+  usernamesCache.clear();
+  pronounsCache.clear();
 
   let twitchUserId: string = "";
   const chatroomId = await fanslyApi.getChatroomId();
