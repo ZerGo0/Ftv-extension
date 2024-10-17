@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      lucide-svelte:
-        specifier: ^0.453.0
-        version: 0.453.0(svelte@5.0.0-next.265)
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: 4.0.0-next.8
@@ -30,6 +26,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      lucide-svelte:
+        specifier: ^0.453.0
+        version: 0.453.0(svelte@5.0.0-next.265)
       postcss:
         specifier: ^8.4.47
         version: 8.4.47

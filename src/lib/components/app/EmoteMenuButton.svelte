@@ -165,7 +165,6 @@
     </div>
   </Popover.Trigger>
   <Popover.Content
-    class=""
     style="position: fixed; bottom: {bottom}px; right: {right}px;"
     strategy={"fixed"}
   >

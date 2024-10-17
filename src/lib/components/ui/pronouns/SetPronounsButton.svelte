@@ -1,141 +1,63 @@
 <script lang="ts">
-  // import Modal from 'src/components/Chat/Modal.svelte';
-  // import * as h from '../../../../content/helper';
+  import { fanslyApi } from "@/lib/api/fansly.svelte";
+  import { zergo0Api } from "@/lib/api/zergo0";
+  import Modal from "@/lib/components/ui/modal/Modal.svelte";
+  import { ChatPronoun } from "@/lib/types";
+  import Button from "../button/button.svelte";
 
-  // let showModal = false;
-  // let errored = false;
-  // let pronouns: Pronoun[] = [];
+  let showModal = $state(false);
+  let errored = $state(false);
+  let pronouns: ChatPronoun[] = $state([]);
+  let subject = $state(1)
+  let object = $state(1)
 
-  // // pronoun type
-  // type Pronoun = {
-  //   id: number;
-  //   subject: string;
-  //   object: string;
-  //   singular: boolean;
-  // };
+  const botChatroomdId = '408830844350771200';
 
-  // async function openModal() {
-  //   // Fetch pronouns from the server
-  //   const response = await fetch('https://zergo0_bot.zergo0.dev/ftv/pronouns');
-  //   if (!response.ok) {
-  //     h.error('Could not fetch pronouns');
-  //     return;
-  //   }
+  onMount(async () => {
+    pronouns = await zergo0Api.getChatPronouns();
+    if (pronouns.length === 0) {
+      console.error('No pronouns found');
+      return;
+    }  
+  });
+  
+  async function handleSetPronouns(){
+    if (subject === 0 || object === 0) {
+      console.error('No pronouns selected');
+      return;
+    }
 
-  //   const json = await response.json();
-  //   if (!json || !json.success) {
-  //     h.error('Invalid pronouns response');
-  //     return;
-  //   }
+    setPronouns(subject, object);
+  }
 
-  //   pronouns = json.response as Pronoun[];
+  async function handleRemovePronouns(){
+    setPronouns(0, 0);
+  }
 
-  //   if (pronouns.length === 0) {
-  //     h.error('No pronouns found');
-  //     return;
-  //   }
+  async function setPronouns(subject: number, object: number){
+    const result = await fanslyApi.sendChatMessage(botChatroomdId, `!setpronouns ${subject} ${object}`)
+    if (!result) {
+      errored = true;
+    }
 
-  //   showModal = true;
-  // }
-
-  // async function handleSetPronouns() {
-  //   const subject = (document.getElementById('subject') as HTMLSelectElement).value;
-  //   const object = (document.getElementById('object') as HTMLSelectElement).value;
-
-  //   const res = await setPronouns(subject, object);
-
-  //   if (res === true) {
-  //     setTimeout(() => {
-  //       showModal = false;
-  //       window.location.reload();
-  //     }, 1000);
-  //   }
-  // }
-
-  // async function handleRemovePronouns() {
-  //   const res = await setPronouns('0', '0');
-
-  //   if (res === true) {
-  //     setTimeout(() => {
-  //       showModal = false;
-  //       window.location.reload();
-  //     }, 1000);
-  //   }
-  // }
-
-  // async function setPronouns(subject: string, object: string): Promise<boolean> {
-  //   if (!subject || !object) {
-  //     h.error('Invalid pronouns', { subject, object });
-  //     return false;
-  //   }
-
-  //   const result = await sendFanslyMessage(`!setpronouns ${subject} ${object}`);
-  //   if (!result) {
-  //     h.error('Could not set pronouns');
-  //     errored = true;
-  //     return false;
-  //   }
-
-  //   errored = false;
-  //   return true;
-  // }
-
-  // async function sendFanslyMessage(message: string): Promise<boolean> {
-  //   const session = localStorage.getItem('session_active_session');
-  //   if (!session) {
-  //     h.error('No session found');
-  //     return false;
-  //   }
-
-  //   const sessionJson = JSON.parse(session);
-  //   const authToken = sessionJson.token;
-  //   const fanslyId = sessionJson.accountId;
-
-  //   if (!authToken || !fanslyId) {
-  //     h.error('No auth token or fansly id found');
-  //     return false;
-  //   }
-
-  //   const response = await fetch('https://apiv3.fansly.com/api/v1/chatroom/message', {
-  //     method: 'POST',
-  //     headers: {
-  //       Authorization: authToken,
-  //       Referer: 'https://fansly.com/',
-  //       'Content-Type': 'application/json',
-  //       Accept: 'application/json, text/plain, */*'
-  //     },
-  //     body: JSON.stringify({
-  //       chatRoomId: '408830844350771200',
-  //       content: message
-  //     }),
-  //     referrer: 'https://fansly.com/',
-  //     referrerPolicy: 'strict-origin-when-cross-origin',
-  //     mode: 'cors',
-  //     credentials: 'include'
-  //   });
-
-  //   if (!response.ok) {
-  //     h.error('Something went wrong, could not make link request');
-  //     return false;
-  //   }
-
-  //   const data = await response.json();
-  //   if (!data?.success) {
-  //     h.error('Something went wrong, could not make link request');
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
+    errored = false;
+    if (result === true) {
+      setTimeout(() => {
+        showModal = false;
+        window.location.reload();
+      }, 100);
+    }
+  }
 </script>
 
-<div class=" bg-fwhite w-full" id="set-pronouns-button-container">
+<div class="w-full" id="set-pronouns-button-container">
   <!-- onclick={openModal} -->
   <button
     class="set-pronouns-button w-full flex justify-center items-center backdrop-brightness-125 hover:backdrop-brightness-90 active:backdrop-brightness-90 ease-in-out duration-200"
     title="Set your chat pronouns"
     aria-label="Set your chat pronouns"
     id="set-pronouns-button"
+    onclick="{() => showModal = true}"
   >
     <svg
       width="20px"
@@ -154,5 +76,45 @@
   </button>
 </div>
 
-<style>
-</style>
+<Modal bind:showModal>
+  {#snippet header()}
+    <h2>Set your chat pronouns</h2>
+  {/snippet}
+
+  {#snippet body()}
+  <div class="flex flex-col gap-2 justify-between">
+    <div class="flex flex-col w-full items-center">
+      <label for="subject">Subject</label>
+      <select id="subject" class="border-input bg-background ring-offset-background focus-visible:ring-ring aria-[invalid]:border-destructive flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      bind:value={subject}
+      >
+        {#each pronouns as pronoun}
+          <option value={pronoun.id}>{pronoun.subject}</option>
+        {/each}
+      </select>
+    </div>
+    
+    <div class="flex flex-col w-full items-center">
+      <label for="subject">Object</label>
+      <select id="subject" class="border-input bg-background ring-offset-background focus-visible:ring-ring aria-[invalid]:border-destructive flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      bind:value={object}
+      >
+        {#each pronouns as pronoun}
+          <option value={pronoun.id}>{pronoun.object}</option>
+        {/each}
+      </select>
+    </div>
+  </div>
+  <div class="space-y-2 mt-2 flex flex-col">
+    <Button variant="default" onclick={handleSetPronouns}>
+      Set
+    </Button>
+    <Button variant="destructive" onclick={handleRemovePronouns}>
+      Remove
+    </Button>
+    {#if errored}
+      <p class="text-red-500">Could not set pronouns, please try again later or contact support</p>
+    {/if}
+  </div>
+  {/snippet}
+</Modal>

@@ -119,6 +119,47 @@ class FanslyApi {
 
     return localchatroomId;
   }
+
+  async sendChatMessage(chatroomId: string, message: string): Promise<boolean> {
+    if (!chatroomId || !message) {
+      console.error("No chatroom or message provided");
+      return false;
+    }
+
+    const resp = await fetch(
+      "https://apiv3.fansly.com/api/v1/chatroom/message",
+      {
+        method: "POST",
+        headers: {
+          Authorization: this.authToken,
+          Referer: "https://fansly.com/",
+          "Content-Type": "application/json",
+          Accept: "application/json, text/plain, */*",
+        },
+        body: JSON.stringify({
+          chatRoomId: chatroomId,
+          content: message,
+        }),
+        referrer: "https://fansly.com/",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        mode: "cors",
+        credentials: "include",
+      }
+    );
+
+    if (!resp.ok) {
+      console.error("Something went wrong, could not send chat message");
+      return false;
+    }
+
+    const data = await resp.json();
+    if (!data?.success) {
+      console.error("Something went wrong, could not send chat message");
+      return false;
+    }
+
+    return true;
+  }
 }
 
 export const fanslyApi = new FanslyApi();

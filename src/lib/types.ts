@@ -9,3 +9,10 @@ export class Emote {
     this.nameLower = name.toLocaleLowerCase();
   }
 }
+
+export interface ChatPronoun {
+  id: number;
+  subject: string;
+  object: string;
+  singular: boolean;
+}
