@@ -4,7 +4,7 @@ An emote extension for Fansly which adds support for emotes from popular emote e
 
 ## TODO
 
-- [ ] Display emotes in chatbox
+- [x] Display emotes in chatbox
 - [ ] Fill username cache based on the chatbox
 - [ ] Add pronouns modal
 - [ ] Chrome permissions check (https://github.com/GoogleChromeLabs/extension-update-testing-tool)

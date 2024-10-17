@@ -7,6 +7,7 @@ import { Ffz, FfzUser } from "@/lib/emotes/providers/ffz";
 import { Provider as EmoteProvider } from "@/lib/emotes/providers/provider";
 import { SevenTv, SevenTvUser } from "@/lib/emotes/providers/seventv";
 import { Twitch, TwitchUser } from "@/lib/emotes/providers/twitch";
+import { chatEmotes } from "@/lib/entryPoints/chatEmotes";
 import {
   chatUsernameAutoComplete,
   usernames,
@@ -28,6 +29,7 @@ export default defineContentScript({
         fanslyStyleFixes();
         handleFirstInit(mutation);
 
+        chatEmotes();
         emoteMenuButton(ctx);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
@@ -68,26 +70,26 @@ async function handleFirstInit(mutation: MutationRecord) {
 async function getEmoteProviders(
   twitchUserId: string
 ): Promise<EmoteProvider[]> {
-  let emoteProviders: EmoteProvider[] = [];
+  let emoteProviders: Promise<EmoteProvider>[] = [];
 
   if (twitchUserId) {
     emoteProviders = [
-      await loadProvider(new TwitchUser(twitchUserId)),
-      await loadProvider(new SevenTvUser(twitchUserId)),
-      await loadProvider(new FfzUser(twitchUserId)),
-      await loadProvider(new BttvUser(twitchUserId)),
+      loadProvider(new TwitchUser(twitchUserId)),
+      loadProvider(new SevenTvUser(twitchUserId)),
+      loadProvider(new FfzUser(twitchUserId)),
+      loadProvider(new BttvUser(twitchUserId)),
     ];
   }
 
   emoteProviders = [
     ...emoteProviders,
-    await loadProvider(new SevenTv()),
-    await loadProvider(new Ffz()),
-    await loadProvider(new Bttv()),
-    await loadProvider(new Twitch()),
+    loadProvider(new SevenTv()),
+    loadProvider(new Ffz()),
+    loadProvider(new Bttv()),
+    loadProvider(new Twitch()),
   ];
 
-  return emoteProviders;
+  return Promise.all(emoteProviders);
 }
 
 async function loadProvider(provider: EmoteProvider): Promise<EmoteProvider> {
