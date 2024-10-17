@@ -21,12 +21,11 @@ export default defineContentScript({
   matches: ["*://*.fansly.com/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
-    fanslyStyleFixes();
-
     // This needs to be a MutationObserver because of client-side routing
     // When a user navigates to a new page, the actual page is not reloaded
     new MutationObserver(async (mutations) => {
       mutations.forEach(async (mutation) => {
+        fanslyStyleFixes();
         handleFirstInit(mutation);
 
         emoteMenuButton(ctx);
