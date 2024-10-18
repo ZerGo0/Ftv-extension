@@ -58,7 +58,8 @@
       visibleProviders = visibleProviders.filter((i) => i !== idx);
     }
 
-    selectedProvider = Math.min(...visibleProviders);
+    const providersMin = Math.min(...visibleProviders);
+    selectedProvider = providersMin === Infinity ? 1 : providersMin;
   }
 
   // TODO: refactor this function...
