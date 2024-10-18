@@ -12,12 +12,12 @@
   function onEmoteClick(emoteName: string) {
     if (!chatInput) {
       chatInput = document.querySelector(
-        "app-chat-room > .chat-footer > * > .message-input-container > textarea"
+        "app-chat-room > .chat-footer > * > .message-input-container > textarea",
       );
 
       if (!chatInput) {
         const chatFooter = document.querySelector(
-          "app-chat-room > .chat-footer"
+          "app-chat-room > .chat-footer",
         );
         console.error("Could not find chat input?", chatFooter);
         return;

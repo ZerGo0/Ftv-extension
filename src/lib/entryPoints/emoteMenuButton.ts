@@ -5,7 +5,7 @@ const attachedClass = "ftv-emotes-attached";
 
 export async function emoteMenuButton(ctx: any) {
   const chatInputElements = document.querySelectorAll(
-    "app-chat-room > .chat-footer > *"
+    "app-chat-room > .chat-footer > *",
   );
   if (!chatInputElements || chatInputElements.length === 0) {
     return;

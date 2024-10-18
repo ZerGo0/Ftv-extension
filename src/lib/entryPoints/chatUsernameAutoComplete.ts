@@ -5,10 +5,10 @@ let originalUsername: string | null = null;
 
 export async function chatUsernameAutoComplete(
   ctx: any,
-  mutation: MutationRecord
+  mutation: MutationRecord,
 ) {
   const chatInput = document.querySelector(
-    "app-chat-room > .chat-footer > * > .message-input-container > textarea"
+    "app-chat-room > .chat-footer > * > .message-input-container > textarea",
   ) as HTMLTextAreaElement;
 
   if (!chatInput || chatInput.classList.contains(attachedClass)) {
@@ -48,7 +48,7 @@ export async function chatUsernameAutoComplete(
 
 function autoCompleteUsername(
   inputUsername: string,
-  chatInput: HTMLTextAreaElement
+  chatInput: HTMLTextAreaElement,
 ) {
   if (usernamesCache.size === 0) {
     return;
@@ -63,7 +63,7 @@ function autoCompleteUsername(
 
   // Get all usernames that start with the input username
   const matchingUsernames = Array.from(usernamesCache).filter((username) =>
-    username[0].startsWith(usernameWithoutAt.toLowerCase())
+    username[0].startsWith(usernameWithoutAt.toLowerCase()),
   );
 
   if (matchingUsernames.length === 0) {

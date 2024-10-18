@@ -44,7 +44,7 @@ export class SevenTvUser extends Provider {
     if (this.userId === undefined || this.userId === "") {
       console.error(
         this.name,
-        `Emote fetch failed because user ID was invalid`
+        `Emote fetch failed because user ID was invalid`,
       );
       return [];
     }

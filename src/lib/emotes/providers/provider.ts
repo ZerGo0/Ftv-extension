@@ -14,7 +14,7 @@ export class Provider {
   async fetchEmotes(): Promise<Emote[]> {
     console.error(
       "fetchEmotes function not overwritten by provider:",
-      this.name
+      this.name,
     );
     return [];
   }

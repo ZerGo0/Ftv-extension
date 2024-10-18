@@ -29,7 +29,7 @@
       disabled={index === selectedProvider}
       onclick={() => {
         onScrollToProvider(
-          new CustomEvent("scrollToProvider", { detail: { index } })
+          new CustomEvent("scrollToProvider", { detail: { index } }),
         );
       }}
       id="emote-selector-button"

@@ -12,7 +12,7 @@ class EmoteStore {
 
   search(term: string) {
     return this.emotes.filter((emote) =>
-      emote.nameLower.includes(term.toLocaleLowerCase())
+      emote.nameLower.includes(term.toLocaleLowerCase()),
     );
   }
 }

@@ -18,14 +18,14 @@
   let twitchUserIconUrl = $derived(
     emoteProviderStore.provdiers.length > 0
       ? emoteProviderStore.provdiers[0].iconUrl
-      : ""
+      : "",
   );
   let visibleProviders: number[] = [];
   let selectedProvider = $state(0);
   let emotesContainer: HTMLDivElement;
   let searchTerm = $state("");
   let searchResult: Emote[] = $derived(
-    searchTerm.length > 0 ? emoteStore.search(searchTerm) : []
+    searchTerm.length > 0 ? emoteStore.search(searchTerm) : [],
   );
   let emoteButtonElm: HTMLButtonElement;
   let bottom = $state(0);
@@ -33,7 +33,7 @@
 
   onMount(() => {
     emoteButtonElm = shadowRoot.querySelector(
-      "#emote-menu-button"
+      "#emote-menu-button",
     ) as HTMLButtonElement;
     readjustPosition();
   });
@@ -82,7 +82,7 @@
     }
 
     const searchbarInput = shadowRoot.querySelector(
-      "#emote-search"
+      "#emote-search",
     ) as HTMLInputElement;
     if (searchbarInput && searchbarInput.value.length > 0) {
       searchbarInput.value = "";

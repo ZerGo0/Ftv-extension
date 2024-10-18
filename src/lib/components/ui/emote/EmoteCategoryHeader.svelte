@@ -7,7 +7,7 @@
     provider: Provider;
     index: number;
     onInViewport: (
-      e: CustomEvent<{ isIntersecting: boolean; index: number }>
+      e: CustomEvent<{ isIntersecting: boolean; index: number }>,
     ) => void;
   }
 
@@ -22,10 +22,10 @@
               isIntersecting: entries[0].isIntersecting,
               index: index,
             },
-          })
+          }),
         );
       },
-      { threshold: 1 }
+      { threshold: 1 },
     );
 
     observer.observe(element);

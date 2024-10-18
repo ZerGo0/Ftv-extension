@@ -21,7 +21,7 @@ export class Twitch extends Provider {
 
     const emotes = data.data.map(
       (e: { name: string; id: string; images: { url_1x: string } }) =>
-        new Emote(e.name, e.images.url_1x)
+        new Emote(e.name, e.images.url_1x),
     );
 
     return emotes;
@@ -40,7 +40,7 @@ export class TwitchUser extends Provider {
     if (this.userId === undefined || this.userId === "") {
       console.error(
         this.name,
-        `Emote fetch failed because user ID was invalid`
+        `Emote fetch failed because user ID was invalid`,
       );
       return [];
     }
@@ -86,8 +86,8 @@ export class TwitchUser extends Provider {
               emote.token,
               emote.id.startsWith("emotesv2")
                 ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
-            )
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`,
+            ),
           );
         }
       }
@@ -101,8 +101,8 @@ export class TwitchUser extends Provider {
               emote.token,
               emote.id.startsWith("emotesv2")
                 ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
-            )
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`,
+            ),
           );
         }
       }

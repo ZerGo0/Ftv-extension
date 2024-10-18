@@ -6,7 +6,7 @@ const attachedClass = "ftv-pronouns-attached";
 
 export function accountCard() {
   const chatContainer = document.querySelector(
-    "app-chat-room > * .chat-container"
+    "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {
     return;
@@ -19,7 +19,7 @@ export function accountCard() {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations)
+    async (mutations) => await chatMessageHandler(mutations),
   ).observe(chatContainer, {
     childList: true,
   });
@@ -96,7 +96,7 @@ async function getAccountPronouns(username: string): Promise<string> {
         accept: "application/json, text/plain, */*",
       },
       method: "GET",
-    }
+    },
   );
 
   if (!resp.ok) {

@@ -4,7 +4,7 @@ const attachedClass = "ftv-chat-emotes-attached";
 
 export function chatEmotes() {
   const chatContainer = document.querySelector(
-    "app-chat-room > * .chat-container"
+    "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {
     return;
@@ -17,7 +17,7 @@ export function chatEmotes() {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations)
+    async (mutations) => await chatMessageHandler(mutations),
   ).observe(chatContainer, {
     childList: true,
   });
@@ -102,7 +102,7 @@ function parseChatMessageNode(node: Node) {
 // FIXME: the last word always has a trailing space
 async function parseEmotes(
   message: string,
-  emoteSeparator: string
+  emoteSeparator: string,
 ): Promise<(HTMLDivElement | Text)[]> {
   const chatMsgElements = [];
   const messageSplit = message.split(emoteSeparator);
@@ -117,7 +117,7 @@ async function parseEmotes(
 
     const wordLower = word.toLocaleLowerCase();
     const emote = emoteStore.emotes.find(
-      (emote) => emote.nameLower === wordLower
+      (emote) => emote.nameLower === wordLower,
     );
 
     if (emote === undefined) {
@@ -151,7 +151,7 @@ async function parseEmotes(
 function appendSeparator(
   chatMsgElements: any[],
   word: string,
-  selector: string
+  selector: string,
 ): void {
   if (
     chatMsgElements.length > 0 &&

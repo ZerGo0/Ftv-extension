@@ -13,7 +13,7 @@ export class Bttv extends Provider {
         headers: {
           Accept: "application/json",
         },
-      }
+      },
     );
     if (resp.status !== 200) {
       console.error("Failed to fetch", this.name);
@@ -29,7 +29,7 @@ export class Bttv extends Provider {
     const emotes = json.map((e: any) => {
       return new Emote(
         e.code,
-        "https://cdn.betterttv.net/emote/" + e.id + "/1x"
+        "https://cdn.betterttv.net/emote/" + e.id + "/1x",
       );
     });
 
@@ -49,7 +49,7 @@ export class BttvUser extends Provider {
     if (this.userId === undefined || this.userId === "") {
       console.error(
         this.name,
-        `Emote fetch failed because user ID was invalid`
+        `Emote fetch failed because user ID was invalid`,
       );
       return [];
     }
@@ -60,7 +60,7 @@ export class BttvUser extends Provider {
         headers: {
           Accept: "application/json",
         },
-      }
+      },
     );
     if (resp.status !== 200) {
       console.error("Failed to fetch", this.name);
@@ -76,7 +76,7 @@ export class BttvUser extends Provider {
     const emotes = json.channelEmotes.map((e: any) => {
       return new Emote(
         e.code,
-        "https://cdn.betterttv.net/emote/" + e.id + "/1x"
+        "https://cdn.betterttv.net/emote/" + e.id + "/1x",
       );
     });
 

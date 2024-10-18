@@ -3,7 +3,7 @@ import { ChatPronoun } from "../types";
 class Zergo0Api {
   async getTwitchId(fanslyId: string): Promise<string> {
     const resp = await fetch(
-      `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`
+      `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`,
     );
     if (!resp.ok) {
       console.error("Twitch Id request failed", resp);

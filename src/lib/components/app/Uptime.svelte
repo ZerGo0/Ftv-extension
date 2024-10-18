@@ -27,7 +27,7 @@
 
     if (accountResp?.streaming?.channel?.stream?.startedAt) {
       startedAt = new Date(
-        accountResp.streaming.channel.stream.startedAt
+        accountResp.streaming.channel.stream.startedAt,
       ).getTime();
       setInterval(() => {
         uptime = Date.now() - startedAt;

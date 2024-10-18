@@ -5,7 +5,7 @@ export class Ffz extends Provider {
   constructor() {
     super(
       "FFZ Global",
-      "https://frankerfacez.com/static/images/favicon-32.png"
+      "https://frankerfacez.com/static/images/favicon-32.png",
     );
   }
 
@@ -28,7 +28,7 @@ export class Ffz extends Provider {
     }
 
     const emotes = json.sets[json.default_sets[0]]?.emoticons.map(
-      (e: any) => new Emote(e.name, e.urls["1"])
+      (e: any) => new Emote(e.name, e.urls["1"]),
     );
 
     return emotes;
@@ -47,13 +47,13 @@ export class FfzUser extends Provider {
     if (this.userId === undefined || this.userId === "") {
       console.error(
         this.name,
-        `Emote fetch failed because user ID was invalid`
+        `Emote fetch failed because user ID was invalid`,
       );
       return [];
     }
 
     const resp = await fetch(
-      `https://api.frankerfacez.com/v1/room/id/${this.userId}`
+      `https://api.frankerfacez.com/v1/room/id/${this.userId}`,
     );
     if (resp.status !== 200) {
       console.error("Failed to fetch", this.name);
@@ -67,7 +67,7 @@ export class FfzUser extends Provider {
     }
 
     const emotes = json.sets[json.room.set].emoticons.map(
-      (e: any) => new Emote(e.name, e.urls["1"])
+      (e: any) => new Emote(e.name, e.urls["1"]),
     );
 
     return emotes;

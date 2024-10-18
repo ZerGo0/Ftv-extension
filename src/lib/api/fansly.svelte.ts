@@ -29,7 +29,7 @@ class FanslyApi {
         method: "GET",
         mode: "cors",
         credentials: "include",
-      }
+      },
     );
 
     if (!resp.ok) {
@@ -142,7 +142,7 @@ class FanslyApi {
         referrerPolicy: "strict-origin-when-cross-origin",
         mode: "cors",
         credentials: "include",
-      }
+      },
     );
 
     if (!resp.ok) {

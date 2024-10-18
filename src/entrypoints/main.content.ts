@@ -33,7 +33,7 @@ export default defineContentScript({
     new MutationObserver(async (mutations) => {
       const urlPath = window.location.pathname;
       const isWhitelisted = mutationUrlPathWhitelist.some((path) =>
-        new RegExp(path).test(urlPath)
+        new RegExp(path).test(urlPath),
       );
       if (!isWhitelisted) {
         return;
@@ -84,7 +84,7 @@ async function handleFirstInit(mutation: MutationRecord) {
 }
 
 async function getEmoteProviders(
-  twitchUserId: string
+  twitchUserId: string,
 ): Promise<EmoteProvider[]> {
   let emoteProviders: Promise<EmoteProvider>[] = [];
 
