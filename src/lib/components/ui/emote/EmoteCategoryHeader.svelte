@@ -1,25 +1,29 @@
 <script lang="ts">
   import { Provider } from "@/lib/emotes/providers/provider";
   import { SearchIcon } from "lucide-svelte";
-  import { createEventDispatcher } from "svelte";
 
   interface Props {
     twitchUserIconUrl: string;
     provider: Provider;
     index: number;
+    onInViewport: (
+      e: CustomEvent<{ isIntersecting: boolean; index: number }>
+    ) => void;
   }
 
-  let { twitchUserIconUrl, provider, index }: Props = $props();
-
-  const dispatch = createEventDispatcher();
+  let { twitchUserIconUrl, provider, index, onInViewport }: Props = $props();
 
   function actionWhenInViewport(element: HTMLElement) {
     const observer = new IntersectionObserver(
       (entries) => {
-        dispatch("inViewport", {
-          isIntersecting: entries[0].isIntersecting,
-          index: index,
-        });
+        onInViewport(
+          new CustomEvent("inViewport", {
+            detail: {
+              isIntersecting: entries[0].isIntersecting,
+              index: index,
+            },
+          })
+        );
       },
       { threshold: 1 }
     );

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Provider } from "@/lib/emotes/providers/provider";
-  import { createEventDispatcher } from "svelte";
   import EmoteButton from "./EmoteButton.svelte";
   import EmoteCategoryHeader from "./EmoteCategoryHeader.svelte";
 
@@ -8,15 +7,15 @@
     provider: Provider;
     index: number;
     twitchUserIconUrl: string;
+    onInViewport: (e: CustomEvent) => void;
   }
 
-  let { provider: provider, index, twitchUserIconUrl }: Props = $props();
-
-  const dispatch = createEventDispatcher();
-
-  function onInViewport(e: CustomEvent<any>) {
-    dispatch("inViewport", e.detail);
-  }
+  let {
+    provider: provider,
+    index,
+    twitchUserIconUrl,
+    onInViewport,
+  }: Props = $props();
 </script>
 
 {#if provider.emotes.length > 0 || provider.name === "Search Result Emotes"}
@@ -25,7 +24,7 @@
       {provider}
       {twitchUserIconUrl}
       {index}
-      on:inViewport={onInViewport}
+      {onInViewport}
     />
 
     <div

@@ -118,7 +118,6 @@
 
     const screenheight = window.innerHeight;
     const emoteButtonRect = emoteButtonElm.getBoundingClientRect();
-    console.log(screenheight - emoteButtonRect.top);
     if (screenheight - emoteButtonRect.top >= 0) {
       bottom = screenheight - emoteButtonRect.top + 10;
     } else {
@@ -191,6 +190,7 @@
             provider={new Provider("Search Result", "", searchResult)}
             index={-1}
             twitchUserIconUrl={""}
+            onInViewport={() => {}}
           />
         {:else}
           {#each emoteProviderStore.provdiers as provider, i}
@@ -200,7 +200,7 @@
               twitchUserIconUrl={isUserProvider(provider.name)
                 ? twitchUserIconUrl
                 : ""}
-              on:inViewport={onInViewport}
+              {onInViewport}
             />
           {/each}
         {/if}
@@ -221,7 +221,9 @@
               twitchUserIconUrl={isUserProvider(provider.name)
                 ? twitchUserIconUrl
                 : ""}
-              on:scrollToProvider={(e) => onScrollToProvider(e.detail.index)}
+              onScrollToProvider={(e) => {
+                onScrollToProvider(e.detail.index);
+              }}
             />
           {/each}
         </div>

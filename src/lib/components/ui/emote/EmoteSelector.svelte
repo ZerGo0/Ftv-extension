@@ -1,12 +1,12 @@
 <script lang="ts">
   import { Provider } from "@/lib/emotes/providers/provider";
-  import { createEventDispatcher } from "svelte";
 
   interface Props {
     category: Provider;
     index: number;
     twitchUserIconUrl: string;
     selectedProvider: number;
+    onScrollToProvider: (e: CustomEvent<{ index: number }>) => void;
   }
 
   let {
@@ -14,13 +14,8 @@
     index,
     twitchUserIconUrl,
     selectedProvider: selectedProvider,
+    onScrollToProvider,
   }: Props = $props();
-
-  const dispatch = createEventDispatcher();
-
-  function scrollToProvider(index: number) {
-    dispatch("scrollToProvider", { index });
-  }
 </script>
 
 {#if provider.emotes.length > 0}
@@ -32,7 +27,11 @@
         : 'backdrop-brightness-125 hover:backdrop-brightness-90 active:backdrop-brightness-80 ease-in-out duration-200'}"
       title={provider.name}
       disabled={index === selectedProvider}
-      onclick={() => scrollToProvider(index)}
+      onclick={() => {
+        onScrollToProvider(
+          new CustomEvent("scrollToProvider", { detail: { index } })
+        );
+      }}
       id="emote-selector-button"
     >
       {#if index === selectedProvider}

@@ -51,8 +51,6 @@ class FanslyApi {
       return this.authToken;
     }
 
-    console.log("Getting auth token from local storage");
-
     const session = this.localStorage.getItem("session_active_session");
     if (!session) {
       console.error("Could not find session in local storage");
