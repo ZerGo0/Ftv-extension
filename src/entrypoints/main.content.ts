@@ -18,7 +18,7 @@ import { uptime } from "@/lib/entryPoints/uptime";
 import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
 
 const attachedClass = "ftv-attached";
-export const mutationUrlPathWhitelist = [
+const mutationUrlPathWhitelist = [
   "/live/.*",
   "/chatroom/.*",
   "/creator/streaming",
