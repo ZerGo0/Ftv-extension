@@ -16,14 +16,14 @@
   onMount(async () => {
     pronouns = await zergo0Api.getChatPronouns();
     if (pronouns.length === 0) {
-      console.error("No pronouns found");
+      console.warn("No pronouns found");
       return;
     }
   });
 
   async function handleSetPronouns() {
     if (subject === 0 || object === 0) {
-      console.error("No pronouns selected");
+      console.warn("No pronouns selected");
       return;
     }
 

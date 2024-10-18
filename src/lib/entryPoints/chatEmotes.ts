@@ -79,7 +79,7 @@ function parseChatMessageNode(node: Node) {
 
   const messageElements = textNodes.slice(1);
   if (!messageElements || messageElements.length === 0) {
-    console.error("Could not get message");
+    console.warn("Could not get message");
     return;
   }
 

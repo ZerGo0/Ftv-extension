@@ -64,7 +64,7 @@
   // TODO: refactor this function...
   function onScrollToProvider(idx: number) {
     if (emotesContainer.children.length === 0) {
-      console.error("Emote container has no childrens");
+      console.warn("Emote container has no childrens");
       return;
     }
 

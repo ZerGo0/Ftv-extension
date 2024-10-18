@@ -1,4 +1,4 @@
-// fixes chatter list scrollbar not showing up
+/* fixes chatter list scrollbar not showing up */
 app-chat-room-chatter-list {
   overflow-y: auto;
 }

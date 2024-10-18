@@ -12,7 +12,7 @@ export class Provider {
   }
 
   async fetchEmotes(): Promise<Emote[]> {
-    console.error(
+    console.warn(
       "fetchEmotes function not overwritten by provider:",
       this.name,
     );

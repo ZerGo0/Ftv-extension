@@ -9,13 +9,13 @@ export class Twitch extends Provider {
   override async fetchEmotes(): Promise<Emote[]> {
     const resp = await fetch("https://zergo0_bot.zergo0.dev/ftv/twitch/emotes");
     if (resp.status !== 200) {
-      console.error(this.name, `Emote fetch failed with status ${resp.status}`);
+      console.warn(this.name, `Emote fetch failed with status ${resp.status}`);
       return [];
     }
 
     const data = await resp.json();
     if (data?.data?.length === 0) {
-      console.error(this.name, `Emote fetch succeeded but data was invalid`);
+      console.warn(this.name, `Emote fetch succeeded but data was invalid`);
       return [];
     }
 
@@ -38,7 +38,7 @@ export class TwitchUser extends Provider {
 
   override async fetchEmotes(): Promise<Emote[]> {
     if (this.userId === undefined || this.userId === "") {
-      console.error(
+      console.warn(
         this.name,
         `Emote fetch failed because user ID was invalid`,
       );
@@ -56,7 +56,7 @@ export class TwitchUser extends Provider {
       body: `[{"operationName":"EmotePicker_EmotePicker_UserSubscriptionProducts","variables":{"channelOwnerID":"${this.userId}"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"71b5f829a4576d53b714c01d3176f192cbd0b14973eb1c3d0ee23d5d1b78fd7e"}}}]`,
     });
     if (resp.status !== 200) {
-      console.error(this.name, `User fetch failed with status ${resp.status}`);
+      console.warn(this.name, `User fetch failed with status ${resp.status}`);
       return [];
     }
 
@@ -72,7 +72,7 @@ export class TwitchUser extends Provider {
       (!data[0]?.data?.channel?.localEmoteSets &&
         !data[0]?.data?.user?.subscriptionProducts)
     ) {
-      console.error(this.name, "User fetch failed");
+      console.warn(this.name, "User fetch failed");
       return [];
     }
 

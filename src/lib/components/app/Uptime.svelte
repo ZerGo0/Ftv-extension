@@ -16,12 +16,12 @@
     const username = window.location.pathname.split("/")[2];
     const accountResp = await fanslyApi.getFanslyAccount(username);
     if (!accountResp) {
-      console.error("Could not get account response");
+      console.warn("Could not get account response");
       return;
     }
 
     if (accountResp?.streaming?.channel?.status !== 2) {
-      console.error("Channel is not live");
+      console.warn("Channel is not live");
       return;
     }
 

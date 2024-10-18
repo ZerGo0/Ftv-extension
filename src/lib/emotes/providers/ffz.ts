@@ -12,7 +12,7 @@ export class Ffz extends Provider {
   override async fetchEmotes(): Promise<Emote[]> {
     const resp = await fetch("https://api.frankerfacez.com/v1/set/global");
     if (resp.status !== 200) {
-      console.error("Failed to fetch", this.name);
+      console.warn("Failed to fetch", this.name);
       return [];
     }
 
@@ -23,7 +23,7 @@ export class Ffz extends Provider {
       json.default_sets.length === 0 ||
       json.sets.length === 0
     ) {
-      console.error("Failed to parse", this.name);
+      console.warn("Failed to parse", this.name);
       return [];
     }
 
@@ -45,10 +45,7 @@ export class FfzUser extends Provider {
 
   override async fetchEmotes(): Promise<Emote[]> {
     if (this.userId === undefined || this.userId === "") {
-      console.error(
-        this.name,
-        `Emote fetch failed because user ID was invalid`,
-      );
+      console.warn(this.name, `Emote fetch failed because user ID was invalid`);
       return [];
     }
 
@@ -56,13 +53,13 @@ export class FfzUser extends Provider {
       `https://api.frankerfacez.com/v1/room/id/${this.userId}`,
     );
     if (resp.status !== 200) {
-      console.error("Failed to fetch", this.name);
+      console.warn("Failed to fetch", this.name);
       return [];
     }
 
     const json = await resp.json();
     if (!json || !json.sets || json.sets.length === 0) {
-      console.error("Failed to parse", this.name);
+      console.warn("Failed to parse", this.name);
       return [];
     }
 

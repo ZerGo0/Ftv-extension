@@ -100,7 +100,7 @@ async function getAccountPronouns(username: string): Promise<string> {
   );
 
   if (!resp.ok) {
-    console.error("Account request failed", resp);
+    console.warn("Account request failed", resp);
     return "";
   }
 

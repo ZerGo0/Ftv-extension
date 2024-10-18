@@ -16,13 +16,13 @@ export class Bttv extends Provider {
       },
     );
     if (resp.status !== 200) {
-      console.error("Failed to fetch", this.name);
+      console.warn("Failed to fetch", this.name);
       return [];
     }
 
     const json = await resp.json();
     if (json?.length === 0) {
-      console.error("Failed to parse", this.name);
+      console.warn("Failed to parse", this.name);
       return [];
     }
 
@@ -47,10 +47,7 @@ export class BttvUser extends Provider {
 
   override async fetchEmotes(): Promise<Emote[]> {
     if (this.userId === undefined || this.userId === "") {
-      console.error(
-        this.name,
-        `Emote fetch failed because user ID was invalid`,
-      );
+      console.warn(this.name, `Emote fetch failed because user ID was invalid`);
       return [];
     }
 
@@ -63,13 +60,13 @@ export class BttvUser extends Provider {
       },
     );
     if (resp.status !== 200) {
-      console.error("Failed to fetch", this.name);
+      console.warn("Failed to fetch", this.name);
       return [];
     }
 
     let json = await resp.json();
     if (json?.channelEmotes?.length === 0) {
-      console.error("Failed to parse", this.name);
+      console.warn("Failed to parse", this.name);
       return [];
     }
 

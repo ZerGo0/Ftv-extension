@@ -10,9 +10,9 @@ export class Emote {
   }
 }
 
-export interface ChatPronoun {
+export type ChatPronoun = {
   id: number;
   subject: string;
   object: string;
   singular: boolean;
-}
+};

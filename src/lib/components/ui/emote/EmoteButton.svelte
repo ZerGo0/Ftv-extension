@@ -19,7 +19,7 @@
         const chatFooter = document.querySelector(
           "app-chat-room > .chat-footer",
         );
-        console.error("Could not find chat input?", chatFooter);
+        console.warn("Could not find chat input?", chatFooter);
         return;
       }
     }
