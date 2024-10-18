@@ -25,7 +25,7 @@ const mutationUrlPathWhitelist = [
 ];
 
 export default defineContentScript({
-  matches: ["*://*.fansly.com/*"],
+  matches: ["https://fansly.com/*"],
   cssInjectionMode: "ui",
   async main(ctx) {
     // This needs to be a MutationObserver because of client-side routing
