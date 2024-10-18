@@ -6,7 +6,6 @@ export default defineConfig({
   modules: ["@wxt-dev/module-svelte"],
   runner: {
     chromiumArgs: ["--user-data-dir=./private/.dev-profile"],
-    firefoxProfile: "./private/.dev-profile-firefox",
     startUrls: [
       "https://fansly.com/live/zergo0_bot",
       "https://fansly.com/creator/streaming",
