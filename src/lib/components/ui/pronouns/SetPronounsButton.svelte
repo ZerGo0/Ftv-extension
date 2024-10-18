@@ -2,7 +2,7 @@
   import { fanslyApi } from "@/lib/api/fansly.svelte";
   import { zergo0Api } from "@/lib/api/zergo0";
   import Modal from "@/lib/components/ui/modal/Modal.svelte";
-  import { ChatPronoun } from "@/lib/types";
+  import type { ChatPronoun } from "@/lib/types";
   import Button from "../button/button.svelte";
 
   let showModal = $state(false);

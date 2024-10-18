@@ -1,4 +1,4 @@
-import { ChatPronoun } from "../types";
+import type { ChatPronoun } from "../types";
 
 class Zergo0Api {
   async getTwitchId(fanslyId: string): Promise<string> {

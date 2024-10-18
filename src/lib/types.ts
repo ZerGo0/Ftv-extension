@@ -10,9 +10,16 @@ export class Emote {
   }
 }
 
-export type ChatPronoun = {
+export class ChatPronoun {
   id: number;
   subject: string;
   object: string;
   singular: boolean;
-};
+
+  constructor(id: number, subject: string, object: string, singular: boolean) {
+    this.id = id;
+    this.subject = subject;
+    this.object = object;
+    this.singular = singular;
+  }
+}
