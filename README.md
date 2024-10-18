@@ -1,6 +1,6 @@
 # Ftv
 
-An emote extension for Fansly which adds support for emotes from popular emote platforms.
+A emote extension for Fansly which adds support for emotes from popular emote platforms.
 
 ## Features
 
