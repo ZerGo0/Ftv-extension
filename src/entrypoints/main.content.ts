@@ -18,6 +18,11 @@ import { uptime } from "@/lib/entryPoints/uptime";
 import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
 
 const attachedClass = "ftv-attached";
+export const mutationUrlPathWhitelist = [
+  "/live/.*",
+  "/chatroom/.*",
+  "/creator/streaming",
+];
 
 export default defineContentScript({
   matches: ["*://*.fansly.com/*"],
@@ -26,6 +31,14 @@ export default defineContentScript({
     // This needs to be a MutationObserver because of client-side routing
     // When a user navigates to a new page, the actual page is not reloaded
     new MutationObserver(async (mutations) => {
+      const urlPath = window.location.pathname;
+      const isWhitelisted = mutationUrlPathWhitelist.some((path) =>
+        new RegExp(path).test(urlPath)
+      );
+      if (!isWhitelisted) {
+        return;
+      }
+
       mutations.forEach(async (mutation) => {
         fanslyStyleFixes();
         handleFirstInit(mutation);
