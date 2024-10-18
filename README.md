@@ -12,7 +12,7 @@ A emote extension for Fansly which adds support for emotes from popular emote pl
 ## Supported Browsers
 
 - [x] Chromium - Chrome, Edge, Opera, Brave, etc.
-- [] Firefox - Currently not supported due to a bug in Svelte 5 and shadcn-svelte
+- [ ] Firefox - Currently not supported due to a bug in Svelte 5 and shadcn-svelte
   - `proto is null` error in Firefox
 
 ## Disclaimer
