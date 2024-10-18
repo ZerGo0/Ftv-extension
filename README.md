@@ -1,22 +1,18 @@
 # Ftv
 
-An emote extension for Fansly which adds support for emotes from popular emote extensions.
-
-## TODO
-
-- [x] Display emotes in chatbox
-- [x] Fill username cache based on the chatbox
-- [x] Add pronouns modal
-- [x] Chrome permissions check (https://github.com/GoogleChromeLabs/extension-update-testing-tool)
-- [ ] Move repo to private account and delete this org
-- [ ] Release update
+An emote extension for Fansly which adds support for emotes from popular emote platforms.
 
 ## Features
 
 - 300+ emote slots
 - Support for animated and wide emotes
 - All kinds of images including WEBP are supported
-- Support for emotes from popular emote extensions
+- Support for emotes from popular emote platforms
+
+## Supported Browsers
+
+[x] Chromium - Chrome, Edge, Opera, Brave, etc.
+[] Firefox - Currently not supported due to a bug in Svelte 5 and shadcn-svelte
 
 ## Disclaimer
 
@@ -27,7 +23,7 @@ The Ftv browser extension is not associated with Fansly, Twitch, 7TV, FFZ, or BT
 ### Install
 
 ```bash
-pnpm install
+pnpm i
 ```
 
 ### Dev
