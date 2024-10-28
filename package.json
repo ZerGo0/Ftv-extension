@@ -16,29 +16,29 @@
     "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,svelte}\""
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "4.0.0-next.8",
+    "@sveltejs/vite-plugin-svelte": "4.0.0",
     "@tsconfig/svelte": "^5.0.4",
     "@wxt-dev/module-svelte": "^1.0.1",
     "autoprefixer": "^10.4.20",
     "bits-ui": "^0.21.16",
     "clsx": "^2.1.1",
-    "lucide-svelte": "^0.453.0",
+    "lucide-svelte": "^0.454.0",
     "postcss": "^8.4.47",
     "prettier-plugin-svelte": "^3.2.7",
     "prettier-plugin-tailwindcss": "^0.6.8",
-    "svelte": "5.0.0-next.270",
+    "svelte": "5.1.3",
     "svelte-check": "^4.0.5",
     "tailwind-merge": "^2.5.4",
     "tailwind-variants": "^0.2.1",
     "tailwindcss": "^3.4.14",
     "tslib": "^2.8.0",
     "typescript": "^5.6.3",
-    "wxt": "^0.19.11"
+    "wxt": "^0.19.13"
   },
   "pnpm": {
     "overrides": {
-      "@sveltejs/vite-plugin-svelte@<4.0.0-next.8": ">=4.0.0-next.8",
-      "svelte@<5.0.0-next.265": ">=5.0.0-next.265"
+      "@sveltejs/vite-plugin-svelte@<4.0.0": ">=4.0.0",
+      "svelte@<5.0.0": ">=5.0.0"
     }
   }
 }
