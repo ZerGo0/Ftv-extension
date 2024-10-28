@@ -1,5 +1,3 @@
-import { fanslyApi } from "@/lib/api/fansly.svelte";
-import { zergo0Api } from "@/lib/api/zergo0";
 import { emoteStore } from "@/lib/emotes/emotes.svelte";
 import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
 import { Bttv, BttvUser } from "@/lib/emotes/providers/bttv";
@@ -16,6 +14,7 @@ import {
 import { emoteMenuButton } from "@/lib/entryPoints/emoteMenuButton";
 import { uptime } from "@/lib/entryPoints/uptime";
 import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
+import { sharedState } from "@/lib/state/state.svelte";
 
 const attachedClass = "ftv-attached";
 const mutationUrlPathWhitelist = [
@@ -70,21 +69,19 @@ async function handleFirstInit(mutation: MutationRecord) {
   usernamesCache.clear();
   pronounsCache.clear();
 
-  let twitchUserId: string = "";
-  const chatroomId = await fanslyApi.getChatroomId();
-  if (chatroomId) {
-    twitchUserId = await zergo0Api.getTwitchId(chatroomId);
-  }
+  await sharedState.initialize();
 
-  console.log(`Loaded (ChatroomId: ${chatroomId} | TwitchId: ${twitchUserId})`);
+  console.log(
+    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`,
+  );
 
-  const providers = await getEmoteProviders(twitchUserId);
+  const providers = await getEmoteProviders(sharedState.twitchUserId);
   emoteProviderStore.provdiers = providers;
   emoteStore.emotes = providers.flatMap((c) => c.emotes);
 }
 
 async function getEmoteProviders(
-  twitchUserId: string,
+  twitchUserId: string | undefined,
 ): Promise<EmoteProvider[]> {
   let emoteProviders: Promise<EmoteProvider>[] = [];
 

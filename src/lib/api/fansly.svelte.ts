@@ -158,6 +158,47 @@ class FanslyApi {
 
     return true;
   }
+
+  async getChatroomByChatroomId(chatroomId: string): Promise<any> {
+    if (!chatroomId) {
+      console.warn("No chatroom provided");
+      return "";
+    }
+
+    const resp = await fetch(
+      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`,
+      {
+        headers: {
+          accept: "application/json, text/plain, */*",
+          authorization: this.authToken,
+        },
+        referrer: "https://fansly.com/",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        body: null,
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      },
+    );
+
+    if (!resp.ok) {
+      console.warn("Chatroom request failed", resp);
+      return "";
+    }
+
+    const json = await resp.json();
+    if (!json || !json.success) {
+      console.warn("Could not parse chatroom response");
+      return "";
+    }
+
+    if (!json?.response || json?.response.length === 0) {
+      console.warn("No chatroom found");
+      return "";
+    }
+
+    return json?.response[0];
+  }
 }
 
 export const fanslyApi = new FanslyApi();
