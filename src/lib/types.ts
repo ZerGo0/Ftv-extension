@@ -23,3 +23,8 @@ export class ChatPronoun {
     this.singular = singular;
   }
 }
+
+export enum ActionType {
+  None = "none",
+  ChatPoll = "chatPoll",
+}

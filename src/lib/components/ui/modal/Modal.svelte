@@ -3,15 +3,31 @@
     showModal: boolean;
     header: any;
     body: any;
+    onClose?: () => void;
+    className?: string;
   }
 
-  let { showModal = $bindable(), header, body }: Props = $props();
+  let {
+    showModal = $bindable(),
+    header,
+    body,
+    onClose = () => {},
+    className = "",
+  }: Props = $props();
 
   let dialog: HTMLDialogElement | null;
 
   $effect(() => {
-    if (dialog && showModal) dialog.showModal();
-    if (dialog && !showModal) dialog.close();
+    if (!dialog) {
+      return;
+    }
+
+    if (showModal) {
+      dialog.showModal();
+    } else {
+      dialog.close();
+      onClose();
+    }
   });
 </script>
 
@@ -25,7 +41,7 @@
       showModal = false;
     }
   }}
-  class="bg-popover text-fansly-font-1 rounded-lg max-w-[32rem]"
+  class="bg-popover text-fansly-font-1 rounded-lg max-w-[32rem] {className}"
 >
   <div class="p-4">
     {@render header()}
