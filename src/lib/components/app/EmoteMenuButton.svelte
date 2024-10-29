@@ -11,6 +11,7 @@
   import { Input } from "../ui/input";
   import * as Popover from "../ui/popover";
   import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
+  import ActionsButton from "../ui/useractions/ActionsButton.svelte";
 
   let shadowRoot: ShadowRoot =
     document.querySelector("ftv-emotes-ui")!.shadowRoot!;
@@ -232,6 +233,7 @@
           class="flex flex-col justify-center items-center text-primary border-t"
           id="category-selector-actions"
         >
+          <ActionsButton />
           <SetPronounsButton />
         </div>
       </div>

@@ -12,12 +12,7 @@ A emote extension for Fansly which adds support for emotes from popular emote pl
 ## Supported Browsers
 
 - [x] Chromium - Chrome, Edge, Opera, Brave, etc.
-- [ ] Firefox - Currently needs a patch to fix the `proto is null` error
-  - `proto is null` error in Firefox: [svelte #13691](https://github.com/sveltejs/svelte/issues/13691)
-    - node_modules/svelte/src/internal/client/dom/elements/attributes.js
-    - ```js
-      while (proto && proto.constructor.name !== 'Element') {
-      ```
+- [x] Firefox - Desktop and Android
 
 ## Disclaimer
 
