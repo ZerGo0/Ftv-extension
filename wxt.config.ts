@@ -18,7 +18,7 @@ export default defineConfig({
       name: "Ftv",
       description:
         "Ftv adds support for Twitch, 7TV, BTTV, and FFZ emotes to your fansly chat.",
-      version: "2.0.0",
+      version: "2.0.1",
       host_permissions:
         manifestVersion === 3
           ? ["https://apiv3.fansly.com/*", "https://zergo0_bot.zergo0.dev/*"]

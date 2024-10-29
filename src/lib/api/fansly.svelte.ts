@@ -199,6 +199,37 @@ class FanslyApi {
 
     return json?.response[0];
   }
+
+  async getOnlineFollowingStreams(): Promise<any> {
+    const resp = await fetch(
+      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
+      {
+        headers: {
+          accept: "application/json, text/plain, */*",
+          authorization: this.authToken,
+        },
+        referrer: "https://fansly.com/",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        body: null,
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      },
+    );
+
+    if (!resp.ok) {
+      console.warn("Online following streams request failed", resp);
+      return "";
+    }
+
+    const json = await resp.json();
+    if (!json || !json.success) {
+      console.warn("Could not parse online following streams response");
+      return "";
+    }
+
+    return json?.response;
+  }
 }
 
 export const fanslyApi = new FanslyApi();

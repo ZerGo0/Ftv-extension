@@ -11,6 +11,7 @@
 
   let startedAt: number = 0;
   let uptime: number | undefined = $state();
+  let uptimeInterval: any;
 
   onMount(async () => {
     const username = window.location.pathname.split("/")[2];
@@ -29,10 +30,16 @@
       startedAt = new Date(
         accountResp.streaming.channel.stream.startedAt,
       ).getTime();
-      setInterval(() => {
+      uptime = Date.now() - startedAt;
+
+      uptimeInterval = setInterval(() => {
         uptime = Date.now() - startedAt;
       }, 1000);
     }
+  });
+
+  onDestroy(() => {
+    clearInterval(uptimeInterval);
   });
 
   function formatUptime(uptime: number): string {
