@@ -1,7 +1,6 @@
 <script lang="ts">
   import { sharedState } from "@/lib/state/state.svelte";
   import { ActionType } from "@/lib/types";
-  import { SvelteComponent } from "svelte";
   import { Button } from "../button";
   import Modal from "../modal/Modal.svelte";
   import ChatPollModal from "./actions/ChatPollModal.svelte";
@@ -12,7 +11,7 @@
 
   let { showModal = $bindable() }: Props = $props();
 
-  let actionModal: SvelteComponent;
+  let actionModal: any;
 
   let action: ActionType = $state(ActionType.None);
 
