@@ -4,7 +4,8 @@
   import { sharedState } from "@/lib/state/state.svelte";
   import { ActionType } from "@/lib/types";
   import { Plus, Trash } from "lucide-svelte";
-  import { z, ZodError, ZodIssue } from "zod";
+  import type { ZodIssue } from "zod";
+  import { z, ZodError } from "zod";
   import Button from "../../button/button.svelte";
   import Input from "../../input/input.svelte";
   import Label from "../../label/label.svelte";
