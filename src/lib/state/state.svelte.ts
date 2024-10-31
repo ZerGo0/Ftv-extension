@@ -1,6 +1,10 @@
 import { fanslyApi } from "../api/fansly.svelte";
 import { zergo0Api } from "../api/zergo0";
-import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "../types";
+import {
+  FanslyChatroomResponse,
+  FanslyFollowingStreamsOnlineAggregationDataAccount,
+  FanslyMeResponse,
+} from "../types";
 
 class SharedState {
   chatroomId: string | undefined = $state(undefined);
@@ -11,9 +15,16 @@ class SharedState {
     setAt: Date;
     accounts: FanslyFollowingStreamsOnlineAggregationDataAccount[];
   } = $state({ setAt: new Date(), accounts: [] });
+  me: FanslyMeResponse | undefined = $state(undefined);
+  chatroom: FanslyChatroomResponse | undefined = $state(undefined);
 
   async initialize() {
+    await this.initializeMe();
     await this.initializeChatroom();
+  }
+
+  async initializeMe() {
+    this.me = await fanslyApi.getMe();
   }
 
   async initializeChatroom() {
@@ -24,14 +35,11 @@ class SharedState {
 
     this.twitchUserId = await zergo0Api.getTwitchId(this.chatroomId);
 
-    const chatroom = await fanslyApi.getChatroomByChatroomId(this.chatroomId);
-    if (!chatroom) {
-      console.warn("No chatroom found");
-      return;
+    this.chatroom = await fanslyApi.getChatroomByChatroomId(this.chatroomId);
+    if (this.chatroom) {
+      this.isOwner = this.me?.account.id === this.chatroom.accountId;
+      this.isModerator = (this.chatroom.accountFlags & 2) === 2;
     }
-
-    this.isOwner = chatroom.accountPermissionFlags % 65536 === 65535; // Not 100% sure about this one
-    this.isModerator = (chatroom.accountFlags & 2) === 2;
   }
 
   async getOnlineAccounts() {

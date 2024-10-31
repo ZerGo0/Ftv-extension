@@ -507,3 +507,156 @@ export type FanslyFollowingStreamsOnlineAggregationDataAccount = {
   };
   profileAccess: boolean;
 };
+
+export type FanslyMeResponse = {
+  account: {
+    id: string;
+    email: string;
+    username: string;
+    displayName: any;
+    flags: number;
+    version: number;
+    createdAt: number;
+    followCount: number;
+    subscriberCount: number;
+    permissions: {
+      accountPermissionFlags: {
+        flags: number;
+      };
+    };
+    timelineStats: {
+      accountId: string;
+      imageCount: number;
+      videoCount: number;
+      bundleCount: number;
+      bundleImageCount: number;
+      bundleVideoCount: number;
+      fetchedAt: number;
+    };
+    statusId: number;
+    lastSeenAt: number;
+    postLikes: number;
+    profileAccessFlags: number;
+    profileFlags: number;
+    about: string;
+    location: string;
+    profileSocials: Array<any>;
+    pinnedPosts: Array<{
+      postId: string;
+      accountId: string;
+      pos: number;
+      createdAt: number;
+    }>;
+    avatar: {
+      id: string;
+      type: number;
+      status: number;
+      accountId: string;
+      mimetype: string;
+      flags: number;
+      filename: string;
+      location: string;
+      width: number;
+      height: number;
+      metadata: string;
+      updatedAt: number;
+      createdAt: number;
+      variants: Array<any>;
+      variantHash: {};
+      locations: Array<{
+        locationId: string;
+        location: string;
+      }>;
+    };
+    banner: {
+      id: string;
+      type: number;
+      status: number;
+      accountId: string;
+      mimetype: string;
+      flags: number;
+      filename: string;
+      location: string;
+      width: number;
+      height: number;
+      metadata: string;
+      updatedAt: number;
+      createdAt: number;
+      variants: Array<{
+        id: string;
+        type: number;
+        status: number;
+        mimetype: string;
+        flags: number;
+        filename: string;
+        location: string;
+        width: number;
+        height: number;
+        metadata: string;
+        updatedAt: number;
+        locations: Array<{
+          locationId: string;
+          location: string;
+        }>;
+      }>;
+      variantHash: {};
+      locations: Array<{
+        locationId: string;
+        location: string;
+      }>;
+    };
+    accountMediaLikes: number;
+    mainWallet: {
+      id: string;
+      balance: number;
+      balance64: number;
+      accountId: string;
+      type: number;
+      flags: number;
+      walletVersion: number;
+    };
+    earningsWallet: {
+      id: string;
+      balance: number;
+      balance64: number;
+      accountId: string;
+      type: number;
+      flags: number;
+      walletVersion: number;
+    };
+    streaming: {
+      accountId: string;
+      channel: {
+        id: string;
+        accountId: string;
+        playbackUrl: string;
+        chatRoomId: string;
+        status: number;
+        version: number;
+        createdAt: number;
+        updatedAt: any;
+        stream: {
+          id: string;
+          historyId: string;
+          channelId: string;
+          accountId: string;
+          title: string;
+          status: number;
+          viewerCount: number;
+          version: number;
+          createdAt: number;
+          updatedAt: any;
+          lastFetchedAt: number;
+          startedAt: number;
+          permissions: {
+            permissionFlags: Array<any>;
+          };
+        };
+      };
+      enabled: boolean;
+    };
+    profileAccess: boolean;
+  };
+  correlationId: string;
+  checkToken: any;
+};
