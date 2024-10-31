@@ -1,3 +1,11 @@
+import {
+  FanslyAccountResponse,
+  FanslyChatroomResponse,
+  FanslyFollowingStreamsOnlineResponse,
+  FanslyMeResponse,
+  FanslyResponse,
+} from "../types";
+
 class FanslyApi {
   // NOTE: This class needs to called the first time outside of the shadow root
   // because it needs to access the proper window object
@@ -7,43 +15,6 @@ class FanslyApi {
 
   constructor() {
     this.authToken = this.getAuthToken();
-  }
-
-  async getFanslyAccount(username: string): Promise<any> {
-    if (!username) {
-      console.warn("No username provided");
-      return "";
-    }
-
-    const isId = username.length === 18 && !isNaN(Number.parseInt(username));
-    const resp = await fetch(
-      `https://apiv3.fansly.com/api/v1/account?${isId ? "ids=" : "usernames="}${username}`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          authorization: this.authToken,
-        },
-        referrer: "https://fansly.com/",
-        referrerPolicy: "strict-origin-when-cross-origin",
-        body: null,
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-      },
-    );
-
-    if (!resp.ok) {
-      console.warn("Account request failed", resp);
-      return "";
-    }
-
-    const json = await resp.json();
-    if (!json || !json.success) {
-      console.warn("Could not parse account response");
-      return "";
-    }
-
-    return json?.response[0];
   }
 
   getAuthToken(): string {
@@ -72,6 +43,55 @@ class FanslyApi {
     return authToken;
   }
 
+  private async fanslyRequest<T>(
+    url: string,
+    method: string = "GET",
+    body: any = null,
+  ): Promise<T | undefined> {
+    const resp = await fetch(url, {
+      headers: {
+        accept: "application/json, text/plain, */*",
+        authorization: this.authToken,
+      },
+      referrer: "https://fansly.com/",
+      referrerPolicy: "strict-origin-when-cross-origin",
+      body: body ? body : null,
+      method: method,
+      mode: "cors",
+      credentials: "include",
+    });
+
+    if (!resp.ok) {
+      console.warn("Request failed", resp);
+      return;
+    }
+
+    return resp.json() as T;
+  }
+
+  async getFanslyAccount(
+    username: string,
+  ): Promise<FanslyAccountResponse | undefined> {
+    if (!username) {
+      console.warn("No username provided");
+      return;
+    }
+
+    const isId = username.length === 18 && !isNaN(Number.parseInt(username));
+    const resp = await this.fanslyRequest<
+      FanslyResponse<FanslyAccountResponse[]>
+    >(
+      `https://apiv3.fansly.com/api/v1/account?${isId ? "ids=" : "usernames="}${username}&ngsw-bypass=true`,
+    );
+
+    if (!resp || !resp.success) {
+      console.warn("Request failed", resp);
+      return;
+    }
+
+    return resp?.response[0];
+  }
+
   async getFanslyIdByUsername(username: string): Promise<string> {
     const accountResp = await this.getFanslyAccount(username);
     if (!accountResp) {
@@ -88,20 +108,25 @@ class FanslyApi {
     return chatRoomId;
   }
 
-  async getChatroomId(): Promise<string | undefined> {
-    let localchatroomId: string;
+  async getCurrentChatroomId(): Promise<string | undefined> {
+    let localChatroomId: string;
+
     if (this.window.location.pathname.includes("/live/")) {
+      // https://fansly.com/live/zergo0_bot
+      // https://fansly.com/live/407996034761891840
       const username = this.window.location.pathname.split("/")[2];
-      localchatroomId = await this.getFanslyIdByUsername(username);
+      localChatroomId = await this.getFanslyIdByUsername(username);
     } else if (this.window.location.pathname.includes("/chatroom/")) {
+      // https://fansly.com/chatroom/408830844350771200
       const urlSplit = this.window.location.pathname.split("/");
       if (urlSplit.length !== 3) {
         console.warn("Invalid chatroom URL");
         return;
       }
 
-      localchatroomId = urlSplit[2];
+      localChatroomId = urlSplit[2];
     } else if (this.window.location.pathname.endsWith("/creator/streaming")) {
+      // https://fansly.com/creator/streaming
       const session = localStorage.getItem("session_active_session");
       if (!session) {
         console.warn("No session found");
@@ -109,13 +134,13 @@ class FanslyApi {
       }
 
       const sessionJson = JSON.parse(session);
-      localchatroomId = sessionJson.accountId;
+      localChatroomId = sessionJson.accountId;
     } else {
-      console.warn("Not in a live or chatroom page, how did we get here?");
+      // any other page should end up here and should not be a chatroom
       return;
     }
 
-    return localchatroomId;
+    return localChatroomId;
   }
 
   async sendChatMessage(chatroomId: string, message: string): Promise<boolean> {
@@ -124,111 +149,78 @@ class FanslyApi {
       return false;
     }
 
-    const resp = await fetch(
+    const resp = await this.fanslyRequest<FanslyResponse<any>>(
       "https://apiv3.fansly.com/api/v1/chatroom/message",
-      {
-        method: "POST",
-        headers: {
-          Authorization: this.authToken,
-          Referer: "https://fansly.com/",
-          "Content-Type": "application/json",
-          Accept: "application/json, text/plain, */*",
-        },
-        body: JSON.stringify({
-          chatRoomId: chatroomId,
-          content: message,
-        }),
-        referrer: "https://fansly.com/",
-        referrerPolicy: "strict-origin-when-cross-origin",
-        mode: "cors",
-        credentials: "include",
-      },
+      "POST",
+      JSON.stringify({
+        chatRoomId: chatroomId,
+        content: message,
+      }),
     );
 
-    if (!resp.ok) {
-      console.warn("Something went wrong, could not send chat message");
-      return false;
-    }
-
-    const data = await resp.json();
-    if (!data?.success) {
-      console.warn("Something went wrong, could not send chat message");
+    if (!resp || !resp.success) {
+      console.warn("Request failed", resp);
       return false;
     }
 
     return true;
   }
 
-  async getChatroomByChatroomId(chatroomId: string): Promise<any> {
+  async getChatroomByChatroomId(
+    chatroomId: string,
+  ): Promise<FanslyChatroomResponse | undefined> {
     if (!chatroomId) {
       console.warn("No chatroom provided");
-      return "";
+      return;
     }
 
-    const resp = await fetch(
+    const resp = await this.fanslyRequest<
+      FanslyResponse<FanslyChatroomResponse[]>
+    >(
       `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`,
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          authorization: this.authToken,
-        },
-        referrer: "https://fansly.com/",
-        referrerPolicy: "strict-origin-when-cross-origin",
-        body: null,
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-      },
     );
 
-    if (!resp.ok) {
-      console.warn("Chatroom request failed", resp);
-      return "";
+    if (!resp || !resp.success) {
+      console.warn("Request failed", resp);
+      return;
     }
 
-    const json = await resp.json();
-    if (!json || !json.success) {
-      console.warn("Could not parse chatroom response");
-      return "";
-    }
-
-    if (!json?.response || json?.response.length === 0) {
+    if (!resp?.response || resp?.response.length === 0) {
       console.warn("No chatroom found");
-      return "";
+      return;
     }
 
-    return json?.response[0];
+    return resp?.response[0];
   }
 
-  async getOnlineFollowingStreams(): Promise<any> {
-    const resp = await fetch(
+  async getOnlineFollowingStreams(): Promise<
+    FanslyFollowingStreamsOnlineResponse | undefined
+  > {
+    const resp = await this.fanslyRequest<
+      FanslyResponse<FanslyFollowingStreamsOnlineResponse>
+    >(
       "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
-      {
-        headers: {
-          accept: "application/json, text/plain, */*",
-          authorization: this.authToken,
-        },
-        referrer: "https://fansly.com/",
-        referrerPolicy: "strict-origin-when-cross-origin",
-        body: null,
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-      },
     );
 
-    if (!resp.ok) {
-      console.warn("Online following streams request failed", resp);
-      return "";
+    if (!resp || !resp.success) {
+      console.warn("Request failed", resp);
+      return;
     }
 
-    const json = await resp.json();
-    if (!json || !json.success) {
-      console.warn("Could not parse online following streams response");
-      return "";
+    return resp?.response;
+  }
+
+  async getMe(): Promise<FanslyMeResponse | undefined> {
+    const resp = await this.fanslyRequest<FanslyResponse<FanslyMeResponse>>(
+      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true",
+    );
+
+    if (!resp || !resp.success) {
+      console.warn("Request failed", resp);
+      return;
     }
 
-    return json?.response;
+    return resp?.response;
   }
 }
 

@@ -73,7 +73,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
   for (const liveCreator of preparedLiveCreators) {
     const username = liveCreator.url.replaceAll("/", "").toLowerCase();
     const onlineCreator = onlineAccounts.find(
-      (creator: any) => creator.username.toLowerCase() === username,
+      (creator) => creator.username.toLowerCase() === username,
     );
 
     if (!onlineCreator) {
