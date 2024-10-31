@@ -36,7 +36,7 @@ class SharedState {
   async getOnlineAccounts() {
     if (
       this.onlineCreators.accounts.length > 0 &&
-      this.onlineCreators.setAt > new Date(Date.now() - 1000 * 60 * 5)
+      this.onlineCreators.setAt > new Date(Date.now() - 1000 * 60 * 1)
     ) {
       return this.onlineCreators.accounts;
     }
