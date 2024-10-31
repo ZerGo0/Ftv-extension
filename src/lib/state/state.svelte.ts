@@ -1,5 +1,6 @@
 import { fanslyApi } from "../api/fansly.svelte";
 import { zergo0Api } from "../api/zergo0";
+import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "../types";
 
 class SharedState {
   chatroomId: string | undefined = $state(undefined);
@@ -8,7 +9,7 @@ class SharedState {
   isModerator: boolean = $state(false);
   onlineCreators: {
     setAt: Date;
-    accounts: any[];
+    accounts: FanslyFollowingStreamsOnlineAggregationDataAccount[];
   } = $state({ setAt: new Date(), accounts: [] });
 
   async initialize() {

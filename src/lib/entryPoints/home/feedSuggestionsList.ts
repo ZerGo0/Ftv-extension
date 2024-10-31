@@ -1,5 +1,6 @@
 import FeedSuggestionsList from "@/lib/components/app/FeedSuggestionsList.svelte";
 import { sharedState } from "@/lib/state/state.svelte";
+import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "@/lib/types";
 import { mount, unmount } from "svelte";
 
 const attachedClass = "ftv-feed-suggestions-list-watch-button-attached";
@@ -73,7 +74,8 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
   for (const liveCreator of preparedLiveCreators) {
     const username = liveCreator.url.replaceAll("/", "").toLowerCase();
     const onlineCreator = onlineAccounts.find(
-      (creator: any) => creator.username.toLowerCase() === username,
+      (creator: FanslyFollowingStreamsOnlineAggregationDataAccount) =>
+        creator.username.toLowerCase() === username,
     );
 
     if (!onlineCreator) {

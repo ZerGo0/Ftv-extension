@@ -1,3 +1,10 @@
+import {
+  FanslyAccountResponse,
+  FanslyChatroomResponse,
+  FanslyFollowingStreamsOnlineResponse,
+  FanslyResponse,
+} from "../types";
+
 class FanslyApi {
   // NOTE: This class needs to called the first time outside of the shadow root
   // because it needs to access the proper window object
@@ -9,10 +16,12 @@ class FanslyApi {
     this.authToken = this.getAuthToken();
   }
 
-  async getFanslyAccount(username: string): Promise<any> {
+  async getFanslyAccount(
+    username: string,
+  ): Promise<FanslyAccountResponse | undefined> {
     if (!username) {
       console.warn("No username provided");
-      return "";
+      return;
     }
 
     const isId = username.length === 18 && !isNaN(Number.parseInt(username));
@@ -34,13 +43,13 @@ class FanslyApi {
 
     if (!resp.ok) {
       console.warn("Account request failed", resp);
-      return "";
+      return;
     }
 
-    const json = await resp.json();
+    const json = (await resp.json()) as FanslyResponse<FanslyAccountResponse[]>;
     if (!json || !json.success) {
       console.warn("Could not parse account response");
-      return "";
+      return;
     }
 
     return json?.response[0];
@@ -155,7 +164,7 @@ class FanslyApi {
       return false;
     }
 
-    const data = await resp.json();
+    const data = (await resp.json()) as FanslyResponse<any>;
     if (!data?.success) {
       console.warn("Something went wrong, could not send chat message");
       return false;
@@ -164,10 +173,12 @@ class FanslyApi {
     return true;
   }
 
-  async getChatroomByChatroomId(chatroomId: string): Promise<any> {
+  async getChatroomByChatroomId(
+    chatroomId: string,
+  ): Promise<FanslyChatroomResponse | undefined> {
     if (!chatroomId) {
       console.warn("No chatroom provided");
-      return "";
+      return;
     }
 
     const resp = await fetch(
@@ -188,24 +199,28 @@ class FanslyApi {
 
     if (!resp.ok) {
       console.warn("Chatroom request failed", resp);
-      return "";
+      return;
     }
 
-    const json = await resp.json();
+    const json = (await resp.json()) as FanslyResponse<
+      FanslyChatroomResponse[]
+    >;
     if (!json || !json.success) {
       console.warn("Could not parse chatroom response");
-      return "";
+      return;
     }
 
     if (!json?.response || json?.response.length === 0) {
       console.warn("No chatroom found");
-      return "";
+      return;
     }
 
     return json?.response[0];
   }
 
-  async getOnlineFollowingStreams(): Promise<any> {
+  async getOnlineFollowingStreams(): Promise<
+    FanslyFollowingStreamsOnlineResponse | undefined
+  > {
     const resp = await fetch(
       "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
       {
@@ -224,13 +239,14 @@ class FanslyApi {
 
     if (!resp.ok) {
       console.warn("Online following streams request failed", resp);
-      return "";
+      return;
     }
 
-    const json = await resp.json();
+    const json =
+      (await resp.json()) as FanslyResponse<FanslyFollowingStreamsOnlineResponse>;
     if (!json || !json.success) {
       console.warn("Could not parse online following streams response");
-      return "";
+      return;
     }
 
     return json?.response;
