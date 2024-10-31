@@ -1,4 +1,5 @@
 import { emoteStore } from "../emotes/emotes.svelte";
+import { Emote } from "../types";
 
 const attachedClass = "ftv-chat-emotes-attached";
 
@@ -77,41 +78,86 @@ function parseChatMessageNode(node: Node) {
     }
   });
 
-  const messageElements = textNodes.slice(1);
-  if (!messageElements || messageElements.length === 0) {
+  const messageNodes = textNodes.slice(1); // the first text node is " : "
+  if (!messageNodes || messageNodes.length === 0) {
     console.warn("Could not get message");
     return;
   }
 
-  messageElements.forEach((messageElement: any) => {
-    if (messageElement.nodeType === Node.ELEMENT_NODE) {
-      messageElement.data = messageElement.textContent;
+  messageNodes.forEach((messageNode: ChildNode) => {
+    if (
+      messageNode.nodeType !== Node.ELEMENT_NODE ||
+      !messageNode.textContent
+    ) {
+      return;
     }
 
-    parseEmotes(messageElement.data, " ").then((chatMsgElements: any) => {
-      if (!chatMsgElements || chatMsgElements.length === 0) {
-        return;
-      }
+    const messageElement = messageNode as HTMLElement;
+    if (!messageElement) {
+      return;
+    }
 
-      messageElement.replaceWith(...chatMsgElements);
-    });
+    let elementTextSplit = prepareTextSplit(messageNode.textContent!);
+
+    const emotePositions = getEmotes(elementTextSplit);
+    if (emotePositions.length === 0) {
+      return;
+    }
+
+    for (const { idx, emote } of emotePositions) {
+      const emoteHtml = prepareEmoteHtml(emote);
+      elementTextSplit[idx] = emoteHtml;
+    }
+
+    messageElement.innerHTML = elementTextSplit.join("");
   });
 }
 
-// FIXME: "test https://example.com" becomes "test  https://example.com" (2 spaces)
-// FIXME: the last word always has a trailing space
-async function parseEmotes(
-  message: string,
-  emoteSeparator: string,
-): Promise<(HTMLDivElement | Text)[]> {
-  const chatMsgElements = [];
-  const messageSplit = message.split(emoteSeparator);
+function prepareTextSplit(elementText: string): string[] {
+  let elementTextSplit = [];
+  let currentWord = "";
+  for (let i = 0; i < elementText.length; i++) {
+    const currentChar = elementText[i];
+    currentWord += currentChar;
 
-  for (let i = 0; i < messageSplit.length; i++) {
-    const word = messageSplit[i];
+    if (elementText.length - 1 === i) {
+      // last character
+      elementTextSplit.push(currentWord);
+      currentWord = "";
+      continue;
+    }
 
-    if (word.length === 0) {
-      appendSeparator(chatMsgElements, word, emoteSeparator);
+    const nextChar = elementText[i + 1];
+
+    if (currentChar === " " && nextChar !== " ") {
+      // currentWord contains space right now,
+      // but next character is not a space
+      elementTextSplit.push(currentWord);
+      currentWord = "";
+      continue;
+    }
+
+    if (currentChar !== " " && nextChar === " ") {
+      // currentWord does not contain space right now,
+      // but next character is a space
+      elementTextSplit.push(currentWord);
+      currentWord = "";
+      continue;
+    }
+  }
+
+  return elementTextSplit;
+}
+
+function getEmotes(
+  elementTextSplit: string[],
+): Array<{ idx: number; emote: Emote }> {
+  const emotePositions: Array<{ idx: number; emote: Emote }> = [];
+
+  for (let i = 0; i < elementTextSplit.length; i++) {
+    const word = elementTextSplit[i];
+
+    if (word.length === 0 || word[0] === " ") {
       continue;
     }
 
@@ -121,45 +167,31 @@ async function parseEmotes(
     );
 
     if (emote === undefined) {
-      appendSeparator(chatMsgElements, word, emoteSeparator);
       continue;
     }
 
-    const emoteContElement = document.createElement("div");
-    emoteContElement.id = "emote-container";
-    emoteContElement.className = "emote-container";
-    emoteContElement.style.display = "inline-block";
-    emoteContElement.title = emote.name;
-
-    const emoteImgElement = document.createElement("img");
-    emoteImgElement.id = "emote";
-    emoteImgElement.className = "emote";
-    emoteImgElement.loading = "lazy";
-    emoteImgElement.src = emote.url;
-    emoteImgElement.title = emote.name;
-    emoteImgElement.alt = emote.name;
-
-    emoteContElement.appendChild(emoteImgElement);
-
-    chatMsgElements.push(emoteContElement);
-    chatMsgElements.push(document.createTextNode(emoteSeparator));
+    emotePositions.push({ idx: i, emote });
   }
 
-  return chatMsgElements;
+  return emotePositions;
 }
 
-function appendSeparator(
-  chatMsgElements: any[],
-  word: string,
-  selector: string,
-): void {
-  if (
-    chatMsgElements.length > 0 &&
-    chatMsgElements[chatMsgElements.length - 1].nodeType === Node.TEXT_NODE
-  ) {
-    chatMsgElements[chatMsgElements.length - 1].textContent += word + selector;
-    return;
-  }
+function prepareEmoteHtml(emote: Emote): string {
+  const emoteContElement = document.createElement("div");
+  emoteContElement.id = "emote-container";
+  emoteContElement.className = "emote-container";
+  emoteContElement.style.display = "inline-block";
+  emoteContElement.title = emote.name;
 
-  chatMsgElements.push(document.createTextNode(word + selector));
+  const emoteImgElement = document.createElement("img");
+  emoteImgElement.id = "emote";
+  emoteImgElement.className = "emote";
+  emoteImgElement.loading = "lazy";
+  emoteImgElement.src = emote.url;
+  emoteImgElement.title = emote.name;
+  emoteImgElement.alt = emote.name;
+
+  emoteContElement.appendChild(emoteImgElement);
+
+  return emoteContElement.outerHTML;
 }
