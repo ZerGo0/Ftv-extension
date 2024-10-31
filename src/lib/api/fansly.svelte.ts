@@ -88,20 +88,25 @@ class FanslyApi {
     return chatRoomId;
   }
 
-  async getChatroomId(): Promise<string | undefined> {
-    let localchatroomId: string;
+  async getCurrentChatroomId(): Promise<string | undefined> {
+    let localChatroomId: string;
+
     if (this.window.location.pathname.includes("/live/")) {
+      // https://fansly.com/live/zergo0_bot
+      // https://fansly.com/live/407996034761891840
       const username = this.window.location.pathname.split("/")[2];
-      localchatroomId = await this.getFanslyIdByUsername(username);
+      localChatroomId = await this.getFanslyIdByUsername(username);
     } else if (this.window.location.pathname.includes("/chatroom/")) {
+      // https://fansly.com/chatroom/408830844350771200
       const urlSplit = this.window.location.pathname.split("/");
       if (urlSplit.length !== 3) {
         console.warn("Invalid chatroom URL");
         return;
       }
 
-      localchatroomId = urlSplit[2];
+      localChatroomId = urlSplit[2];
     } else if (this.window.location.pathname.endsWith("/creator/streaming")) {
+      // https://fansly.com/creator/streaming
       const session = localStorage.getItem("session_active_session");
       if (!session) {
         console.warn("No session found");
@@ -109,13 +114,13 @@ class FanslyApi {
       }
 
       const sessionJson = JSON.parse(session);
-      localchatroomId = sessionJson.accountId;
+      localChatroomId = sessionJson.accountId;
     } else {
-      console.warn("Not in a live or chatroom page, how did we get here?");
+      // any other page should end up here and should not be a chatroom
       return;
     }
 
-    return localchatroomId;
+    return localChatroomId;
   }
 
   async sendChatMessage(chatroomId: string, message: string): Promise<boolean> {

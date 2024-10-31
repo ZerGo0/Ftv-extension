@@ -16,7 +16,7 @@ class SharedState {
   }
 
   async initializeChatroom() {
-    this.chatroomId = await fanslyApi.getChatroomId();
+    this.chatroomId = await fanslyApi.getCurrentChatroomId();
     if (!this.chatroomId) {
       return;
     }
