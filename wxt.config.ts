@@ -7,9 +7,9 @@ export default defineConfig({
   runner: {
     chromiumArgs: ["--user-data-dir=./private/.dev-profile"],
     startUrls: [
+      "https://fansly.com/chatroom/408830844350771200",
       "https://fansly.com/live/zergo0_bot",
       "https://fansly.com/creator/streaming",
-      "https://fansly.com/chatroom/408830844350771200",
     ],
   },
   manifest: ({ browser, manifestVersion, mode, command }) => {
@@ -18,7 +18,7 @@ export default defineConfig({
       name: "Ftv",
       description:
         "Ftv adds support for Twitch, 7TV, BTTV, and FFZ emotes to your fansly chat.",
-      version: "2.0.1",
+      // version: "0.0.0", package.json version is used by default
       host_permissions:
         manifestVersion === 3
           ? ["https://apiv3.fansly.com/*", "https://zergo0_bot.zergo0.dev/*"]
