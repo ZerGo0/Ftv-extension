@@ -3,11 +3,13 @@
   import { emoteStore } from "@/lib/emotes/emotes.svelte";
   import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
   import { Provider } from "@/lib/emotes/providers/provider";
+  import { sharedState } from "@/lib/state/state.svelte";
   import { Emote } from "@/lib/types";
   import { SmileIcon } from "lucide-svelte";
   import { Button } from "../ui/button";
   import EmoteCategory from "../ui/emote/EmoteCategory.svelte";
   import EmoteSelector from "../ui/emote/EmoteSelector.svelte";
+  import Circle from "../ui/icons/circle.svelte";
   import { Input } from "../ui/input";
   import * as Popover from "../ui/popover";
   import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
@@ -154,13 +156,22 @@
   onOpenChange={readjustPosition}
 >
   <Popover.Trigger asChild let:builder>
-    <div class="ml-1 flex items-center" id="emote-menu-button-container">
+    <div
+      class="ml-1 flex items-center relative"
+      id="emote-menu-button-container"
+    >
       <Button
         builders={[builder]}
         variant="icon"
         size="clear"
         id="emote-menu-button"
       >
+        {#if sharedState.newExtensionVersion}
+          <div class="absolute -top-1 -right-1">
+            <Circle class="text-red-500" size={12} />
+          </div>
+        {/if}
+
         <SmileIcon size="20" />
       </Button>
     </div>

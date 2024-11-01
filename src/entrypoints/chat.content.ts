@@ -39,11 +39,11 @@ export default defineContentScript({
       }
 
       mutations.forEach(async (mutation) => {
-        fanslyStyleFixes();
+        fanslyStyleFixes(ctx);
         handleFirstInit(mutation);
 
-        chatEmotes();
-        accountCard();
+        chatEmotes(ctx);
+        accountCard(ctx);
         emoteMenuButton(ctx);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);

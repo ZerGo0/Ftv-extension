@@ -4,7 +4,7 @@ export const pronounsCache = new Map<string, Promise<string>>();
 
 const attachedClass = "ftv-pronouns-attached";
 
-export function accountCard() {
+export function accountCard(ctx: any) {
   const chatContainer = document.querySelector(
     "app-chat-room > * .chat-container",
   );

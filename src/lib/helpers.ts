@@ -1,4 +1,7 @@
 import { ZodError, ZodIssue } from "zod";
+import { sharedState } from "./state/state.svelte";
+
+const extensionVersionKey = "ftv-version";
 
 export async function waitForElement(selector: string): Promise<Element> {
   return new Promise((resolve) => {
@@ -47,4 +50,35 @@ export function formatZodErrorMessage(
   }
 
   return "";
+}
+
+export function checkIfExtensionVersionIsNewer() {
+  const latestVersion = browser.runtime.getManifest().version;
+  if (!latestVersion) {
+    return false;
+  }
+
+  const currentVersion = localStorage.getItem(extensionVersionKey);
+  if (!currentVersion) {
+    return true;
+  }
+
+  return currentVersion !== latestVersion;
+}
+
+export function setExtensionVersion() {
+  const latestVersion = browser.runtime.getManifest().version;
+  if (!latestVersion) {
+    console.warn("Could not get extension version");
+    return;
+  }
+
+  localStorage.setItem(
+    extensionVersionKey,
+    browser.runtime.getManifest().version,
+  );
+
+  sharedState.newExtensionVersion = false;
+
+  return;
 }

@@ -3,7 +3,7 @@ import { Emote } from "../types";
 
 const attachedClass = "ftv-chat-emotes-attached";
 
-export function chatEmotes() {
+export function chatEmotes(ctx: any) {
   const chatContainer = document.querySelector(
     "app-chat-room > * .chat-container",
   );
@@ -84,7 +84,7 @@ function parseChatMessageNode(node: Node) {
     return;
   }
 
-  messageNodes.forEach((messageNode: ChildNode) => {
+  for (const messageNode of messageNodes) {
     if (
       messageNode.nodeType !== Node.ELEMENT_NODE ||
       !messageNode.textContent
@@ -110,7 +110,7 @@ function parseChatMessageNode(node: Node) {
     }
 
     messageElement.innerHTML = elementTextSplit.join("");
-  });
+  }
 }
 
 function prepareTextSplit(elementText: string): string[] {

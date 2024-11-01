@@ -2,7 +2,7 @@ import css from "@/assets/fanslyStyleFixes.css?inline";
 
 const elementId = "ftv-fansly-style-fixes-css";
 
-export function fanslyStyleFixes() {
+export function fanslyStyleFixes(ctx: any) {
   if (document.getElementById(elementId)) {
     return;
   }
