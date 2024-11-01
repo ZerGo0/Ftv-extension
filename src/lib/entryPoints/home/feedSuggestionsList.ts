@@ -5,10 +5,6 @@ import { mount, unmount } from "svelte";
 const attachedClass = "ftv-feed-suggestions-list-watch-button-attached";
 
 export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
-  if (!mutation || !mutation.target) {
-    return;
-  }
-
   const feedSuggestionsList = mutation.target as HTMLElement;
   if (
     !feedSuggestionsList ||

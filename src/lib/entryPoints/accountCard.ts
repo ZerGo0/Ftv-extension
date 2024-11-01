@@ -4,8 +4,13 @@ export const pronounsCache = new Map<string, Promise<string>>();
 
 const attachedClass = "ftv-pronouns-attached";
 
-export function accountCard() {
-  const chatContainer = document.querySelector(
+export function accountCard(ctx: any, mutation: MutationRecord) {
+  const element = mutation.target as HTMLElement;
+  if (!element || !element.tagName || element.tagName !== "APP-CHAT-ROOM") {
+    return;
+  }
+
+  const chatContainer = element.querySelector(
     "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {

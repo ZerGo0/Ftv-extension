@@ -16,10 +16,6 @@
       );
 
       if (!chatInput) {
-        const chatFooter = document.querySelector(
-          "app-chat-room > .chat-footer",
-        );
-        console.warn("Could not find chat input?", chatFooter);
         return;
       }
     }

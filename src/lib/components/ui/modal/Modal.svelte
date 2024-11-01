@@ -4,7 +4,7 @@
     header: any;
     body: any;
     onClose?: () => void;
-    className?: string;
+    class?: string;
   }
 
   let {
@@ -12,7 +12,7 @@
     header,
     body,
     onClose = () => {},
-    className = "",
+    class: className = "",
   }: Props = $props();
 
   let dialog: HTMLDialogElement | null;
@@ -43,9 +43,15 @@
   }}
   class="bg-popover text-fansly-font-1 rounded-lg max-w-[32rem] {className}"
 >
-  <div class="p-4">
-    {@render header()}
-    <hr class="my-2" />
+  <div class="p-4 pt-0">
+    <div
+      id="modal-header"
+      class="bg-popover pt-4 text-lg font-bold sticky top-0"
+    >
+      {@render header()}
+
+      <hr class="my-2" />
+    </div>
     {@render body()}
   </div>
 </dialog>

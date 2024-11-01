@@ -1,5 +1,6 @@
 import { fanslyApi } from "../api/fansly.svelte";
 import { zergo0Api } from "../api/zergo0";
+import { checkIfExtensionVersionIsNewer } from "../helpers";
 import {
   FanslyChatroomResponse,
   FanslyFollowingStreamsOnlineAggregationDataAccount,
@@ -15,31 +16,52 @@ class SharedState {
     setAt: Date;
     accounts: FanslyFollowingStreamsOnlineAggregationDataAccount[];
   } = $state({ setAt: new Date(), accounts: [] });
-  me: FanslyMeResponse | undefined = $state(undefined);
+  mePromise: Promise<FanslyMeResponse | undefined> = $state(
+    this.initializeMe(),
+  );
   chatroom: FanslyChatroomResponse | undefined = $state(undefined);
+  newExtensionVersion: boolean = $state(checkIfExtensionVersionIsNewer());
+
+  constructor() {}
+
+  async initializeMe() {
+    // NOTE: This should technically not change which is why we use this in a constructor.
+    // initialize() gets called whenever we mount components and we don't need
+    // to do this every time.
+    return fanslyApi.getMe();
+  }
 
   async initialize() {
-    await this.initializeMe();
     await this.initializeChatroom();
   }
 
-  async initializeMe() {
-    this.me = await fanslyApi.getMe();
-  }
-
   async initializeChatroom() {
-    this.chatroomId = await fanslyApi.getCurrentChatroomId();
+    this.chatroomId = await fanslyApi.getCurrentChatroomId(this.mePromise);
     if (!this.chatroomId) {
       return;
     }
 
-    this.twitchUserId = await zergo0Api.getTwitchId(this.chatroomId);
+    const twitchUserIdPromise = zergo0Api
+      .getTwitchId(this.chatroomId)
+      .then((twitchId) => {
+        this.twitchUserId = twitchId;
+      });
 
-    this.chatroom = await fanslyApi.getChatroomByChatroomId(this.chatroomId);
-    if (this.chatroom) {
-      this.isOwner = this.me?.account.id === this.chatroom.accountId;
-      this.isModerator = (this.chatroom.accountFlags & 2) === 2;
-    }
+    const chatroomPromise = fanslyApi
+      .getChatroomByChatroomId(this.chatroomId)
+      .then(async (chatroom) => {
+        this.chatroom = chatroom;
+        if (!this.chatroom) {
+          return;
+        }
+
+        this.isModerator = (this.chatroom.accountFlags & 2) === 2;
+
+        const me = await this.mePromise;
+        this.isOwner = me?.account.id === this.chatroom.accountId;
+      });
+
+    await Promise.all([twitchUserIdPromise, chatroomPromise]);
   }
 
   async getOnlineAccounts() {

@@ -1,16 +1,22 @@
 <script lang="ts">
   import "@/assets/app.pcss";
+  import { currentSeasonalEmoteButtonType } from "@/lib/consts";
   import { emoteStore } from "@/lib/emotes/emotes.svelte";
   import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
   import { Provider } from "@/lib/emotes/providers/provider";
-  import { Emote } from "@/lib/types";
+  import { Emote, SeasonalEmoteButtonTypes } from "@/lib/types";
   import { SmileIcon } from "lucide-svelte";
   import { Button } from "../ui/button";
   import EmoteCategory from "../ui/emote/EmoteCategory.svelte";
   import EmoteSelector from "../ui/emote/EmoteSelector.svelte";
+  import IconParkOutlineFireworks from "../ui/icons/IconParkOutlineFireworks.svelte";
+  import MdiEasterOutline from "../ui/icons/MdiEasterOutline.svelte";
+  import MingcuteChristmasHatLine from "../ui/icons/MingcuteChristmasHatLine.svelte";
+  import MingcutePumpkinLanternLine from "../ui/icons/MingcutePumpkinLanternLine.svelte";
   import { Input } from "../ui/input";
   import * as Popover from "../ui/popover";
   import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
+  import UpdateDot from "../ui/updatedot/UpdateDot.svelte";
   import ActionsButton from "../ui/useractions/ActionsButton.svelte";
 
   let shadowRoot: ShadowRoot =
@@ -154,14 +160,29 @@
   onOpenChange={readjustPosition}
 >
   <Popover.Trigger asChild let:builder>
-    <div class="ml-1 flex items-center" id="emote-menu-button-container">
+    <div
+      class="ml-1 flex items-center relative"
+      id="emote-menu-button-container"
+    >
       <Button
         builders={[builder]}
         variant="icon"
         size="clear"
         id="emote-menu-button"
       >
-        <SmileIcon size="20" />
+        <UpdateDot class="-top-1 -right-1" />
+
+        {#if currentSeasonalEmoteButtonType.type === SeasonalEmoteButtonTypes.NewYears}
+          <IconParkOutlineFireworks size="20" />
+        {:else if currentSeasonalEmoteButtonType.type === SeasonalEmoteButtonTypes.Easter}
+          <MdiEasterOutline size="20" />
+        {:else if currentSeasonalEmoteButtonType.type === SeasonalEmoteButtonTypes.Halloween}
+          <MingcutePumpkinLanternLine size="20" />
+        {:else if currentSeasonalEmoteButtonType.type === SeasonalEmoteButtonTypes.Christmas}
+          <MingcuteChristmasHatLine size="20" />
+        {:else}
+          <SmileIcon size="20" />
+        {/if}
       </Button>
     </div>
   </Popover.Trigger>

@@ -26,6 +26,7 @@ export class ChatPronoun {
 
 export enum ActionType {
   None = "none",
+  Changelog = "changelog",
   ChatPoll = "chatPoll",
 }
 
@@ -659,4 +660,24 @@ export type FanslyMeResponse = {
   };
   correlationId: string;
   checkToken: any;
+};
+
+export type Changelog = {
+  version: string;
+  date: string;
+  changes: string;
+};
+
+export enum SeasonalEmoteButtonTypes {
+  Default = "default",
+  NewYears = "newYears",
+  Easter = "easter",
+  Halloween = "halloween",
+  Christmas = "christmas",
+}
+
+export type SeasonalEmoteButton = {
+  type: SeasonalEmoteButtonTypes;
+  startDate: Date;
+  endDate: Date;
 };
