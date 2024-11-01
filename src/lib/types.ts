@@ -667,3 +667,17 @@ export type Changelog = {
   date: string;
   changes: string;
 };
+
+export enum SeasonalEmoteButtonTypes {
+  Default = "default",
+  NewYears = "newYears",
+  Easter = "easter",
+  Halloween = "halloween",
+  Christmas = "christmas",
+}
+
+export type SeasonalEmoteButton = {
+  type: SeasonalEmoteButtonTypes;
+  startDate: Date;
+  endDate: Date;
+};
