@@ -3,8 +3,13 @@ import EmoteMenuButton from "../components/app/EmoteMenuButton.svelte";
 
 const attachedClass = "ftv-emotes-attached";
 
-export async function emoteMenuButton(ctx: any) {
-  const chatInputElements = document.querySelectorAll(
+export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
+  const element = mutation.target as HTMLElement;
+  if (!element || !element.tagName || element.tagName !== "APP-CHAT-ROOM") {
+    return;
+  }
+
+  const chatInputElements = element.querySelectorAll(
     "app-chat-room > .chat-footer > *",
   );
   if (!chatInputElements || chatInputElements.length === 0) {

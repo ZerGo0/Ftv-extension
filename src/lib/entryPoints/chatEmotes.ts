@@ -3,8 +3,13 @@ import { Emote } from "../types";
 
 const attachedClass = "ftv-chat-emotes-attached";
 
-export function chatEmotes(ctx: any) {
-  const chatContainer = document.querySelector(
+export function chatEmotes(ctx: any, mutation: MutationRecord) {
+  const element = mutation.target as HTMLElement;
+  if (!element || !element.tagName || element.tagName !== "APP-CHAT-ROOM") {
+    return;
+  }
+
+  const chatContainer = element.querySelector(
     "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {

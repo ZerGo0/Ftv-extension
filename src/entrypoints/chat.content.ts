@@ -42,9 +42,9 @@ export default defineContentScript({
         fanslyStyleFixes(ctx);
         handleFirstInit(mutation);
 
-        chatEmotes(ctx);
-        accountCard(ctx);
-        emoteMenuButton(ctx);
+        chatEmotes(ctx, mutation);
+        accountCard(ctx, mutation);
+        emoteMenuButton(ctx, mutation);
         uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
       });

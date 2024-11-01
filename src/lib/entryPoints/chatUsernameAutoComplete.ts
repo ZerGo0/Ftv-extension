@@ -7,7 +7,12 @@ export async function chatUsernameAutoComplete(
   ctx: any,
   mutation: MutationRecord,
 ) {
-  const chatInput = document.querySelector(
+  const element = mutation.target as HTMLElement;
+  if (!element || !element.tagName || element.tagName !== "APP-CHAT-ROOM") {
+    return;
+  }
+
+  const chatInput = element.querySelector(
     "app-chat-room > .chat-footer > * > .message-input-container > textarea",
   ) as HTMLTextAreaElement;
 
