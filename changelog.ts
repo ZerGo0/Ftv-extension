@@ -2,6 +2,14 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.3",
+    date: "11/01/2024",
+    changes: `
+- added changelog modal
+- fixed "Start Poll" button not showing up for creators in /creator/streaming
+`,
+  },
+  {
     version: "2.0.2",
     date: "10/31/2024",
     changes: `
