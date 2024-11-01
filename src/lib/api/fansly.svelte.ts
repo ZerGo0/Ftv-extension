@@ -108,7 +108,11 @@ class FanslyApi {
     return chatRoomId;
   }
 
-  async getCurrentChatroomId(): Promise<string | undefined> {
+  async getCurrentChatroomId(
+    mePromise: Promise<FanslyMeResponse | undefined> = Promise.resolve(
+      undefined,
+    ),
+  ): Promise<string | undefined> {
     let localChatroomId: string;
 
     if (this.window.location.pathname.includes("/live/")) {
@@ -127,14 +131,13 @@ class FanslyApi {
       localChatroomId = urlSplit[2];
     } else if (this.window.location.pathname.endsWith("/creator/streaming")) {
       // https://fansly.com/creator/streaming
-      const session = localStorage.getItem("session_active_session");
-      if (!session) {
-        console.warn("No session found");
+      const me = await mePromise;
+      if (!me) {
+        console.warn("Could not get me");
         return;
       }
 
-      const sessionJson = JSON.parse(session);
-      localChatroomId = sessionJson.accountId;
+      localChatroomId = me.account?.streaming?.channel?.chatRoomId;
     } else {
       // any other page should end up here and should not be a chatroom
       return;

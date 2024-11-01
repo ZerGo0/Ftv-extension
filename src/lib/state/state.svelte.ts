@@ -16,16 +16,13 @@ class SharedState {
     setAt: Date;
     accounts: FanslyFollowingStreamsOnlineAggregationDataAccount[];
   } = $state({ setAt: new Date(), accounts: [] });
-  me: Promise<FanslyMeResponse | undefined> = $state(
-    Promise.resolve(undefined),
+  mePromise: Promise<FanslyMeResponse | undefined> = $state(
+    this.initializeMe(),
   );
   chatroom: FanslyChatroomResponse | undefined = $state(undefined);
-  newExtensionVersion: boolean = $state(false);
+  newExtensionVersion: boolean = $state(checkIfExtensionVersionIsNewer());
 
-  constructor() {
-    this.me = this.initializeMe();
-    this.newExtensionVersion = checkIfExtensionVersionIsNewer();
-  }
+  constructor() {}
 
   async initializeMe() {
     // NOTE: This should technically not change which is why we use this in a constructor.
@@ -39,7 +36,7 @@ class SharedState {
   }
 
   async initializeChatroom() {
-    this.chatroomId = await fanslyApi.getCurrentChatroomId();
+    this.chatroomId = await fanslyApi.getCurrentChatroomId(this.mePromise);
     if (!this.chatroomId) {
       return;
     }
@@ -54,12 +51,14 @@ class SharedState {
       .getChatroomByChatroomId(this.chatroomId)
       .then(async (chatroom) => {
         this.chatroom = chatroom;
-
-        if (this.chatroom) {
-          this.isOwner =
-            (await this.me)?.account.id === this.chatroom.accountId;
-          this.isModerator = (this.chatroom.accountFlags & 2) === 2;
+        if (!this.chatroom) {
+          return;
         }
+
+        this.isModerator = (this.chatroom.accountFlags & 2) === 2;
+
+        const me = await this.mePromise;
+        this.isOwner = me?.account.id === this.chatroom.accountId;
       });
 
     await Promise.all([twitchUserIdPromise, chatroomPromise]);
