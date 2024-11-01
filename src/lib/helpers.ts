@@ -1,7 +1,7 @@
 import { ZodError, ZodIssue } from "zod";
 import { sharedState } from "./state/state.svelte";
 
-const extensionVersionKey = "ftv-version";
+const extensionVersionKey = "ftv_version";
 
 export async function waitForElement(selector: string): Promise<Element> {
   return new Promise((resolve) => {

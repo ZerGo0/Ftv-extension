@@ -1,6 +1,7 @@
 <script lang="ts">
   import { setExtensionVersion } from "@/lib/helpers";
-  import { ActionType, Changelog } from "@/lib/types";
+  import type { Changelog } from "@/lib/types";
+  import { ActionType } from "@/lib/types";
   import { changelog } from "../../../../../../changelog";
   import Codeblock from "../../codeblock/codeblock.svelte";
   import Modal from "../../modal/Modal.svelte";

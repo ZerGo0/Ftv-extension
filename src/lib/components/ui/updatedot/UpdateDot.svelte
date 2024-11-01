@@ -1,6 +1,6 @@
 <script lang="ts">
   import { sharedState } from "@/lib/state/state.svelte";
-  import Circle from "../icons/circle.svelte";
+  import Circle from "../icons/Circle.svelte";
 
   interface Props {
     size?: number;
