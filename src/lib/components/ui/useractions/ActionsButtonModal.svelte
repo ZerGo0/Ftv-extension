@@ -2,8 +2,8 @@
   import { sharedState } from "@/lib/state/state.svelte";
   import { ActionType } from "@/lib/types";
   import { Button } from "../button";
-  import Circle from "../icons/circle.svelte";
   import Modal from "../modal/Modal.svelte";
+  import UpdateDot from "../updatedot/UpdateDot.svelte";
   import ChangelogModal from "./actions/ChangelogModal.svelte";
   import ChatPollModal from "./actions/ChatPollModal.svelte";
 
@@ -34,20 +34,15 @@
   {#snippet body()}
     <div class="flex flex-col space-y-2">
       <Button variant="secondary" onclick={handleChangelog} class="relative">
-        {#if sharedState.newExtensionVersion}
-          <div class="absolute -top-1 -right-1">
-            <Circle class="text-red-500" size={12} />
-          </div>
-        {/if}
+        <UpdateDot class="-top-1 -right-1" />
 
         Changelog
       </Button>
+
       {#if sharedState.isOwner || sharedState.isModerator}
         <Button variant="secondary" onclick={handleStartPoll}>
           Start Poll
         </Button>
-      {:else}
-        <p>No actions available</p>
       {/if}
     </div>
   {/snippet}

@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { sharedState } from "@/lib/state/state.svelte";
   import { BotMessageSquare } from "lucide-svelte";
-  import Circle from "../icons/circle.svelte";
+  import UpdateDot from "../updatedot/UpdateDot.svelte";
   import ActionsButtonModal from "./ActionsButtonModal.svelte";
 
   let showModal = $state(false);
@@ -15,11 +14,7 @@
     id="actions-button"
     onclick={() => (showModal = true)}
   >
-    {#if sharedState.newExtensionVersion}
-      <div class="absolute top-0 right-0 m-1">
-        <Circle class="text-red-500" size={12} />
-      </div>
-    {/if}
+    <UpdateDot class="top-0 right-0 m-1" />
 
     <BotMessageSquare class="m-2" />
   </button>
