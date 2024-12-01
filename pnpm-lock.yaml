@@ -20,7 +20,7 @@ importers:
         version: 5.0.4
       '@wxt-dev/module-svelte':
         specifier: ^2.0.0
-        version: 2.0.0(svelte@5.1.9)(vite@5.4.10(@types/node@22.8.1))(wxt@0.19.13(@types/node@22.8.1)(rollup@4.24.2))
+        version: 2.0.0(svelte@5.1.9)(vite@5.4.10(@types/node@22.8.1))(wxt@0.19.17(@types/node@22.8.1)(rollup@4.24.2))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -64,8 +64,8 @@ importers:
         specifier: ^5.7.2
         version: 5.7.2
       wxt:
-        specifier: ^0.19.13
-        version: 0.19.13(@types/node@22.8.1)(rollup@4.24.2)
+        specifier: ^0.19.17
+        version: 0.19.17(@types/node@22.8.1)(rollup@4.24.2)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -461,8 +461,8 @@ packages:
   '@tsconfig/svelte@5.0.4':
     resolution: {integrity: sha512-BV9NplVgLmSi4mwKzD8BD/NQ8erOY/nUE/GpgWe2ckx+wIQF5RyRirn/QsSSCPeulVpc3RA/iJt6DpfTIZps0Q==}
 
-  '@types/chrome@0.0.269':
-    resolution: {integrity: sha512-vF7x8YywnhXX2F06njQ/OE7a3Qeful43C5GUOsUksXWk89WoSFUU3iLeZW8lDpVO9atm8iZIEiLQTRC3H7NOXQ==}
+  '@types/chrome@0.0.280':
+    resolution: {integrity: sha512-AotSmZrL9bcZDDmSI1D9dE7PGbhOur5L0cKxXd7IqbVizQWCY4gcvupPUVsQ4FfDj3V2tt/iOpomT9EY0s+w1g==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -485,8 +485,8 @@ packages:
   '@types/node@22.8.1':
     resolution: {integrity: sha512-k6Gi8Yyo8EtrNtkHXutUu2corfDf9su95VYVP10aGYMMROM6SAItZi0w1XszA6RtWTHSVp5OeFof37w0IEqCQg==}
 
-  '@types/webextension-polyfill@0.10.7':
-    resolution: {integrity: sha512-10ql7A0qzBmFB+F+qAke/nP1PIonS0TXZAOMVOxEUsm+lGSW6uwVcISFNa0I4Oyj0884TZVWGGMIWeXOVSNFHw==}
+  '@types/webextension-polyfill@0.12.1':
+    resolution: {integrity: sha512-xPTFWwQ8BxPevPF2IKsf4hpZNss4LxaOLZXypQH4E63BDLmcwX/RMGdI4tB4VO4Nb6xDBH3F/p4gz4wvof1o9w==}
 
   '@types/yauzl@2.10.3':
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
@@ -505,6 +505,9 @@ packages:
     peerDependencies:
       svelte: '>=5'
       wxt: '>=0.18.6'
+
+  '@wxt-dev/storage@1.0.1':
+    resolution: {integrity: sha512-05fzQrr4z0WhdJ0rMQGmjCNTWAC7vrCtvlmu6ZWAKbxdc7k0+T9ui5qPIdF+PxcKPRavIY6ebowBy5KV9lRY0w==}
 
   acorn-typescript@1.4.13:
     resolution: {integrity: sha512-xsc9Xv0xlVfwp2o7sQ+GCQ1PgbkdcpWdTzrwXxO3xDMTAywVS3oXVOcOHuRjAPkS4P9b+yc/qNF15460v+jp4Q==}
@@ -719,8 +722,8 @@ packages:
     resolution: {integrity: sha512-NIxF55hv4nSqQswkAeiOi1r83xy8JldOFDTWiug55KBu9Jnblncd2U6ViHmYgHf01TPZS77NJBhBMKdWj9HQMQ==}
     engines: {node: '>=8'}
 
-  ci-info@4.0.0:
-    resolution: {integrity: sha512-TdHqgGf9odd8SXNuxtUBVx8Nv+qZOejE6qyqiy5NtbYYQOeFa6zmHkxlPzmaLxWWHsU6nJmB7AETdVPi+2NBUg==}
+  ci-info@4.1.0:
+    resolution: {integrity: sha512-HutrvTNsF48wnxkzERIXOe5/mlcfFcbfCmwcg6CJnizbSue78AbDt+1cgl26zwn61WFxhcPykPfZrbqjGmBb4A==}
     engines: {node: '>=8'}
 
   citty@0.1.6:
@@ -1104,9 +1107,8 @@ packages:
     resolution: {integrity: sha512-vpeMIQKxczTD/0s2CdEWHcb0eeJe6TFjxb+J5xgX7hScxqrGuyjmv4c1D4A/gelKfyox0gJJwIHF+fLjeaM8kQ==}
     engines: {node: '>=18'}
 
-  get-port@7.1.0:
-    resolution: {integrity: sha512-QB9NKEeDg3xxVwCCwJQ9+xycaz6pBB6iQ76wiWMl1927n0Kir6alPiP+yuiICLLU4jpMe08dXfpebuQppFA2zw==}
-    engines: {node: '>=16'}
+  get-port-please@3.1.2:
+    resolution: {integrity: sha512-Gxc29eLs1fbn6LQ4jSU4vXjlwyZhF5HsGuMAa7gqBP4Rw4yxxltyDUuF5MBclFzDTXO+ACchGQoeela4DSfzdQ==}
 
   get-stream@5.2.0:
     resolution: {integrity: sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==}
@@ -1608,8 +1610,8 @@ packages:
   nan@2.22.0:
     resolution: {integrity: sha512-nbajikzWTMwsW+eSsNm3QwlOs7het9gGJU5dDZzRTQGk03vyBOauxgI4VakDzE0PtsGTmXPsXTbbjVhRwR5mpw==}
 
-  nano-spawn@0.1.0:
-    resolution: {integrity: sha512-Q0fYRut0GGSoysqrS6hF1jlQEc3yOglnGXwsS+DcoaLwu6NCkUxOB8om08hvUF0V+bNRjExzKM3v8ATbfrLWyQ==}
+  nano-spawn@0.2.0:
+    resolution: {integrity: sha512-IjZBIOLxSlxu+m/kacg9JuP93oUpRemeV0mEuCy64nzBKKIL9m0aLJHtVPcVuzJDHFhElzjpwbW4a3tMzgKoZQ==}
     engines: {node: '>=18.19'}
 
   nanoid@3.3.7:
@@ -1712,8 +1714,8 @@ packages:
     resolution: {integrity: sha512-ERAyNnZOfqM+Ao3RAvIXkYh5joP220yf59gVe2X/cI6SiCxIdi4c9HZKZD8R6q/RDXEje1THBju6iExiSsgJaQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  ora@8.1.0:
-    resolution: {integrity: sha512-GQEkNkH/GHOhPFXcqZs3IDahXEQcQxsSjEkK4KvEEST4t7eNzoMjxTzef+EZ+JluDEV+Raoi3WQ2CflnRdSVnQ==}
+  ora@8.1.1:
+    resolution: {integrity: sha512-YWielGi1XzG1UTvOaCFaNgEnuhZVMSHYkW/FQ7UX8O26PtlpdM84c0f7wLPlkvx2RfiQmnzd61d/MGxmpQeJPw==}
     engines: {node: '>=18'}
 
   os-shim@0.1.3:
@@ -2430,8 +2432,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  wxt@0.19.13:
-    resolution: {integrity: sha512-iWtMkCo6Puy3UsxQ7x0HQSYqxOz6Vu2vZ/BB/lzKMCrkrmlXj4IUAEqjEcQCdBRTkiGTx0f8qFtrA+o9QtUe7w==}
+  wxt@0.19.17:
+    resolution: {integrity: sha512-yM02qn+8F3QpJTTTDhmCUPTl6EnPwVpkCV1XFj5Ol2oUM5OIy4puwg/IdAz6QtK/3XMZzN1E8va73NtZu8WiBQ==}
     hasBin: true
 
   xdg-basedir@5.1.0:
@@ -2786,7 +2788,7 @@ snapshots:
 
   '@tsconfig/svelte@5.0.4': {}
 
-  '@types/chrome@0.0.269':
+  '@types/chrome@0.0.280':
     dependencies:
       '@types/filesystem': 0.0.36
       '@types/har-format': 1.2.16
@@ -2809,7 +2811,7 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
-  '@types/webextension-polyfill@0.10.7': {}
+  '@types/webextension-polyfill@0.12.1': {}
 
   '@types/yauzl@2.10.3':
     dependencies:
@@ -2826,14 +2828,19 @@ snapshots:
 
   '@webext-core/match-patterns@1.0.3': {}
 
-  '@wxt-dev/module-svelte@2.0.0(svelte@5.1.9)(vite@5.4.10(@types/node@22.8.1))(wxt@0.19.13(@types/node@22.8.1)(rollup@4.24.2))':
+  '@wxt-dev/module-svelte@2.0.0(svelte@5.1.9)(vite@5.4.10(@types/node@22.8.1))(wxt@0.19.17(@types/node@22.8.1)(rollup@4.24.2))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.0(svelte@5.1.9)(vite@5.4.10(@types/node@22.8.1))
       svelte: 5.1.9
-      wxt: 0.19.13(@types/node@22.8.1)(rollup@4.24.2)
+      wxt: 0.19.17(@types/node@22.8.1)(rollup@4.24.2)
     transitivePeerDependencies:
       - supports-color
       - vite
+
+  '@wxt-dev/storage@1.0.1':
+    dependencies:
+      async-mutex: 0.5.0
+      dequal: 2.0.3
 
   acorn-typescript@1.4.13(acorn@8.14.0):
     dependencies:
@@ -3053,7 +3060,7 @@ snapshots:
 
   ci-info@3.9.0: {}
 
-  ci-info@4.0.0: {}
+  ci-info@4.1.0: {}
 
   citty@0.1.6:
     dependencies:
@@ -3458,7 +3465,7 @@ snapshots:
 
   get-east-asian-width@1.3.0: {}
 
-  get-port@7.1.0: {}
+  get-port-please@3.1.2: {}
 
   get-stream@5.2.0:
     dependencies:
@@ -3912,7 +3919,7 @@ snapshots:
   nan@2.22.0:
     optional: true
 
-  nano-spawn@0.1.0: {}
+  nano-spawn@0.2.0: {}
 
   nanoid@3.3.7: {}
 
@@ -4023,7 +4030,7 @@ snapshots:
       strip-ansi: 7.1.0
       wcwidth: 1.0.1
 
-  ora@8.1.0:
+  ora@8.1.1:
     dependencies:
       chalk: 5.3.0
       cli-cursor: 5.0.0
@@ -4753,28 +4760,28 @@ snapshots:
 
   ws@8.18.0: {}
 
-  wxt@0.19.13(@types/node@22.8.1)(rollup@4.24.2):
+  wxt@0.19.17(@types/node@22.8.1)(rollup@4.24.2):
     dependencies:
       '@aklinker1/rollup-plugin-visualizer': 5.12.0(rollup@4.24.2)
-      '@types/chrome': 0.0.269
-      '@types/webextension-polyfill': 0.10.7
+      '@types/chrome': 0.0.280
+      '@types/webextension-polyfill': 0.12.1
       '@webext-core/fake-browser': 1.3.1
       '@webext-core/isolated-element': 1.1.2
       '@webext-core/match-patterns': 1.0.3
+      '@wxt-dev/storage': 1.0.1
       async-mutex: 0.5.0
       c12: 1.11.2(magicast@0.3.5)
       cac: 6.7.14
       chokidar: 3.6.0
-      ci-info: 4.0.0
+      ci-info: 4.1.0
       consola: 3.2.3
       defu: 6.1.4
-      dequal: 2.0.3
       dotenv: 16.4.5
       esbuild: 0.21.5
       fast-glob: 3.3.2
       filesize: 10.1.6
       fs-extra: 11.2.0
-      get-port: 7.1.0
+      get-port-please: 3.1.2
       giget: 1.2.3
       hookable: 5.5.3
       is-wsl: 3.1.0
@@ -4784,12 +4791,12 @@ snapshots:
       linkedom: 0.18.5
       magicast: 0.3.5
       minimatch: 10.0.1
-      nano-spawn: 0.1.0
+      nano-spawn: 0.2.0
       normalize-path: 3.0.0
       nypm: 0.3.12
       ohash: 1.1.4
       open: 10.1.0
-      ora: 8.1.0
+      ora: 8.1.1
       perfect-debounce: 1.0.0
       picocolors: 1.1.1
       prompts: 2.4.2
