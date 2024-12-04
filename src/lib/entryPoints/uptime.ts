@@ -1,4 +1,4 @@
-import { mount } from "svelte";
+import { mount, unmount } from "svelte";
 import Uptime from "../components/app/Uptime.svelte";
 
 const attachedClass = "ftv-uptime-attached";
@@ -33,8 +33,7 @@ export async function uptime(ctx: any, mutation: MutationRecord) {
 
       return app;
     },
-    onRemove: (app) => {
-      // @ts-ignore https://svelte-5-preview.vercel.app/docs/breaking-changes
+    onRemove: (app: any) => {
       unmount(app);
     },
   });

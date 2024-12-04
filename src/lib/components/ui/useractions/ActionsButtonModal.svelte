@@ -6,6 +6,7 @@
   import UpdateDot from "../updatedot/UpdateDot.svelte";
   import ChangelogModal from "./actions/ChangelogModal.svelte";
   import ChatPollModal from "./actions/ChatPollModal.svelte";
+  import GiveawayModal from "./actions/GiveawayModal.svelte";
 
   interface Props {
     showModal: boolean;
@@ -23,6 +24,10 @@
 
   function handleStartPoll() {
     action = ActionType.ChatPoll;
+  }
+
+  function handleStartGiveaway() {
+    action = ActionType.Giveaway;
   }
 </script>
 
@@ -43,6 +48,10 @@
         <Button variant="secondary" onclick={handleStartPoll}>
           Start Poll
         </Button>
+
+        <Button variant="secondary" onclick={handleStartGiveaway}>
+          Start Giveaway
+        </Button>
       {/if}
     </div>
   {/snippet}
@@ -52,4 +61,6 @@
   <ChangelogModal bind:action />
 {:else if action === ActionType.ChatPoll}
   <ChatPollModal bind:action />
+{:else if action === ActionType.Giveaway}
+  <GiveawayModal bind:action />
 {/if}
