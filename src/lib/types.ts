@@ -28,6 +28,7 @@ export enum ActionType {
   None = "none",
   Changelog = "changelog",
   ChatPoll = "chatPoll",
+  Giveaway = "giveaway",
 }
 
 export type FanslyResponse<T> = {

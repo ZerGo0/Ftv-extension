@@ -1,4 +1,4 @@
-import { mount } from "svelte";
+import { mount, unmount } from "svelte";
 import EmoteMenuButton from "../components/app/EmoteMenuButton.svelte";
 
 const attachedClass = "ftv-emotes-attached";
@@ -39,8 +39,7 @@ export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
       });
       return app;
     },
-    onRemove: (app) => {
-      // @ts-ignore https://svelte-5-preview.vercel.app/docs/breaking-changes
+    onRemove: (app: any) => {
       unmount(app);
     },
   });

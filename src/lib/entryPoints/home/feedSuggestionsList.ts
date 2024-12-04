@@ -89,10 +89,10 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
             startedAt: onlineCreator.streaming.channel.stream.startedAt,
           },
         });
+
         return app;
       },
-      onRemove: (app) => {
-        // @ts-ignore
+      onRemove: (app: any) => {
         unmount(app);
       },
     });
