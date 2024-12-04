@@ -2,6 +2,14 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.4",
+    date: "12/04/2024",
+    changes: `
+- added giveaway modal
+- fixed chat emotes not being case sensitive
+`,
+  },
+  {
     version: "2.0.3",
     date: "11/01/2024",
     changes: `
