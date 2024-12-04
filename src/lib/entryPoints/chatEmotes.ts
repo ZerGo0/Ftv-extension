@@ -166,10 +166,7 @@ function getEmotes(
       continue;
     }
 
-    const wordLower = word.toLocaleLowerCase();
-    const emote = emoteStore.emotes.find(
-      (emote) => emote.nameLower === wordLower,
-    );
+    const emote = emoteStore.emotes.find((emote) => emote.name === word);
 
     if (emote === undefined) {
       continue;
