@@ -67,8 +67,6 @@
 
     const providersMin = Math.min(...visibleProviders);
     sharedState.selectedProvider = providersMin === Infinity ? 1 : providersMin;
-
-    console.log(sharedState.selectedProvider);
   }
 
   // TODO: refactor this function...
