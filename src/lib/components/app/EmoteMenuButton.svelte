@@ -18,6 +18,7 @@
   import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
   import UpdateDot from "../ui/updatedot/UpdateDot.svelte";
   import ActionsButton from "../ui/useractions/ActionsButton.svelte";
+  import { sharedState } from "@/lib/state/state.svelte";
 
   let shadowRoot: ShadowRoot =
     document.querySelector("ftv-emotes-ui")!.shadowRoot!;
@@ -28,7 +29,6 @@
       : "",
   );
   let visibleProviders: number[] = [];
-  let selectedProvider = $state(0);
   let emotesContainer: HTMLDivElement;
   let searchTerm = $state("");
   let searchResult: Emote[] = $derived(
@@ -66,7 +66,9 @@
     }
 
     const providersMin = Math.min(...visibleProviders);
-    selectedProvider = providersMin === Infinity ? 1 : providersMin;
+    sharedState.selectedProvider = providersMin === Infinity ? 1 : providersMin;
+
+    console.log(sharedState.selectedProvider);
   }
 
   // TODO: refactor this function...
@@ -240,7 +242,7 @@
             <EmoteSelector
               category={provider}
               index={i}
-              {selectedProvider}
+              selectedProvider={sharedState.selectedProvider}
               twitchUserIconUrl={isUserProvider(provider.name)
                 ? twitchUserIconUrl
                 : ""}

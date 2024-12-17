@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Provider } from "@/lib/emotes/providers/provider";
+  import { sharedState } from "@/lib/state/state.svelte";
 
   interface Props {
     category: Provider;
@@ -16,6 +17,12 @@
     selectedProvider: selectedProvider,
     onScrollToProvider,
   }: Props = $props();
+
+  onDestroy(() => {
+    // Kind of hacky, but we need to set this here, because EmoteMenuButton is always mounted
+    // and Popover.Content, doesn't have a onMount hook...
+    sharedState.selectedProvider = 1;
+  });
 </script>
 
 {#if provider.emotes.length > 0}
