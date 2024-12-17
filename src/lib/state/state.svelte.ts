@@ -21,6 +21,7 @@ class SharedState {
   );
   chatroom: FanslyChatroomResponse | undefined = $state(undefined);
   newExtensionVersion: boolean = $state(checkIfExtensionVersionIsNewer());
+  selectedProvider: number = $state(1);
 
   constructor() {}
 

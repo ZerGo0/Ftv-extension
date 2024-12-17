@@ -1,9 +1,10 @@
 import { Emote } from "@/lib/types";
 import { Provider } from "./provider";
+import TwitchIcon from "@/assets/providers/icons/Twitch.ico";
 
 export class Twitch extends Provider {
   constructor() {
-    super("Twitch Global", "https://www.twitch.tv/favicon.ico");
+    super("Twitch Global", TwitchIcon);
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -32,16 +33,13 @@ export class TwitchUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super("Twitch Sub", "https://www.twitch.tv/favicon.ico");
+    super("Twitch Sub", TwitchIcon);
     this.userId = userId;
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
     if (this.userId === undefined || this.userId === "") {
-      console.warn(
-        this.name,
-        `Emote fetch failed because user ID was invalid`,
-      );
+      console.warn(this.name, `Emote fetch failed because user ID was invalid`);
       return [];
     }
 

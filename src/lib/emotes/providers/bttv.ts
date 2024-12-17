@@ -1,9 +1,10 @@
 import { Emote } from "@/lib/types";
 import { Provider } from "./provider";
+import BttvIcon from "@/assets/providers/icons/BTTV.png";
 
 export class Bttv extends Provider {
   constructor() {
-    super("BTTV Global", "https://betterttv.com/favicon.png");
+    super("BTTV Global", BttvIcon);
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -41,7 +42,7 @@ export class BttvUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super("BTTV User", "https://betterttv.com/favicon.png");
+    super("BTTV User", BttvIcon);
     this.userId = userId;
   }
 
