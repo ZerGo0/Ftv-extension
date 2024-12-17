@@ -2,6 +2,14 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.5",
+    date: "12/17/2024",
+    changes: `
+- fixed 7TV icon not showing up
+- fixed emote provider selector showing wrong "selected" provider sometimes
+`,
+  },
+  {
     version: "2.0.4",
     date: "12/04/2024",
     changes: `
