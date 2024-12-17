@@ -1,9 +1,10 @@
 import { Emote } from "@/lib/types";
 import { Provider } from "./provider";
+import SevenTvIcon from "@/assets/providers/icons/7tv.svg";
 
 export class SevenTv extends Provider {
   constructor() {
-    super("7TV Global", "https://7tv.app/favicon.ico");
+    super("7TV Global", SevenTvIcon);
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -36,7 +37,7 @@ export class SevenTvUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super("7TV User", "https://7tv.app/favicon.ico");
+    super("7TV User", SevenTvIcon);
     this.userId = userId;
   }
 

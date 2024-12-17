@@ -1,12 +1,10 @@
 import { Emote } from "@/lib/types";
 import { Provider } from "./provider";
+import FfzIcon from "@/assets/providers/icons/FFZ.png";
 
 export class Ffz extends Provider {
   constructor() {
-    super(
-      "FFZ Global",
-      "https://frankerfacez.com/static/images/favicon-32.png",
-    );
+    super("FFZ Global", FfzIcon);
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -39,7 +37,7 @@ export class FfzUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super("FFZ User", "https://frankerfacez.com/static/images/favicon-32.png");
+    super("FFZ User", FfzIcon);
     this.userId = userId;
   }
 

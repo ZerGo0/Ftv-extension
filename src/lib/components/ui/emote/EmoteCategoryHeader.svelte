@@ -13,22 +13,36 @@
 
   let { twitchUserIconUrl, provider, index, onInViewport }: Props = $props();
 
-  function actionWhenInViewport(element: HTMLElement) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        onInViewport(
-          new CustomEvent("inViewport", {
-            detail: {
-              isIntersecting: entries[0].isIntersecting,
-              index: index,
-            },
-          }),
-        );
-      },
-      { threshold: 1 },
-    );
+  let observer: IntersectionObserver;
 
-    observer.observe(element);
+  onDestroy(() => {
+    if (observer) {
+      observer.disconnect();
+    }
+  });
+
+  function actionWhenInViewport(element: HTMLElement) {
+    if (observer) {
+      observer.disconnect();
+    }
+
+    setTimeout(() => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          onInViewport(
+            new CustomEvent("inViewport", {
+              detail: {
+                isIntersecting: entries[0].isIntersecting,
+                index: index,
+              },
+            }),
+          );
+        },
+        { threshold: 1 },
+      );
+
+      observer.observe(element);
+    }, 500);
   }
 </script>
 
