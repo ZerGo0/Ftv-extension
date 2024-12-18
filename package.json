@@ -2,7 +2,7 @@
   "name": "ftv",
   "description": "An emote extension for Fansly which adds support for emotes from popular emote extensions.",
   "private": true,
-  "version": "2.0.5",
+  "version": "2.0.6",
   "type": "module",
   "scripts": {
     "dev": "wxt",
