@@ -12,7 +12,6 @@ import {
   usernamesCache,
 } from "@/lib/entryPoints/chatUsernameAutoComplete";
 import { emoteMenuButton } from "@/lib/entryPoints/emoteMenuButton";
-import { uptime } from "@/lib/entryPoints/uptime";
 import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
 import { sharedState } from "@/lib/state/state.svelte";
 
@@ -45,7 +44,6 @@ export default defineContentScript({
         chatEmotes(ctx, mutation);
         accountCard(ctx, mutation);
         emoteMenuButton(ctx, mutation);
-        uptime(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
       });
     }).observe(document.body, { childList: true, subtree: true });
