@@ -2,7 +2,7 @@ import { feedSuggestionsList } from "@/lib/entryPoints/home/feedSuggestionsList"
 import { sharedState } from "@/lib/state/state.svelte";
 
 const attachedClass = "ftv-attached";
-const mutationUrlPathWhitelist = ["/home"];
+const mutationUrlPathWhitelist = ["/home", "/explore/discover"];
 
 export default defineContentScript({
   matches: ["https://fansly.com/*"],
