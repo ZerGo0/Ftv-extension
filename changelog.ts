@@ -2,6 +2,15 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.6",
+    date: "12/18/2024",
+    changes: `
+- updates related to the new Fansly update
+  - removed uptime from stream page
+  - added uptime to explore page
+`,
+  },
+  {
     version: "2.0.5",
     date: "12/17/2024",
     changes: `
