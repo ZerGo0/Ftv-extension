@@ -2,6 +2,13 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.7",
+    date: "12/19/2024",
+    changes: `
+- fixed uptime not showing up in feed suggestions list
+`,
+  },
+  {
     version: "2.0.6",
     date: "12/18/2024",
     changes: `
