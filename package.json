@@ -2,7 +2,7 @@
   "name": "ftv",
   "description": "An emote extension for Fansly which adds support for emotes from popular emote extensions.",
   "private": true,
-  "version": "2.0.6",
+  "version": "2.0.7",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -13,7 +13,8 @@
     "zip:firefox": "wxt zip -b firefox",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "postinstall": "wxt prepare",
-    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,svelte}\""
+    "pretty": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,svelte}\"",
+    "release": "wxt zip && wxt zip -b firefox"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",

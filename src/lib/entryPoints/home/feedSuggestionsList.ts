@@ -2,7 +2,7 @@ import FeedSuggestionsList from "@/lib/components/app/FeedSuggestionsList.svelte
 import { sharedState } from "@/lib/state/state.svelte";
 import { mount, unmount } from "svelte";
 
-const attachedClass = "ftv-feed-suggestions-list-watch-button-attached";
+const attachedClass = "ftv-feed-suggestions-list-attached";
 
 export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
   const feedSuggestionsList = mutation.target as HTMLElement;
@@ -27,21 +27,6 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
       continue;
     }
 
-    const watchButton = feedHeader.children[
-      feedHeader.children.length - 1
-    ] as HTMLDivElement;
-
-    if (
-      !watchButton ||
-      watchButton.innerText.trim().toLowerCase() !== "watch"
-    ) {
-      continue;
-    }
-
-    if (watchButton.classList.contains(attachedClass)) {
-      continue;
-    }
-
     const usernameElement = feedHeader.querySelector(
       "* .username-wrapper",
     ) as HTMLAnchorElement;
@@ -49,11 +34,15 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
       continue;
     }
 
-    watchButton.classList.add(attachedClass);
+    if (usernameElement.classList.contains(attachedClass)) {
+      continue;
+    }
+
+    usernameElement.classList.add(attachedClass);
 
     preparedLiveCreators.push({
       url: usernameElement.href.split("/").pop() || "",
-      watchButton: watchButton,
+      usernameElement: usernameElement,
     });
   }
 
@@ -81,7 +70,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
       name: "ftv-feed-suggestions-list",
       position: "inline",
       append: "last",
-      anchor: liveCreator.watchButton,
+      anchor: liveCreator.usernameElement,
       onMount: (container) => {
         const app = mount(FeedSuggestionsList, {
           target: container,
