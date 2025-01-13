@@ -2,3 +2,15 @@
 app-chat-room-chatter-list {
   overflow-y: auto;
 }
+
+.feed-suggestions-list * .feed-suggestion-header {
+  overflow: hidden;
+}
+
+.feed-suggestions-list * .feed-creator-col {
+  overflow: hidden;
+}
+
+.stream-info > * {
+  overflow: hidden;
+}
