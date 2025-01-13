@@ -1,4 +1,5 @@
 import { feedSuggestionsList } from "@/lib/entryPoints/home/feedSuggestionsList";
+import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
 import { sharedState } from "@/lib/state/state.svelte";
 
 const attachedClass = "ftv-attached";
@@ -21,6 +22,7 @@ export default defineContentScript({
 
       mutations.forEach(async (mutation) => {
         handleFirstInit(mutation);
+        fanslyStyleFixes(ctx);
 
         feedSuggestionsList(ctx, mutation);
       });

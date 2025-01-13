@@ -39,13 +39,6 @@ export const currentSeasonalEmoteButtonType =
   seasonalEmoteButtonTypes.find((seasonalEmoteButton) => {
     const currentDate = new Date().getTime();
 
-    console.log(
-      "currentDate",
-      currentDate,
-      seasonalEmoteButton.startDate.getTime(),
-      seasonalEmoteButton.endDate.getTime(),
-    );
-
     return (
       currentDate >= seasonalEmoteButton.startDate.getTime() &&
       currentDate <= seasonalEmoteButton.endDate.getTime()
