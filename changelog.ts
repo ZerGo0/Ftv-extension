@@ -2,6 +2,13 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.8",
+    date: "1/13/2025",
+    changes: `
+- added support for stream titles
+`,
+  },
+  {
     version: "2.0.7",
     date: "12/19/2024",
     changes: `
