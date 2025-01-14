@@ -2,6 +2,13 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.11",
+    date: "1/14/2025",
+    changes: `
+- stream titles now show spaces correctly
+`,
+  },
+  {
     version: "2.0.10",
     date: "1/14/2025",
     changes: `
