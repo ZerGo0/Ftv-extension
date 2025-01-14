@@ -13,10 +13,23 @@
   let { action = $bindable() }: Props = $props();
 
   const sortedChangelog = changelog
-    .sort(
-      (a, b) =>
-        b.version.localeCompare(a.version) || b.date.localeCompare(a.date),
-    )
+    .sort((a, b) => {
+      // Split version numbers into parts
+      const aParts = a.version.split(".").map(Number);
+      const bParts = b.version.split(".").map(Number);
+
+      // Compare each version part
+      for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
+        const aNum = aParts[i] || 0;
+        const bNum = bParts[i] || 0;
+        if (aNum !== bNum) {
+          return bNum - aNum; // Descending order
+        }
+      }
+
+      // If versions are equal, sort by date
+      return b.date.localeCompare(a.date);
+    })
     .map((change) => {
       return cleanupChangelog(change);
     });

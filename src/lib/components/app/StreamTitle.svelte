@@ -33,7 +33,7 @@
     id="stream-title-container"
     title={streamTitle}
   >
-    <span class="text-fansly-font-1" id="stream-title-text">
+    <span class="text-fansly-font-1 whitespace-pre" id="stream-title-text">
       {streamTitle}
     </span>
   </div>
