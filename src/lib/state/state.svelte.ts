@@ -8,9 +8,6 @@ import {
 } from "../types";
 
 class SharedState {
-  initializing: boolean = $state(false);
-  initialized: boolean = $state(false);
-  initializingPromise: Promise<void> = $state(Promise.resolve());
   chatroomId: string | undefined = $state(undefined);
   twitchUserId: string | undefined = $state(undefined);
   isOwner: boolean = $state(false);
@@ -40,54 +37,31 @@ class SharedState {
   }
 
   async initializeChatroom() {
-    if (this.initialized) {
+    this.chatroomId = await fanslyApi.getCurrentChatroomId(this.mePromise);
+    if (!this.chatroomId) {
       return;
     }
 
-    if (this.initializing) {
-      await this.initializingPromise;
-      return;
-    }
-
-    this.initializing = true;
-    this.initializingPromise = new Promise(async (resolve) => {
-      try {
-        this.chatroomId = await fanslyApi.getCurrentChatroomId(this.mePromise);
-        if (!this.chatroomId) {
+    const twitchUserIdPromise = zergo0Api
+      .getTwitchId(this.chatroomId)
+      .then((twitchId) => {
+        this.twitchUserId = twitchId;
+      });
+    const chatroomPromise = fanslyApi
+      .getChatroomByChatroomId(this.chatroomId)
+      .then(async (chatroom) => {
+        this.chatroom = chatroom;
+        if (!this.chatroom) {
           return;
         }
 
-        const twitchUserIdPromise = zergo0Api
-          .getTwitchId(this.chatroomId)
-          .then((twitchId) => {
-            this.twitchUserId = twitchId;
-          });
+        this.isModerator = (this.chatroom.accountFlags & 2) === 2;
 
-        const chatroomPromise = fanslyApi
-          .getChatroomByChatroomId(this.chatroomId)
-          .then(async (chatroom) => {
-            this.chatroom = chatroom;
-            if (!this.chatroom) {
-              return;
-            }
+        const me = await this.mePromise;
+        this.isOwner = me?.account.id === this.chatroom.accountId;
+      });
 
-            this.isModerator = (this.chatroom.accountFlags & 2) === 2;
-
-            const me = await this.mePromise;
-            this.isOwner = me?.account.id === this.chatroom.accountId;
-          });
-
-        await Promise.all([twitchUserIdPromise, chatroomPromise]);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.initializing = false;
-        this.initialized = true;
-        resolve();
-      }
-    });
-
-    await this.initializingPromise;
+    await Promise.all([twitchUserIdPromise, chatroomPromise]);
   }
 
   async getOnlineAccounts() {

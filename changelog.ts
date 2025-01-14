@@ -2,6 +2,13 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.9",
+    date: "1/14/2025",
+    changes: `
+- fixed wrong emotes/title when switching between streamers
+`,
+  },
+  {
     version: "2.0.8",
     date: "1/13/2025",
     changes: `
