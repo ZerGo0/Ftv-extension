@@ -23,20 +23,37 @@ class SharedState {
   newExtensionVersion: boolean = $state(checkIfExtensionVersionIsNewer());
   selectedProvider: number = $state(1);
 
+  private initializationPromise: Promise<void> | null = null;
+  private lastInitializationTime: number = 0;
+  private readonly MIN_INITIALIZATION_INTERVAL = 5000;
+
   constructor() {}
 
-  async initializeMe() {
-    // NOTE: This should technically not change which is why we use this in a constructor.
-    // initialize() gets called whenever we mount components and we don't need
-    // to do this every time.
+  async initialize() {
+    const now = Date.now();
+    if (
+      this.initializationPromise &&
+      now - this.lastInitializationTime < this.MIN_INITIALIZATION_INTERVAL
+    ) {
+      return this.initializationPromise;
+    }
+
+    this.lastInitializationTime = now;
+    this.initializationPromise = this.initializeChatroom();
+
+    try {
+      await this.initializationPromise;
+    } finally {
+      // Clear the promise after completion or error
+      this.initializationPromise = null;
+    }
+  }
+
+  private async initializeMe() {
     return fanslyApi.getMe();
   }
 
-  async initialize() {
-    await this.initializeChatroom();
-  }
-
-  async initializeChatroom() {
+  private async initializeChatroom() {
     this.chatroomId = await fanslyApi.getCurrentChatroomId(this.mePromise);
     if (!this.chatroomId) {
       return;
