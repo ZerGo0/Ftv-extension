@@ -2,6 +2,13 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.10",
+    date: "1/14/2025",
+    changes: `
+- fixed rate limit issues
+`,
+  },
+  {
     version: "2.0.9",
     date: "1/14/2025",
     changes: `
