@@ -14,3 +14,12 @@ app-chat-room-chatter-list {
 .stream-info > * {
   overflow: hidden;
 }
+
+.ftv-view-count-blurred {
+  filter: blur(5px);
+}
+
+.ftv-view-count-pseudo {
+  position: relative;
+  left: -5px;
+}
