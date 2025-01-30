@@ -2,6 +2,14 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.12",
+    date: "1/30/2025",
+    changes: `
+- you can now click on the view count to toggle it
+  - this allows you to blur the view count so that it doesn't show the actual view count
+`,
+  },
+  {
     version: "2.0.11",
     date: "1/14/2025",
     changes: `
