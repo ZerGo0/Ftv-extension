@@ -53,10 +53,10 @@ importers:
         version: 3.1.0
       tailwind-variants:
         specifier: ^1.0.0
-        version: 1.0.0(tailwindcss@4.0.17)
+        version: 1.0.0(tailwindcss@4.1.5)
       tailwindcss:
-        specifier: ^4.0.17
-        version: 4.0.17
+        specifier: ^4.1.5
+        version: 4.1.5
       tslib:
         specifier: ^2.8.1
         version: 2.8.1
@@ -2238,8 +2238,8 @@ packages:
     peerDependencies:
       tailwindcss: '*'
 
-  tailwindcss@4.0.17:
-    resolution: {integrity: sha512-OErSiGzRa6rLiOvaipsDZvLMSpsBZ4ysB4f0VKGXUrjw2jfkJRd6kjRKV2+ZmTCNvwtvgdDam5D7w6WXsdLJZw==}
+  tailwindcss@4.1.5:
+    resolution: {integrity: sha512-nYtSPfWGDiWgCkwQG/m+aX83XCwf62sBgg3bIlNiiOcggnS1x3uVRDAuyelBFL+vJdOPPCGElxv9DjHJjRHiVA==}
 
   thenify-all@1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
@@ -4506,12 +4506,12 @@ snapshots:
 
   tailwind-merge@3.1.0: {}
 
-  tailwind-variants@1.0.0(tailwindcss@4.0.17):
+  tailwind-variants@1.0.0(tailwindcss@4.1.5):
     dependencies:
       tailwind-merge: 3.0.2
-      tailwindcss: 4.0.17
+      tailwindcss: 4.1.5
 
-  tailwindcss@4.0.17: {}
+  tailwindcss@4.1.5: {}
 
   thenify-all@1.6.0:
     dependencies:
