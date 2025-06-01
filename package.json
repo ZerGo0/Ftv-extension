@@ -23,7 +23,7 @@
     "autoprefixer": "^10.4.21",
     "bits-ui": "^1.8.0",
     "clsx": "^2.1.1",
-    "lucide-svelte": "^0.503.0",
+    "lucide-svelte": "^0.511.0",
     "postcss": "^8.5.3",
     "prettier-plugin-svelte": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
