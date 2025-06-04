@@ -10,7 +10,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   }
 
   const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container",
+    "app-chat-room > * .chat-container"
   );
   if (!chatContainer) {
     return;
@@ -23,7 +23,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations),
+    async (mutations) => await chatMessageHandler(mutations)
   ).observe(chatContainer, {
     childList: true,
   });
@@ -71,23 +71,14 @@ function parseChatMessageNode(node: Node) {
     return;
   }
 
-  const textNodes: ChildNode[] = [];
-  element.childNodes.forEach(async (node) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      textNodes.push(node);
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      const childElement = node as HTMLElement;
-      if (childElement.classList.contains("message-text")) {
-        textNodes.push(childElement);
-      }
-    }
-  });
-
-  const messageNodes = textNodes.slice(1); // the first text node is " : "
-  if (!messageNodes || messageNodes.length === 0) {
+  // Find the message-text span inside the nested structure
+  const messageTextElement = element.querySelector(".message-text");
+  if (!messageTextElement) {
     console.warn("Could not get message");
     return;
   }
+
+  const messageNodes = [messageTextElement];
 
   for (const messageNode of messageNodes) {
     if (
@@ -155,7 +146,7 @@ function prepareTextSplit(elementText: string): string[] {
 }
 
 function getEmotes(
-  elementTextSplit: string[],
+  elementTextSplit: string[]
 ): Array<{ idx: number; emote: Emote }> {
   const emotePositions: Array<{ idx: number; emote: Emote }> = [];
 
