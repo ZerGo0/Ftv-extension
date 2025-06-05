@@ -52,19 +52,14 @@ function parseChatMessageNode(node: Node) {
     return;
   }
 
-  element.childNodes.forEach(async (node) => {
-    if (node.nodeType !== Node.ELEMENT_NODE) {
-      return;
-    }
-
-    const childElement = node as HTMLElement;
-    if (childElement.attributes.getNamedItem("appaccountcard")) {
-      await handleAccountCard(childElement);
-    }
-  });
+  // Look for the username element with appaccountcard attribute in the new structure
+  const usernameElement = element.querySelector('[appaccountcard]');
+  if (usernameElement && usernameElement instanceof HTMLElement) {
+    handleAccountCard(usernameElement);
+  }
 }
 
-async function handleAccountCard(element: HTMLElement) {
+function handleAccountCard(element: HTMLElement) {
   const username = element.innerText.trim();
   if (username.length === 0) {
     return;
@@ -76,10 +71,11 @@ async function handleAccountCard(element: HTMLElement) {
     usernamesCache.set(usernameLower, username);
   }
 
-  const pronouns = await getAccountPronounsFromCache(usernameLower);
-  if (pronouns && pronouns.length > 0) {
-    appendPronouns(element, pronouns);
-  }
+  getAccountPronounsFromCache(usernameLower).then((pronouns) => {
+    if (pronouns && pronouns.length > 0) {
+      appendPronouns(element, pronouns);
+    }
+  });
 }
 
 async function getAccountPronounsFromCache(username: string): Promise<string> {

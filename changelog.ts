@@ -2,6 +2,23 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.14",
+    date: "6/5/2025",
+    changes: `
+- fixed pronouns not showing up in account cards
+- removed stream title functionality
+`,
+  },
+  {
+    version: "2.0.13",
+    date: "6/4/2025",
+    changes: `
+- fixed chat emotes parsing after Fansly's latest update
+  - updated selector for finding chat messages
+  - improved message text detection
+`,
+  },
+  {
     version: "2.0.12",
     date: "1/30/2025",
     changes: `
