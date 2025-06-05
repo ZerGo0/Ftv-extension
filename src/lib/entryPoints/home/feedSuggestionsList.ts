@@ -1,5 +1,4 @@
 import FeedSuggestionsList from "@/lib/components/app/FeedSuggestionsList.svelte";
-import StreamTitle from "@/lib/components/app/StreamTitle.svelte";
 import { sharedState } from "@/lib/state/state.svelte";
 import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "@/lib/types";
 import { mount, unmount } from "svelte";
@@ -68,7 +67,6 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
       continue;
     }
 
-    await attachStreamTitle(ctx, liveCreator, onlineCreator);
     await attachFeedSuggestionsList(ctx, liveCreator, onlineCreator);
   }
 }
@@ -102,32 +100,3 @@ async function attachFeedSuggestionsList(
   ui.mount();
 }
 
-async function attachStreamTitle(
-  ctx: any,
-  liveCreator: { url: string; usernameElement: HTMLAnchorElement },
-  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount,
-) {
-  const ui = await createShadowRootUi(ctx, {
-    name: "ftv-stream-title-ui",
-    position: "inline",
-    append: "first",
-    anchor: liveCreator.usernameElement,
-    onMount: (container) => {
-      const app = mount(StreamTitle, {
-        target: container,
-        props: {
-          chatroomId: undefined,
-          creatorId: onlineCreator.id,
-        },
-      });
-
-      return app;
-    },
-    onRemove: (app: any) => {
-      unmount(app);
-    },
-  });
-
-  ui.uiContainer.classList.add("dark");
-  ui.mount();
-}

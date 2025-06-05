@@ -35,19 +35,6 @@ class Zergo0Api {
     return json.response as ChatPronoun[];
   }
 
-  async getStreamTitle(
-    chatroomId: string | undefined,
-    creatorId: string | undefined,
-  ): Promise<string> {
-    const response = await fetch(
-      `https://zergo0_bot.zergo0.dev/ftv/title/${chatroomId ?? creatorId}`,
-    );
-    if (!response.ok) {
-      return "";
-    }
-
-    return await response.text();
-  }
 }
 
 export const zergo0Api = new Zergo0Api();
