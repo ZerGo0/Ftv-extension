@@ -2,6 +2,15 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.15",
+    date: "6/29/2025",
+    changes: `
+- added support for ZerGo0_Bot emotes
+- added support for ZerGo0_Bot badges
+- added support for ZerGo0_Bot username paint
+`,
+  },
+  {
     version: "2.0.14",
     date: "6/5/2025",
     changes: `
