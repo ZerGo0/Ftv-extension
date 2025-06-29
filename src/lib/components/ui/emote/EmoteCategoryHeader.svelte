@@ -68,7 +68,12 @@
           alt={provider.name}
         />
       {:else if provider.iconUrl.length > 0}
-        <img loading="lazy" src={provider.iconUrl} alt={provider.name} />
+        <img
+          loading="lazy"
+          src={provider.iconUrl}
+          alt={provider.name}
+          class="h-6"
+        />
       {:else}
         <SearchIcon size="20" />
       {/if}

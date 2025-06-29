@@ -1,10 +1,10 @@
 import { Provider } from "./providers/provider";
 
 class EmoteProviderStore {
-  provdiers: Provider[] = $state([]);
+  providers: Provider[] = $state([]);
 
   reset() {
-    this.provdiers = [];
+    this.providers = [];
   }
 }
 

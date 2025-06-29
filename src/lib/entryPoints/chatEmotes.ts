@@ -183,6 +183,7 @@ function prepareEmoteHtml(emote: Emote): string {
   emoteImgElement.src = emote.url;
   emoteImgElement.title = emote.name;
   emoteImgElement.alt = emote.name;
+  emoteImgElement.style.maxHeight = "32px";
 
   emoteContElement.appendChild(emoteImgElement);
 

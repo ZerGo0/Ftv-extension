@@ -36,6 +36,11 @@
     id="emote-button"
     onclick={() => onEmoteClick(emote.name)}
   >
-    <img loading="lazy" class="emote p-1" src={emote.url} alt={emote.name} />
+    <img
+      loading="lazy"
+      class="emote p-1 max-h-[36px]"
+      src={emote.url}
+      alt={emote.name}
+    />
   </button>
 </div>
