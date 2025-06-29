@@ -1,7 +1,6 @@
 .ftv-badge-container {
   display: inline-flex;
   align-items: center;
-  margin-right: 0.25rem;
 }
 
 .ftv-badge-container .badge-item {

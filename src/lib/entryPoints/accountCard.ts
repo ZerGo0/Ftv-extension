@@ -75,44 +75,58 @@ function handleAccountCard(element: HTMLElement) {
     usernamesCache.set(usernameLower, username);
   }
 
+  // Apply username paint to the element itself
   zergo0Api.getUsernamePaint(usernameLower).then((usernamePaint) => {
     setUsernamePaint(element, usernamePaint);
   });
 
+  // Get the parent node to insert siblings
+  const parent = element.parentNode;
+  if (!parent) {
+    return;
+  }
+
+  // Add badges before the username element
   zergo0Api.getUserBadges(usernameLower).then((badges) => {
     badges.forEach((badge) => {
-      prependBadge(element, badge);
+      prependBadge(parent, badge, element);
     });
   });
 
+  // Add pronouns after the username element
   zergo0Api.getUserPronouns(usernameLower).then((pronouns) => {
     if (pronouns && pronouns.length > 0) {
-      appendPronouns(element, pronouns);
+      appendPronouns(parent, pronouns, element);
     }
   });
 }
 
-function appendPronouns(element: HTMLElement, pronouns: string) {
-  element.style.display = "inline-flex";
-  element.style.alignItems = "center";
-  element.style.flexDirection = "row";
-
-  const pronounsText = document.createElement("div");
-  pronounsText.style.marginLeft = "5px";
+function appendPronouns(
+  parent: Node,
+  pronouns: string,
+  afterElement: HTMLElement
+) {
+  const pronounsText = document.createElement("span");
   pronounsText.style.color = "gray";
   pronounsText.style.fontSize = "10px";
   pronounsText.style.fontWeight = "bold";
-  pronounsText.style.display = "inline-block";
+  pronounsText.style.marginLeft = "5px";
   pronounsText.textContent = pronouns;
   pronounsText.title = "User's pronouns";
-  element.appendChild(pronounsText);
+
+  // Insert after the username element
+  if (afterElement.nextSibling) {
+    parent.insertBefore(pronounsText, afterElement.nextSibling);
+  } else {
+    parent.appendChild(pronounsText);
+  }
 }
 
-function prependBadge(element: HTMLElement, badge: ZerGo0Badge) {
-  element.style.display = "inline-flex";
-  element.style.alignItems = "center";
-  element.style.flexDirection = "row";
-
+function prependBadge(
+  parent: Node,
+  badge: ZerGo0Badge,
+  beforeElement: HTMLElement
+) {
   if (badge.type.startsWith("sub_badge")) {
     // append "badges.css" to the head if it's not already there
     const head = document.head;
@@ -124,9 +138,17 @@ function prependBadge(element: HTMLElement, badge: ZerGo0Badge) {
       document.head.appendChild(style);
     }
 
+    // Create a container for the badge
+    const badgeContainer = document.createElement("span");
+    badgeContainer.style.marginRight = "0.25rem";
+    badgeContainer.style.display = "inline-flex";
+    badgeContainer.style.alignItems = "center";
+
+    // Insert the badge container before the username element
+    parent.insertBefore(badgeContainer, beforeElement);
+
     mount(ZerGo0BotSubBadge, {
-      target: element,
-      anchor: element.firstChild as Node,
+      target: badgeContainer,
       props: {
         badge,
       },
