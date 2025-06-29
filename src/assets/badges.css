@@ -1,0 +1,243 @@
+.ftv-badge-container {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.25rem;
+}
+
+.ftv-badge-container .badge-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+  border-radius: calc(0.5rem - 2px);
+}
+
+.ftv-badge-container .badge-item:not(.badge-sparkle.badge-glow) {
+  overflow: hidden;
+}
+
+.ftv-badge-container .badge-text {
+  z-index: 10;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+  font-weight: 700;
+}
+
+/* Glow animation with dynamic color */
+.ftv-badge-container .badge-glow {
+  --glow-color: #ffd700; /* Default fallback gold color */
+  animation: badge-glow 2s ease-in-out infinite;
+}
+
+@keyframes badge-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 1px var(--glow-color), 0 0 2px var(--glow-color),
+      0 0 3px var(--glow-color);
+    filter: drop-shadow(0 0 1px var(--glow-color));
+  }
+  50% {
+    box-shadow: 0 0 2px var(--glow-color), 0 0 3px var(--glow-color),
+      0 0 4px var(--glow-color);
+    filter: drop-shadow(0 0 2px var(--glow-color));
+  }
+}
+
+/* Sparkle animation */
+.ftv-badge-container .badge-sparkle {
+  position: relative;
+}
+
+.ftv-badge-container .badge-sparkle:not(.badge-glow)::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 70%
+  );
+  animation: badge-sparkle 3s ease-in-out infinite;
+}
+
+/* Individual sparkles for 32+ months */
+.ftv-badge-container .sparkle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 20;
+}
+
+/* Position each sparkle */
+.ftv-badge-container .sparkle-1 {
+  top: 15%;
+  left: 20%;
+  animation: twinkle 4s 0s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-2 {
+  top: 10%;
+  left: 70%;
+  animation: twinkle 4s 0.5s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-3 {
+  top: 30%;
+  left: 85%;
+  animation: twinkle 4s 1s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-4 {
+  top: 70%;
+  left: 80%;
+  animation: twinkle 4s 1.5s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-5 {
+  top: 85%;
+  left: 30%;
+  animation: twinkle 4s 2s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-6 {
+  top: 60%;
+  left: 10%;
+  animation: twinkle 4s 2.5s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-7 {
+  top: 40%;
+  left: 40%;
+  animation: twinkle 4s 3s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-8 {
+  top: 50%;
+  left: 60%;
+  animation: twinkle 4s 3.5s ease-in-out infinite;
+}
+
+/* Additional sparkles including outside positions */
+.ftv-badge-container .sparkle-9 {
+  top: -10%;
+  left: 40%;
+  animation: twinkle 4s 0.25s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-10 {
+  top: 50%;
+  left: -10%;
+  animation: twinkle 4s 0.75s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-11 {
+  top: 110%;
+  left: 50%;
+  animation: twinkle 4s 1.25s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-12 {
+  top: 40%;
+  left: 105%;
+  animation: twinkle 4s 1.75s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-13 {
+  top: -5%;
+  left: 80%;
+  animation: twinkle 4s 2.25s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-14 {
+  top: 25%;
+  left: 50%;
+  animation: twinkle 4s 2.75s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-15 {
+  top: 75%;
+  left: 50%;
+  animation: twinkle 4s 3.25s ease-in-out infinite;
+}
+
+.ftv-badge-container .sparkle-16 {
+  top: 105%;
+  left: 20%;
+  animation: twinkle 4s 3.75s ease-in-out infinite;
+}
+
+@keyframes badge-sparkle {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Pulse animation for 32+ months */
+.ftv-badge-container .badge-pulse {
+  animation: badge-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Shimmer animation for 24+ months */
+.ftv-badge-container .badge-shimmer {
+  /* Tiny permanent glow */
+  box-shadow: 0 0 2px rgba(185, 242, 255, 0.5);
+}
+
+.ftv-badge-container .badge-shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: badge-shimmer 2s infinite;
+}
+
+@keyframes badge-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

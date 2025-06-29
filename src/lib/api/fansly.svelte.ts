@@ -5,6 +5,7 @@ import {
   FanslyMeResponse,
   FanslyResponse,
 } from "../types";
+import { deduplicatedFetch } from "../utils/requestDeduplicator";
 
 class FanslyApi {
   // NOTE: This class needs to called the first time outside of the shadow root
@@ -46,31 +47,46 @@ class FanslyApi {
   private async fanslyRequest<T>(
     url: string,
     method: string = "GET",
-    body: any = null,
+    body: any = null
   ): Promise<T | undefined> {
-    const resp = await fetch(url, {
-      headers: {
-        accept: "application/json, text/plain, */*",
-        authorization: this.authToken,
-      },
-      referrer: "https://fansly.com/",
-      referrerPolicy: "strict-origin-when-cross-origin",
-      body: body ? body : null,
-      method: method,
-      mode: "cors",
-      credentials: "include",
-    });
-
-    if (!resp.ok) {
-      console.warn("Request failed", resp);
+    if (!this.authToken) {
+      console.warn("No auth token found");
       return;
     }
 
-    return resp.json() as T;
+    let tryCount = 0;
+
+    while (tryCount < 3) {
+      try {
+        const resp = await deduplicatedFetch(url, {
+          headers: {
+            accept: "application/json, text/plain, */*",
+            authorization: this.authToken,
+          },
+          referrer: "https://fansly.com/",
+          referrerPolicy: "strict-origin-when-cross-origin",
+          body: body ? body : null,
+          method: method,
+          mode: "cors",
+          credentials: "include",
+        });
+
+        if (!resp.ok) {
+          console.warn("Fansly request failed", resp);
+          return;
+        }
+
+        return resp.json() as T;
+      } catch (error) {
+        console.warn("Fansly request failed", error);
+        tryCount++;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
   }
 
   async getFanslyAccount(
-    username: string,
+    username: string
   ): Promise<FanslyAccountResponse | undefined> {
     if (!username) {
       console.warn("No username provided");
@@ -81,7 +97,9 @@ class FanslyApi {
     const resp = await this.fanslyRequest<
       FanslyResponse<FanslyAccountResponse[]>
     >(
-      `https://apiv3.fansly.com/api/v1/account?${isId ? "ids=" : "usernames="}${username}&ngsw-bypass=true`,
+      `https://apiv3.fansly.com/api/v1/account?${
+        isId ? "ids=" : "usernames="
+      }${username}&ngsw-bypass=true`
     );
 
     if (!resp || !resp.success) {
@@ -110,8 +128,8 @@ class FanslyApi {
 
   async getCurrentChatroomId(
     mePromise: Promise<FanslyMeResponse | undefined> = Promise.resolve(
-      undefined,
-    ),
+      undefined
+    )
   ): Promise<string | undefined> {
     let localChatroomId: string;
 
@@ -158,7 +176,7 @@ class FanslyApi {
       JSON.stringify({
         chatRoomId: chatroomId,
         content: message,
-      }),
+      })
     );
 
     if (!resp || !resp.success) {
@@ -170,7 +188,7 @@ class FanslyApi {
   }
 
   async getChatroomByChatroomId(
-    chatroomId: string,
+    chatroomId: string
   ): Promise<FanslyChatroomResponse | undefined> {
     if (!chatroomId) {
       console.warn("No chatroom provided");
@@ -180,7 +198,7 @@ class FanslyApi {
     const resp = await this.fanslyRequest<
       FanslyResponse<FanslyChatroomResponse[]>
     >(
-      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`,
+      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`
     );
 
     if (!resp || !resp.success) {
@@ -202,7 +220,7 @@ class FanslyApi {
     const resp = await this.fanslyRequest<
       FanslyResponse<FanslyFollowingStreamsOnlineResponse>
     >(
-      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
+      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true"
     );
 
     if (!resp || !resp.success) {
@@ -215,7 +233,7 @@ class FanslyApi {
 
   async getMe(): Promise<FanslyMeResponse | undefined> {
     const resp = await this.fanslyRequest<FanslyResponse<FanslyMeResponse>>(
-      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true",
+      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true"
     );
 
     if (!resp || !resp.success) {

@@ -1,6 +1,9 @@
+import badgesCss from "@/assets/badges.css?inline";
+import { mount } from "svelte";
+import { zergo0Api } from "../api/zergo0";
+import ZerGo0BotSubBadge from "../components/ui/badges/ZerGo0BotSubBadge.svelte";
+import { ZerGo0Badge } from "../types";
 import { usernamesCache } from "./chatUsernameAutoComplete";
-
-export const pronounsCache = new Map<string, Promise<string>>();
 
 const attachedClass = "ftv-pronouns-attached";
 
@@ -11,7 +14,7 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   }
 
   const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container",
+    "app-chat-room > * .chat-container"
   );
   if (!chatContainer) {
     return;
@@ -24,7 +27,7 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations),
+    async (mutations) => await chatMessageHandler(mutations)
   ).observe(chatContainer, {
     childList: true,
   });
@@ -53,7 +56,7 @@ function parseChatMessageNode(node: Node) {
   }
 
   // Look for the username element with appaccountcard attribute in the new structure
-  const usernameElement = element.querySelector('[appaccountcard]');
+  const usernameElement = element.querySelector("[appaccountcard]");
   if (usernameElement && usernameElement instanceof HTMLElement) {
     handleAccountCard(usernameElement);
   }
@@ -71,41 +74,21 @@ function handleAccountCard(element: HTMLElement) {
     usernamesCache.set(usernameLower, username);
   }
 
-  getAccountPronounsFromCache(usernameLower).then((pronouns) => {
+  zergo0Api.getUsernamePaint(usernameLower).then((usernamePaint) => {
+    console.log("usernamePaint", usernamePaint);
+  });
+
+  zergo0Api.getUserBadges(usernameLower).then((badges) => {
+    badges.forEach((badge) => {
+      prependBadge(element, badge);
+    });
+  });
+
+  zergo0Api.getUserPronouns(usernameLower).then((pronouns) => {
     if (pronouns && pronouns.length > 0) {
       appendPronouns(element, pronouns);
     }
   });
-}
-
-async function getAccountPronounsFromCache(username: string): Promise<string> {
-  if (pronounsCache.has(username)) {
-    return pronounsCache.get(username) as Promise<string>;
-  }
-
-  const pronouns = getAccountPronouns(username);
-  pronounsCache.set(username, pronouns);
-
-  return pronouns;
-}
-
-async function getAccountPronouns(username: string): Promise<string> {
-  const resp = await fetch(
-    `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`,
-    {
-      headers: {
-        accept: "application/json, text/plain, */*",
-      },
-      method: "GET",
-    },
-  );
-
-  if (!resp.ok) {
-    console.warn("Account request failed", resp);
-    return "";
-  }
-
-  return await resp.text();
 }
 
 function appendPronouns(element: HTMLElement, pronouns: string) {
@@ -122,4 +105,30 @@ function appendPronouns(element: HTMLElement, pronouns: string) {
   pronounsText.textContent = pronouns;
   pronounsText.title = "User's pronouns";
   element.appendChild(pronounsText);
+}
+
+function prependBadge(element: HTMLElement, badge: ZerGo0Badge) {
+  element.style.display = "inline-flex";
+  element.style.alignItems = "center";
+  element.style.flexDirection = "row";
+
+  if (badge.type.startsWith("sub_badge")) {
+    // append "badges.css" to the head if it's not already there
+    const head = document.head;
+    if (!head.querySelector("style#ftv-badges-css")) {
+      const style = document.createElement("style");
+      style.id = "ftv-badges-css";
+      style.media = "screen";
+      style.innerHTML = badgesCss;
+      document.head.appendChild(style);
+    }
+
+    mount(ZerGo0BotSubBadge, {
+      target: element,
+      anchor: element.firstChild as Node,
+      props: {
+        badge,
+      },
+    });
+  }
 }

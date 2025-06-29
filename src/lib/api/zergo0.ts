@@ -5,10 +5,16 @@ import type {
   ZerGo0Response,
   ZerGo0UsernamePaint,
 } from "../types";
+import { Cache } from "../utils/cache";
+import { deduplicatedFetch } from "../utils/requestDeduplicator";
 
 class Zergo0Api {
+  private pronounsCache = new Cache<string>();
+  private badgesCache = new Cache<ZerGo0Badge[]>();
+  private usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
+
   async getTwitchId(fanslyId: string): Promise<string> {
-    const resp = await fetch(
+    const resp = await deduplicatedFetch(
       `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`
     );
     if (!resp.ok) {
@@ -27,7 +33,7 @@ class Zergo0Api {
 
   async getChatPronouns(): Promise<ChatPronoun[]> {
     try {
-      const response = await fetch(
+      const response = await deduplicatedFetch(
         "https://zergo0_bot.zergo0.dev/ftv/pronouns"
       );
       if (!response.ok) {
@@ -48,9 +54,30 @@ class Zergo0Api {
     }
   }
 
+  async getUserPronouns(username: string): Promise<string> {
+    if (this.pronounsCache.has(username)) {
+      return this.pronounsCache.get(username) as Promise<string>;
+    }
+
+    const pronounsPromise = (async () => {
+      const resp = await deduplicatedFetch(
+        `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`
+      );
+      if (!resp.ok) {
+        console.warn("User pronouns request failed", resp);
+        return "";
+      }
+
+      return await resp.text();
+    })();
+
+    this.pronounsCache.set(username, pronounsPromise);
+    return pronounsPromise;
+  }
+
   async getPublicEmotes(chatroomId: string): Promise<ZerGo0Emote[]> {
     try {
-      const resp = await fetch(
+      const resp = await deduplicatedFetch(
         `https://zergo0_bot.zergo0.dev/api/public/v1/emotes/${chatroomId}`
       );
       if (!resp.ok) {
@@ -72,51 +99,71 @@ class Zergo0Api {
   }
 
   async getUserBadges(username: string): Promise<ZerGo0Badge[]> {
-    try {
-      const resp = await fetch(
-        `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`
-      );
-      if (!resp.ok) {
-        console.warn("User badges request failed", resp);
-        return [];
-      }
-
-      const json = (await resp.json()) as ZerGo0Response<ZerGo0Badge[]>;
-      if (!json || !json.success) {
-        console.warn("Could not parse user badges response");
-        return [];
-      }
-
-      return json.response;
-    } catch (error) {
-      console.warn("User badges request failed", error);
-      return [];
+    if (this.badgesCache.has(username)) {
+      return this.badgesCache.get(username) as Promise<ZerGo0Badge[]>;
     }
+
+    const badgesPromise = (async () => {
+      try {
+        const resp = await deduplicatedFetch(
+          `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`
+        );
+        if (!resp.ok) {
+          console.warn("User badges request failed", resp);
+          return [];
+        }
+
+        const json = (await resp.json()) as ZerGo0Response<ZerGo0Badge[]>;
+        if (!json || !json.success) {
+          console.warn("Could not parse user badges response");
+          return [];
+        }
+
+        return json.response;
+      } catch (error) {
+        console.warn("User badges request failed", error);
+        return [];
+      }
+    })();
+
+    this.badgesCache.set(username, badgesPromise);
+    return badgesPromise;
   }
 
   async getUsernamePaint(
     username: string
   ): Promise<ZerGo0UsernamePaint | null> {
-    try {
-      const resp = await fetch(
-        `https://zergo0_bot.zergo0.dev/ftv/username-paint/${username}`
-      );
-      if (!resp.ok) {
-        console.warn("Username paint request failed", resp);
-        return null;
-      }
-
-      const json = (await resp.json()) as ZerGo0Response<ZerGo0UsernamePaint>;
-      if (!json || !json.success) {
-        console.warn("Could not parse username paint response");
-        return null;
-      }
-
-      return json.response;
-    } catch (error) {
-      console.warn("Username paint request failed", error);
-      return null;
+    if (this.usernamePaintCache.has(username)) {
+      return this.usernamePaintCache.get(
+        username
+      ) as Promise<ZerGo0UsernamePaint | null>;
     }
+
+    const paintPromise = (async () => {
+      try {
+        const resp = await deduplicatedFetch(
+          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${username}`
+        );
+        if (!resp.ok) {
+          console.warn("Username paint request failed", resp);
+          return null;
+        }
+
+        const json = (await resp.json()) as ZerGo0Response<ZerGo0UsernamePaint>;
+        if (!json || !json.success) {
+          console.warn("Could not parse username paint response");
+          return null;
+        }
+
+        return json.response;
+      } catch (error) {
+        console.warn("Username paint request failed", error);
+        return null;
+      }
+    })();
+
+    this.usernamePaintCache.set(username, paintPromise);
+    return paintPromise;
   }
 }
 

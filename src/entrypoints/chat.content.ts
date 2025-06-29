@@ -6,7 +6,7 @@ import { Provider as EmoteProvider } from "@/lib/emotes/providers/provider";
 import { SevenTv, SevenTvUser } from "@/lib/emotes/providers/seventv";
 import { Twitch, TwitchUser } from "@/lib/emotes/providers/twitch";
 import { ZerGo0BotUser } from "@/lib/emotes/providers/zergo0";
-import { accountCard, pronounsCache } from "@/lib/entryPoints/accountCard";
+import { accountCard } from "@/lib/entryPoints/accountCard";
 import { chatEmotes } from "@/lib/entryPoints/chatEmotes";
 import {
   chatUsernameAutoComplete,
@@ -68,7 +68,6 @@ async function handleFirstInit(mutation: MutationRecord) {
   emoteStore.reset();
   emoteProviderStore.reset();
   usernamesCache.clear();
-  pronounsCache.clear();
 
   await sharedState.initialize();
 
