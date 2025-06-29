@@ -4,6 +4,7 @@
   import { emoteStore } from "@/lib/emotes/emotes.svelte";
   import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
   import { Provider } from "@/lib/emotes/providers/provider";
+  import { sharedState } from "@/lib/state/state.svelte";
   import { Emote, SeasonalEmoteButtonTypes } from "@/lib/types";
   import { SmileIcon } from "lucide-svelte";
   import { Button } from "../ui/button";
@@ -18,14 +19,14 @@
   import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
   import UpdateDot from "../ui/updatedot/UpdateDot.svelte";
   import ActionsButton from "../ui/useractions/ActionsButton.svelte";
-  import { sharedState } from "@/lib/state/state.svelte";
 
   let shadowRoot: ShadowRoot =
     document.querySelector("ftv-emotes-ui")!.shadowRoot!;
   let panelOpen = $state(false);
   let twitchUserIconUrl = $derived(
-    emoteProviderStore.provdiers.length > 0
-      ? emoteProviderStore.provdiers[0].iconUrl
+    emoteProviderStore.providers.length > 0
+      ? emoteProviderStore.providers.find((p) => p.name === "Twitch Sub Emotes")
+          ?.iconUrl
       : "",
   );
   let visibleProviders: number[] = [];
@@ -216,11 +217,12 @@
             onInViewport={() => {}}
           />
         {:else}
-          {#each emoteProviderStore.provdiers as provider, i}
+          {#each emoteProviderStore.providers as provider, i}
             <EmoteCategory
               {provider}
               index={i}
-              twitchUserIconUrl={isUserProvider(provider.name)
+              twitchUserIconUrl={isUserProvider(provider.name) &&
+              twitchUserIconUrl
                 ? twitchUserIconUrl
                 : ""}
               {onInViewport}
@@ -236,12 +238,13 @@
           class="w-12 h-full flex flex-col overflow-y-auto no-scroll"
           id="category-selector-container"
         >
-          {#each emoteProviderStore.provdiers as provider, i}
+          {#each emoteProviderStore.providers as provider, i}
             <EmoteSelector
               category={provider}
               index={i}
               selectedProvider={sharedState.selectedProvider}
-              twitchUserIconUrl={isUserProvider(provider.name)
+              twitchUserIconUrl={isUserProvider(provider.name) &&
+              twitchUserIconUrl
                 ? twitchUserIconUrl
                 : ""}
               onScrollToProvider={(e) => {

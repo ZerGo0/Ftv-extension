@@ -5,7 +5,8 @@ import { Ffz, FfzUser } from "@/lib/emotes/providers/ffz";
 import { Provider as EmoteProvider } from "@/lib/emotes/providers/provider";
 import { SevenTv, SevenTvUser } from "@/lib/emotes/providers/seventv";
 import { Twitch, TwitchUser } from "@/lib/emotes/providers/twitch";
-import { accountCard, pronounsCache } from "@/lib/entryPoints/accountCard";
+import { ZerGo0BotUser } from "@/lib/emotes/providers/zergo0";
+import { accountCard } from "@/lib/entryPoints/accountCard";
 import { chatEmotes } from "@/lib/entryPoints/chatEmotes";
 import {
   chatUsernameAutoComplete,
@@ -32,7 +33,7 @@ export default defineContentScript({
     new MutationObserver(async (mutations) => {
       const urlPath = window.location.pathname;
       const isWhitelisted = mutationUrlPathWhitelist.some((path) =>
-        new RegExp(path).test(urlPath),
+        new RegExp(path).test(urlPath)
       );
       if (!isWhitelisted) {
         return;
@@ -67,26 +68,37 @@ async function handleFirstInit(mutation: MutationRecord) {
   emoteStore.reset();
   emoteProviderStore.reset();
   usernamesCache.clear();
-  pronounsCache.clear();
 
   await sharedState.initialize();
 
   console.log(
-    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`,
+    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`
   );
 
-  const providers = await getEmoteProviders(sharedState.twitchUserId);
-  emoteProviderStore.provdiers = providers;
+  const providers = await getEmoteProviders(
+    sharedState.twitchUserId,
+    sharedState.chatroomId
+  );
+  emoteProviderStore.providers = providers;
   emoteStore.emotes = providers.flatMap((c) => c.emotes);
 }
 
 async function getEmoteProviders(
   twitchUserId: string | undefined,
+  chatroomId: string | undefined
 ): Promise<EmoteProvider[]> {
   let emoteProviders: Promise<EmoteProvider>[] = [];
 
+  if (chatroomId) {
+    emoteProviders = [
+      ...emoteProviders,
+      loadProvider(new ZerGo0BotUser(chatroomId)),
+    ];
+  }
+
   if (twitchUserId) {
     emoteProviders = [
+      ...emoteProviders,
       loadProvider(new TwitchUser(twitchUserId)),
       loadProvider(new SevenTvUser(twitchUserId)),
       loadProvider(new FfzUser(twitchUserId)),

@@ -682,3 +682,38 @@ export type SeasonalEmoteButton = {
   startDate: Date;
   endDate: Date;
 };
+
+export interface ZerGo0Response<T> {
+  success: boolean;
+  response: T;
+  error: Record<string, unknown>;
+}
+
+export interface ZerGo0Emote {
+  id: number;
+  name: string;
+  url: string;
+  content_type: string;
+  size_bytes: number;
+  width: number;
+  height: number;
+  animated: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ZerGo0Badge {
+  type: string;
+  name: string;
+  color?: string;
+  special?: string;
+  backgroundColor?: string;
+  gradientColors?: string[];
+  borderColor?: string;
+  textColor?: string;
+  animationType?: string;
+}
+
+export interface ZerGo0UsernamePaint {
+  usernamePaintId: number;
+}

@@ -1,91 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
-
-    --primary: 207 100% 58%;
-    --primary-foreground: 0 0% 2%;
-
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 5%;
-
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 5%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 92%;
-    --input: 0 0% 85%;
-    --ring: 0 0% 76%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 200 7% 8%;
-    --foreground: 180 9% 98%;
-
-    --card: 230 10% 11.76%;
-    --card-foreground: 180 9% 98%;
-
-    --popover: 230 10% 11.76%;
-    --popover-foreground: 180 9% 98%;
-
-    --primary: 207 100% 58%;
-    --primary-foreground: 240 9% 2%;
-
-    --secondary: 210 8% 19%;
-    --secondary-foreground: 180 9% 98%;
-
-    --muted: 207 7% 29%;
-    --muted-foreground: 207 8% 49%;
-
-    --accent: 207 71% 19%;
-    --accent-foreground: 180 9% 98%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 204 8% 20%;
-    --input: 210 9% 18%;
-    --ring: 207 100% 40%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply text-foreground;
-  }
-}
-
-.no-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* #region Username Paint */
-
 .userpaints-username {
   position: relative;
   display: inline-block;
@@ -122,6 +34,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: rainbow-wave 3s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes rainbow-wave {
@@ -149,6 +63,8 @@
   -webkit-text-fill-color: transparent;
   animation: fire-burn 2s ease infinite;
   filter: drop-shadow(0 0 3px #ff6600);
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes fire-burn {
@@ -176,6 +92,8 @@
   -webkit-text-fill-color: transparent;
   animation: ocean-wave 4s ease-in-out infinite;
   filter: drop-shadow(0 2px 4px rgba(0, 102, 204, 0.5));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 @keyframes ocean-wave {
@@ -195,6 +113,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: sunset-glow 3s ease-in-out infinite;
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 @keyframes sunset-glow {
@@ -223,6 +143,8 @@
   -webkit-text-fill-color: transparent;
   animation: aurora-dance 5s ease infinite;
   filter: drop-shadow(0 0 8px rgba(0, 255, 170, 0.6));
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes aurora-dance {
@@ -246,6 +168,8 @@
   -webkit-text-fill-color: transparent;
   animation: iridescent-flow 3s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.5));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes iridescent-flow {
@@ -276,6 +200,8 @@
   -webkit-text-fill-color: transparent;
   animation: foil-reflect 2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) contrast(1.2);
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes foil-reflect {
@@ -308,6 +234,8 @@
   -webkit-text-fill-color: transparent;
   animation: pearl-shimmer 4s ease-in-out infinite;
   filter: drop-shadow(0 0 15px rgba(255, 248, 220, 0.6));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes pearl-shimmer {
@@ -339,6 +267,8 @@
   -webkit-text-fill-color: transparent;
   animation: opal-shift 5s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes opal-shift {
@@ -366,6 +296,8 @@
   -webkit-text-fill-color: transparent;
   animation: lava-flow 4s ease-in-out infinite;
   filter: drop-shadow(0 2px 4px rgba(255, 51, 0, 0.8));
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes lava-flow {
@@ -387,6 +319,8 @@
   -webkit-text-fill-color: transparent;
   animation: neon-ink-flow 2s linear infinite;
   filter: drop-shadow(0 0 20px currentColor) saturate(2);
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes neon-ink-flow {
@@ -410,6 +344,8 @@
   text-shadow: 0 0 5px #00ff00;
   animation: matrix-flicker 1s infinite;
   font-family: "Courier New", monospace;
+  will-change: opacity;
+  transform: translateZ(0);
 }
 
 @keyframes matrix-flicker {
@@ -432,6 +368,8 @@
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 20px #ff006e);
   animation: synthwave-glow 2s ease-in-out infinite alternate;
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 @keyframes synthwave-glow {
@@ -460,6 +398,8 @@
   -webkit-text-fill-color: transparent;
   animation: glitch-wave 3s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.8));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes glitch-wave {
@@ -497,6 +437,8 @@
   -webkit-text-fill-color: transparent;
   animation: duotone-shift 4s ease-in-out infinite;
   filter: drop-shadow(0 0 15px rgba(255, 0, 110, 0.6));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes duotone-shift {
@@ -528,6 +470,8 @@
   -webkit-text-fill-color: transparent;
   animation: thermal-scan 3s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 164, 0, 0.7));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes thermal-scan {
@@ -557,6 +501,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradient-shift 5s ease infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes gradient-shift {
@@ -576,6 +522,8 @@
   text-stroke: 2px #ff00ff;
   animation: neon-outline-pulse 2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px #ff00ff);
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 @keyframes neon-outline-pulse {
@@ -608,6 +556,8 @@
   -webkit-text-fill-color: transparent;
   animation: magic-shimmer 3s ease-in-out infinite;
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes magic-shimmer {
@@ -654,6 +604,8 @@
   -webkit-text-fill-color: transparent;
   animation: sparkle-gradient 2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes sparkle-gradient {
@@ -674,6 +626,8 @@
   -webkit-text-fill-color: transparent;
   animation: electric-gradient 1s linear infinite;
   filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.7));
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes electric-gradient {
@@ -700,6 +654,8 @@
   -webkit-text-fill-color: transparent;
   animation: glitter-shine 3s ease-in-out infinite;
   filter: drop-shadow(0 0 12px rgba(221, 160, 221, 0.6));
+  will-change: transform, filter;
+  transform: translateZ(0);
 }
 
 @keyframes glitter-shine {
@@ -750,6 +706,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 8px rgba(255, 192, 203, 0.6));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Kawaii Dream */
@@ -769,6 +727,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(255, 192, 203, 0.5);
   filter: drop-shadow(0 2px 8px rgba(255, 105, 180, 0.4));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Candy Cane */
@@ -788,6 +748,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(255, 23, 68, 0.4));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Gothic Rose */
@@ -800,6 +762,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Pastel Princess */
@@ -818,6 +782,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 6px rgba(224, 187, 255, 0.5));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Dark Academia */
@@ -835,6 +801,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(62, 39, 35, 0.6);
   filter: drop-shadow(0 2px 4px rgba(62, 39, 35, 0.7));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Twitch Purple */
@@ -846,6 +814,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(145, 70, 255, 0.5);
   filter: drop-shadow(0 2px 8px rgba(145, 70, 255, 0.6));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* E-Girl Aesthetic */
@@ -863,6 +833,8 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.6));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Soft Grunge */
@@ -881,6 +853,8 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 15px rgba(72, 61, 139, 0.4);
   filter: drop-shadow(0 2px 6px rgba(47, 79, 79, 0.6));
+  will-change: filter;
+  transform: translateZ(0);
 }
 
 /* Streamer Vibes */
@@ -899,6 +873,6 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
   filter: drop-shadow(0 0 15px rgba(255, 0, 229, 0.6));
+  will-change: filter;
+  transform: translateZ(0);
 }
-
-/* #endregion Username Paint */
