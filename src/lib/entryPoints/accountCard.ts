@@ -3,6 +3,7 @@ import userpaintCss from "@/assets/userpaint.css?inline";
 import { mount } from "svelte";
 import { zergo0Api } from "../api/zergo0";
 import ZerGo0BotSubBadge from "../components/ui/badges/ZerGo0BotSubBadge.svelte";
+import { sharedState } from "../state/state.svelte";
 import { ZerGo0Badge, ZerGo0UsernamePaint } from "../types";
 import { usernamesCache } from "./chatUsernameAutoComplete";
 
@@ -75,10 +76,17 @@ function handleAccountCard(element: HTMLElement) {
     usernamesCache.set(usernameLower, username);
   }
 
+  const chatroomId = sharedState.chatroomId;
+  if (!chatroomId) {
+    return;
+  }
+
   // Apply username paint to the element itself
-  zergo0Api.getUsernamePaint(usernameLower).then((usernamePaint) => {
-    setUsernamePaint(element, usernamePaint);
-  });
+  zergo0Api
+    .getUsernamePaint(chatroomId, usernameLower)
+    .then((usernamePaint) => {
+      setUsernamePaint(element, usernamePaint);
+    });
 
   // Get the parent node to insert siblings
   const parent = element.parentNode;

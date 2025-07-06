@@ -1,3 +1,4 @@
+import { zergo0Api } from "@/lib/api/zergo0";
 import { emoteStore } from "@/lib/emotes/emotes.svelte";
 import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
 import { Bttv, BttvUser } from "@/lib/emotes/providers/bttv";
@@ -68,6 +69,9 @@ async function handleFirstInit(mutation: MutationRecord) {
   emoteStore.reset();
   emoteProviderStore.reset();
   usernamesCache.clear();
+  zergo0Api.pronounsCache.clear();
+  zergo0Api.badgesCache.clear();
+  zergo0Api.usernamePaintCache.clear();
 
   await sharedState.initialize();
 

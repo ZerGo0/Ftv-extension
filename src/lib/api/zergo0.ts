@@ -9,9 +9,9 @@ import { Cache } from "../utils/cache";
 import { deduplicatedFetch } from "../utils/requestDeduplicator";
 
 class Zergo0Api {
-  private pronounsCache = new Cache<string>();
-  private badgesCache = new Cache<ZerGo0Badge[]>();
-  private usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
+  pronounsCache = new Cache<string>();
+  badgesCache = new Cache<ZerGo0Badge[]>();
+  usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
 
   async getTwitchId(fanslyId: string): Promise<string> {
     const resp = await deduplicatedFetch(
@@ -131,6 +131,7 @@ class Zergo0Api {
   }
 
   async getUsernamePaint(
+    chatroomId: string,
     username: string
   ): Promise<ZerGo0UsernamePaint | null> {
     if (this.usernamePaintCache.has(username)) {
@@ -142,7 +143,7 @@ class Zergo0Api {
     const paintPromise = (async () => {
       try {
         const resp = await deduplicatedFetch(
-          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${username}`
+          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${chatroomId}/user/${username}`
         );
         if (!resp.ok) {
           console.warn("Username paint request failed", resp);
