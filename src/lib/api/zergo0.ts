@@ -9,9 +9,9 @@ import { Cache } from "../utils/cache";
 import { deduplicatedFetch } from "../utils/requestDeduplicator";
 
 class Zergo0Api {
-  private pronounsCache = new Cache<string>();
-  private badgesCache = new Cache<ZerGo0Badge[]>();
-  private usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
+  pronounsCache = new Cache<string>();
+  badgesCache = new Cache<ZerGo0Badge[]>();
+  usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
 
   async getTwitchId(fanslyId: string): Promise<string> {
     const resp = await deduplicatedFetch(
