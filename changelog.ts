@@ -2,7 +2,7 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
-    version: "2.0.15",
+    version: "2.0.16",
     date: "7/6/2025",
     changes: `
 - added support for username paints per chatroom
