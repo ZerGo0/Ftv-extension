@@ -3,6 +3,13 @@ import { Changelog } from "@/lib/types";
 export const changelog: Changelog[] = [
   {
     version: "2.0.15",
+    date: "7/6/2025",
+    changes: `
+- added support for username paints per chatroom
+`,
+  },
+  {
+    version: "2.0.15",
     date: "6/29/2025",
     changes: `
 - added support for ZerGo0_Bot emotes
