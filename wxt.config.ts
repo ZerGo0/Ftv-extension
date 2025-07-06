@@ -4,7 +4,7 @@ import { defineConfig } from "wxt";
 export default defineConfig({
   srcDir: "src",
   modules: ["@wxt-dev/module-svelte"],
-  runner: {
+  webExt: {
     chromiumArgs: ["--user-data-dir=./private/.dev-profile"],
     startUrls: [
       "https://fansly.com/chatroom/408830844350771200",
