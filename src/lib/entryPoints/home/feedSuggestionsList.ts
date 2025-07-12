@@ -86,6 +86,7 @@ async function attachFeedSuggestionsList(
         target: container,
         props: {
           startedAt: onlineCreator.streaming.channel.stream.startedAt,
+          title: onlineCreator.streaming.channel.stream.title,
         },
       });
 

@@ -1,11 +1,13 @@
 <script lang="ts">
   import "@/assets/app.pcss";
+  import { onMount, onDestroy } from "svelte";
 
   interface Props {
     startedAt: number;
+    title?: string;
   }
 
-  let { startedAt }: Props = $props();
+  let { startedAt, title }: Props = $props();
 
   let uptime: number | undefined = $state(Date.now() - startedAt);
   let uptimeInterval: any;
@@ -29,11 +31,18 @@
   }
 </script>
 
-{#if uptime}
-  <span class=" text-xs" id="uptime-text">
-    {formatUptime(uptime)}
-  </span>
-{/if}
+<div class="flex flex-col">
+  {#if title}
+    <span class="text-fansly-font-1 whitespace-pre font-bold overflow-hidden text-ellipsis whitespace-nowrap">
+      {title}
+    </span>
+  {/if}
+  {#if uptime}
+    <span class="text-xs" id="uptime-text">
+      {formatUptime(uptime)}
+    </span>
+  {/if}
+</div>
 
 <style>
 </style>
