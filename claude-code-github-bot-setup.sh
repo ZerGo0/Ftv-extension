@@ -43,8 +43,37 @@ else
 fi
 
 echo ""
+echo "Configuring environment for isolated workspace..."
+
+# Add workspaces to eslint ignore for the parent project
+WORKSPACE_DIR=$(pwd)
+PARENT_DIR=$(dirname "$WORKSPACE_DIR")
+
+# Check if we're in a workspace directory
+if [[ "$WORKSPACE_DIR" == */workspaces/* ]]; then
+    echo "Detected workspace environment, configuring eslint..."
+    
+    # Create a local .eslintignore if it doesn't exist
+    if [ ! -f "$PARENT_DIR/.eslintignore" ] && [ -f "$PARENT_DIR/eslint.config.mjs" ]; then
+        echo "workspaces/" > "$PARENT_DIR/.eslintignore"
+        echo "✓ Created .eslintignore to exclude workspace files"
+    elif [ -f "$PARENT_DIR/.eslintignore" ]; then
+        # Check if workspaces/ is already in .eslintignore
+        if ! grep -q "^workspaces/" "$PARENT_DIR/.eslintignore"; then
+            echo "workspaces/" >> "$PARENT_DIR/.eslintignore"
+            echo "✓ Added workspaces/ to .eslintignore"
+        else
+            echo "✓ workspaces/ already in .eslintignore"
+        fi
+    fi
+fi
+
+echo ""
 echo "Setup complete! All required tools are available."
 echo ""
 echo "Available commands:"
 echo "- bun tsc && bun lint (for GitHub bot project)"
 echo "- pnpm check (for Ftv extension project)"
+echo ""
+echo "Note: TypeScript errors in bot project are expected in isolated workspace"
+echo "due to path resolution. Linting should still work for main source files."
