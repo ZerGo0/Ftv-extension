@@ -3,7 +3,7 @@ const activeRequests = new Map<string, Promise<Response>>();
 function createRequestKey(
   method: string,
   url: string,
-  body?: BodyInit | null
+  body?: BodyInit | null,
 ): string {
   const bodyStr = body ? JSON.stringify(body) : "";
   return `${method}:${url}:${bodyStr}`;
@@ -11,7 +11,7 @@ function createRequestKey(
 
 export async function deduplicatedFetch(
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
 ): Promise<Response> {
   const url = typeof input === "string" ? input : input.toString();
   const method = init?.method || "GET";

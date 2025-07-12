@@ -10,7 +10,7 @@ export class Twitch extends Provider {
 
   override async fetchEmotes(): Promise<Emote[]> {
     const resp = await deduplicatedFetch(
-      "https://zergo0_bot.zergo0.dev/ftv/twitch/emotes"
+      "https://zergo0_bot.zergo0.dev/ftv/twitch/emotes",
     );
     if (resp.status !== 200) {
       console.warn(this.name, `Emote fetch failed with status ${resp.status}`);
@@ -25,7 +25,7 @@ export class Twitch extends Provider {
 
     const emotes = data.data.map(
       (e: { name: string; id: string; images: { url_1x: string } }) =>
-        new Emote(e.name, e.images.url_1x)
+        new Emote(e.name, e.images.url_1x),
     );
 
     return emotes;
@@ -87,8 +87,8 @@ export class TwitchUser extends Provider {
               emote.token,
               emote.id.startsWith("emotesv2")
                 ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
-            )
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`,
+            ),
           );
         }
       }
@@ -102,8 +102,8 @@ export class TwitchUser extends Provider {
               emote.token,
               emote.id.startsWith("emotesv2")
                 ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
-            )
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`,
+            ),
           );
         }
       }

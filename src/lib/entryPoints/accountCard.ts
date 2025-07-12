@@ -16,7 +16,7 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   }
 
   const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container"
+    "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {
     return;
@@ -29,7 +29,7 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations)
+    async (mutations) => await chatMessageHandler(mutations),
   ).observe(chatContainer, {
     childList: true,
   });
@@ -112,7 +112,7 @@ function handleAccountCard(element: HTMLElement) {
 function appendPronouns(
   parent: Node,
   pronouns: string,
-  afterElement: HTMLElement
+  afterElement: HTMLElement,
 ) {
   const pronounsText = document.createElement("span");
   pronounsText.style.color = "gray";
@@ -133,7 +133,7 @@ function appendPronouns(
 function prependBadge(
   parent: Node,
   badge: ZerGo0Badge,
-  beforeElement: HTMLElement
+  beforeElement: HTMLElement,
 ) {
   if (badge.type.startsWith("sub_badge")) {
     // append "badges.css" to the head if it's not already there
@@ -166,14 +166,14 @@ function prependBadge(
 
 function setUsernamePaint(
   element: HTMLElement,
-  usernamePaint: ZerGo0UsernamePaint | null
+  usernamePaint: ZerGo0UsernamePaint | null,
 ) {
   if (!usernamePaint) {
     return;
   }
 
   const design = usernamePaintDesigns.find(
-    (design) => design.id === usernamePaint.usernamePaintId
+    (design) => design.id === usernamePaint.usernamePaintId,
   );
 
   if (!design) {

@@ -14,6 +14,7 @@ import {
   usernamesCache,
 } from "@/lib/entryPoints/chatUsernameAutoComplete";
 import { emoteMenuButton } from "@/lib/entryPoints/emoteMenuButton";
+import { emoteSuggestions } from "@/lib/entryPoints/emoteSuggestions";
 import { viewCount } from "@/lib/entryPoints/viewCount";
 import { fanslyStyleFixes } from "@/lib/fanslyStyleFixes";
 import { sharedState } from "@/lib/state/state.svelte";
@@ -34,7 +35,7 @@ export default defineContentScript({
     new MutationObserver(async (mutations) => {
       const urlPath = window.location.pathname;
       const isWhitelisted = mutationUrlPathWhitelist.some((path) =>
-        new RegExp(path).test(urlPath)
+        new RegExp(path).test(urlPath),
       );
       if (!isWhitelisted) {
         return;
@@ -47,6 +48,7 @@ export default defineContentScript({
         chatEmotes(ctx, mutation);
         accountCard(ctx, mutation);
         emoteMenuButton(ctx, mutation);
+        emoteSuggestions(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
         viewCount(ctx, mutation);
       });
@@ -76,12 +78,12 @@ async function handleFirstInit(mutation: MutationRecord) {
   await sharedState.initialize();
 
   console.log(
-    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`
+    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`,
   );
 
   const providers = await getEmoteProviders(
     sharedState.twitchUserId,
-    sharedState.chatroomId
+    sharedState.chatroomId,
   );
   emoteProviderStore.providers = providers;
   emoteStore.emotes = providers.flatMap((c) => c.emotes);
@@ -89,7 +91,7 @@ async function handleFirstInit(mutation: MutationRecord) {
 
 async function getEmoteProviders(
   twitchUserId: string | undefined,
-  chatroomId: string | undefined
+  chatroomId: string | undefined,
 ): Promise<EmoteProvider[]> {
   let emoteProviders: Promise<EmoteProvider>[] = [];
 

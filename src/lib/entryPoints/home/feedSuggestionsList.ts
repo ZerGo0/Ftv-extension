@@ -99,4 +99,3 @@ async function attachFeedSuggestionsList(
   ui.uiContainer.classList.add("dark");
   ui.mount();
 }
-

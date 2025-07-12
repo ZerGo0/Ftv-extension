@@ -10,7 +10,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   }
 
   const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container"
+    "app-chat-room > * .chat-container",
   );
   if (!chatContainer) {
     return;
@@ -23,7 +23,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations)
+    async (mutations) => await chatMessageHandler(mutations),
   ).observe(chatContainer, {
     childList: true,
   });
@@ -146,7 +146,7 @@ function prepareTextSplit(elementText: string): string[] {
 }
 
 function getEmotes(
-  elementTextSplit: string[]
+  elementTextSplit: string[],
 ): Array<{ idx: number; emote: Emote }> {
   const emotePositions: Array<{ idx: number; emote: Emote }> = [];
 

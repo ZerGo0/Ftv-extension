@@ -15,7 +15,7 @@ class Zergo0Api {
 
   async getTwitchId(fanslyId: string): Promise<string> {
     const resp = await deduplicatedFetch(
-      `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`
+      `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`,
     );
     if (!resp.ok) {
       console.warn("Twitch Id request failed", resp);
@@ -34,7 +34,7 @@ class Zergo0Api {
   async getChatPronouns(): Promise<ChatPronoun[]> {
     try {
       const response = await deduplicatedFetch(
-        "https://zergo0_bot.zergo0.dev/ftv/pronouns"
+        "https://zergo0_bot.zergo0.dev/ftv/pronouns",
       );
       if (!response.ok) {
         console.warn("Could not fetch pronouns");
@@ -61,7 +61,7 @@ class Zergo0Api {
 
     const pronounsPromise = (async () => {
       const resp = await deduplicatedFetch(
-        `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`
+        `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`,
       );
       if (!resp.ok) {
         console.warn("User pronouns request failed", resp);
@@ -78,7 +78,7 @@ class Zergo0Api {
   async getPublicEmotes(chatroomId: string): Promise<ZerGo0Emote[]> {
     try {
       const resp = await deduplicatedFetch(
-        `https://zergo0_bot.zergo0.dev/api/public/v1/emotes/${chatroomId}`
+        `https://zergo0_bot.zergo0.dev/api/public/v1/emotes/${chatroomId}`,
       );
       if (!resp.ok) {
         console.warn("Public emotes request failed", resp);
@@ -106,7 +106,7 @@ class Zergo0Api {
     const badgesPromise = (async () => {
       try {
         const resp = await deduplicatedFetch(
-          `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`
+          `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`,
         );
         if (!resp.ok) {
           console.warn("User badges request failed", resp);
@@ -132,18 +132,18 @@ class Zergo0Api {
 
   async getUsernamePaint(
     chatroomId: string,
-    username: string
+    username: string,
   ): Promise<ZerGo0UsernamePaint | null> {
     if (this.usernamePaintCache.has(username)) {
       return this.usernamePaintCache.get(
-        username
+        username,
       ) as Promise<ZerGo0UsernamePaint | null>;
     }
 
     const paintPromise = (async () => {
       try {
         const resp = await deduplicatedFetch(
-          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${chatroomId}/user/${username}`
+          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${chatroomId}/user/${username}`,
         );
         if (!resp.ok) {
           console.warn("Username paint request failed", resp);
