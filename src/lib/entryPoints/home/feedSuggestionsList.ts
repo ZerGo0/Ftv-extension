@@ -79,13 +79,12 @@ async function attachFeedSuggestionsList(
   const ui = await createShadowRootUi(ctx, {
     name: "ftv-feed-suggestions-list",
     position: "inline",
-    append: "last",
+    append: "first",
     anchor: liveCreator.usernameElement,
     onMount: (container) => {
       const app = mount(FeedSuggestionsList, {
         target: container,
         props: {
-          startedAt: onlineCreator.streaming.channel.stream.startedAt,
           title: onlineCreator.streaming.channel.stream.title,
         },
       });
