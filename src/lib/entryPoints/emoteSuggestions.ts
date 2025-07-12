@@ -222,25 +222,20 @@ export function emoteSuggestions(ctx: any, mutation: MutationRecord) {
     switch (e.key) {
       case "ArrowUp":
         e.preventDefault();
-        if (selectedIndex > 4) {
-          selectedIndex -= 5; // Move up by one row (5 emotes per row)
+        if (selectedIndex > 0) {
+          selectedIndex--;
         } else {
-          // Move to the last row
-          selectedIndex = Math.min(
-            emoteCount - 1,
-            selectedIndex + Math.floor((emoteCount - 1) / 5) * 5,
-          );
+          selectedIndex = emoteCount - 1;
         }
         updateSuggestionsProps();
         break;
 
       case "ArrowDown":
         e.preventDefault();
-        if (selectedIndex + 5 < emoteCount) {
-          selectedIndex += 5; // Move down by one row
+        if (selectedIndex < emoteCount - 1) {
+          selectedIndex++;
         } else {
-          // Move to the first row
-          selectedIndex = selectedIndex % 5;
+          selectedIndex = 0;
         }
         updateSuggestionsProps();
         break;

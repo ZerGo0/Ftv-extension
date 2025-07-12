@@ -20,8 +20,13 @@
     if (!searchTerm || searchTerm.length === 0) {
       return [];
     }
-    return emoteStore.search(searchTerm).slice(0, 30); // Limit to 30 emotes
+    return emoteStore.search(searchTerm).slice(0, 10); // Limit to 10 emotes for list view
   });
+
+  function highlightMatch(name: string, searchTerm: string): string {
+    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    return name.replace(regex, '<span class="font-semibold text-primary">$1</span>');
+  }
 
   let containerRef: HTMLDivElement | null = $state(null);
   let emoteRefs: (HTMLButtonElement | null)[] = $state([]);
@@ -49,27 +54,29 @@
 {#if suggestedEmotes.length > 0}
   <div
     bind:this={containerRef}
-    class="ftv-emote-suggestions absolute bottom-full mb-1 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg max-h-[120px] overflow-y-auto overflow-x-hidden z-50"
+    class="ftv-emote-suggestions absolute bottom-full mb-1 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg max-h-[200px] overflow-y-auto overflow-x-hidden z-50"
   >
-    <div class="flex flex-wrap p-1">
+    <div class="flex flex-col">
       {#each suggestedEmotes as emote, index}
         <button
           bind:this={emoteRefs[index]}
-          class="ftv-emote-suggestion-item flex items-center justify-center p-1 m-0.5 rounded hover:bg-accent/50 transition-colors duration-150 {index ===
+          class="ftv-emote-suggestion-item flex items-center gap-2 p-2 hover:bg-accent/50 transition-colors duration-150 text-left {index ===
           selectedIndex
             ? 'bg-accent'
             : ''}"
-          style="width: calc(20% - 4px); height: 38px;"
           onclick={() => onEmoteSelect(emote)}
           onmouseenter={() => onUpdateSelectedIndex(index)}
           title={emote.name}
         >
           <img
             loading="lazy"
-            class="max-h-[30px] max-w-full object-contain"
+            class="h-6 w-6 object-contain flex-shrink-0"
             src={emote.url}
             alt={emote.name}
           />
+          <span class="text-sm truncate flex-1">
+            {@html highlightMatch(emote.name, searchTerm)}
+          </span>
         </button>
       {/each}
     </div>
