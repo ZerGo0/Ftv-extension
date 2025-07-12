@@ -1,4 +1,5 @@
-import FeedSuggestionsList from "@/lib/components/app/FeedSuggestionsList.svelte";
+import FeedStreamTitle from "@/lib/components/FeedStreamTitle.svelte";
+import FeedStreamUptime from "@/lib/components/FeedStreamUptime.svelte";
 import { sharedState } from "@/lib/state/state.svelte";
 import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "@/lib/types";
 import { mount, unmount } from "svelte";
@@ -83,7 +84,7 @@ async function attachStreamTitle(
     append: "first",
     anchor: liveCreator.usernameElement,
     onMount: (container) => {
-      const app = mount(FeedSuggestionsList, {
+      const app = mount(FeedStreamTitle, {
         target: container,
         props: {
           title: onlineCreator.streaming.channel.stream.title,
@@ -112,10 +113,10 @@ async function attachUptime(
     append: "last",
     anchor: liveCreator.usernameElement,
     onMount: (container) => {
-      const app = mount(FeedSuggestionsList, {
+      const app = mount(FeedStreamUptime, {
         target: container,
         props: {
-          startedAt: onlineCreator.streaming.channel.stream.startedAt,
+          createdAt: onlineCreator.streaming.channel.stream.startedAt,
         },
       });
 
