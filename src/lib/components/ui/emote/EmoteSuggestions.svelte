@@ -20,12 +20,23 @@
     if (!searchTerm || searchTerm.length === 0) {
       return [];
     }
-    return emoteStore.search(searchTerm).slice(0, 10); // Limit to 10 emotes for list view
+    return emoteStore.search(searchTerm).slice(0, 10); // Show max 10 emotes
   });
 
-  function highlightMatch(name: string, searchTerm: string): string {
-    const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-    return name.replace(regex, '<span class="font-semibold text-primary">$1</span>');
+  function getMatchIndices(name: string, searchTerm: string): [number, number][] {
+    const indices: [number, number][] = [];
+    const lowerName = name.toLowerCase();
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    let startIndex = 0;
+    
+    while (startIndex < lowerName.length) {
+      const index = lowerName.indexOf(lowerSearchTerm, startIndex);
+      if (index === -1) break;
+      indices.push([index, index + searchTerm.length]);
+      startIndex = index + 1;
+    }
+    
+    return indices;
   }
 
   let containerRef: HTMLDivElement | null = $state(null);
@@ -54,7 +65,7 @@
 {#if suggestedEmotes.length > 0}
   <div
     bind:this={containerRef}
-    class="ftv-emote-suggestions absolute bottom-full mb-1 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg max-h-[200px] overflow-y-auto overflow-x-hidden z-50"
+    class="ftv-emote-suggestions absolute bottom-full mb-1 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg h-[114px] overflow-y-auto overflow-x-hidden z-50"
   >
     <div class="flex flex-col">
       {#each suggestedEmotes as emote, index}
@@ -75,7 +86,13 @@
             alt={emote.name}
           />
           <span class="text-sm truncate flex-1">
-            {@html highlightMatch(emote.name, searchTerm)}
+            {#each emote.name.split('') as char, charIndex}
+              {#if getMatchIndices(emote.name, searchTerm).some(([start, end]) => charIndex >= start && charIndex < end)}
+                <span class="font-semibold text-primary">{char}</span>
+              {:else}
+                {char}
+              {/if}
+            {/each}
           </span>
         </button>
       {/each}
