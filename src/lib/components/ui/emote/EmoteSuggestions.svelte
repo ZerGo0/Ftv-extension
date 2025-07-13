@@ -23,39 +23,47 @@
     return emoteStore.search(searchTerm).slice(0, 10); // Show max 10 emotes
   });
 
-  function getMatchIndices(name: string, searchTerm: string): [number, number][] {
+  function getMatchIndices(
+    name: string,
+    searchTerm: string,
+  ): [number, number][] {
     const indices: [number, number][] = [];
     const lowerName = name.toLowerCase();
     const lowerSearchTerm = searchTerm.toLowerCase();
     let startIndex = 0;
-    
+
     while (startIndex < lowerName.length) {
       const index = lowerName.indexOf(lowerSearchTerm, startIndex);
       if (index === -1) break;
       indices.push([index, index + searchTerm.length]);
       startIndex = index + 1;
     }
-    
+
     return indices;
   }
 
   let containerRef: HTMLDivElement | null = $state(null);
+  let scrollContainerRef: HTMLDivElement | null = $state(null);
   let emoteRefs: (HTMLButtonElement | null)[] = $state([]);
 
   $effect(() => {
     // Scroll the selected emote into view
-    if (emoteRefs[selectedIndex] && containerRef) {
+    if (emoteRefs[selectedIndex] && scrollContainerRef) {
       const button = emoteRefs[selectedIndex];
-      const container = containerRef;
 
       if (button) {
         const buttonRect = button.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = scrollContainerRef.getBoundingClientRect();
 
+        // Check if button is outside visible area
         if (buttonRect.bottom > containerRect.bottom) {
-          button.scrollIntoView({ block: "end", behavior: "smooth" });
+          // Scroll down
+          const scrollAmount = buttonRect.bottom - containerRect.bottom;
+          scrollContainerRef.scrollTop += scrollAmount;
         } else if (buttonRect.top < containerRect.top) {
-          button.scrollIntoView({ block: "start", behavior: "smooth" });
+          // Scroll up
+          const scrollAmount = containerRect.top - buttonRect.top;
+          scrollContainerRef.scrollTop -= scrollAmount;
         }
       }
     }
@@ -65,13 +73,13 @@
 {#if suggestedEmotes.length > 0}
   <div
     bind:this={containerRef}
-    class="ftv-emote-suggestions absolute bottom-full mb-1 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg h-[114px] overflow-y-auto overflow-x-hidden z-50"
+    class="ftv-emote-suggestions absolute bottom-full mb-6 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg overflow-hidden z-50"
   >
-    <div class="flex flex-col">
+    <div bind:this={scrollContainerRef} class="ftv-emote-list flex flex-col h-[114px] overflow-y-auto overflow-x-hidden">
       {#each suggestedEmotes as emote, index}
         <button
           bind:this={emoteRefs[index]}
-          class="ftv-emote-suggestion-item flex items-center gap-2 p-2 hover:bg-accent/50 transition-colors duration-150 text-left {index ===
+          class="ftv-emote-suggestion-item flex items-center gap-4 p-2 hover:bg-accent/50 transition-colors duration-150 text-left {index ===
           selectedIndex
             ? 'bg-accent'
             : ''}"
@@ -86,7 +94,7 @@
             alt={emote.name}
           />
           <span class="text-sm truncate flex-1">
-            {#each emote.name.split('') as char, charIndex}
+            {#each emote.name.split("") as char, charIndex}
               {#if getMatchIndices(emote.name, searchTerm).some(([start, end]) => charIndex >= start && charIndex < end)}
                 <span class="font-semibold text-primary">{char}</span>
               {:else}
@@ -97,6 +105,13 @@
         </button>
       {/each}
     </div>
+    <div
+      class="border-t border-border px-2 py-1 text-xs text-muted-foreground flex items-center justify-between gap-2"
+    >
+      <span>↑↓ Navigate</span>
+      <span>Tab Select</span>
+      <span>Esc Close</span>
+    </div>
   </div>
 {/if}
 
@@ -104,6 +119,7 @@
   .ftv-emote-suggestions {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    width: fit-content;
   }
 
   .ftv-emote-suggestions::-webkit-scrollbar {
