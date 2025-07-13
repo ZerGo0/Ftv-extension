@@ -28,7 +28,8 @@ export enum ActionType {
   None = 'none',
   Changelog = 'changelog',
   ChatPoll = 'chatPoll',
-  Giveaway = 'giveaway'
+  Giveaway = 'giveaway',
+  UsernamePaint = 'usernamePaint'
 }
 
 export type FanslyResponse<T> = {
@@ -716,4 +717,8 @@ export interface ZerGo0Badge {
 
 export interface ZerGo0UsernamePaint {
   usernamePaintId: number;
+}
+
+export interface ZerGo0UsernamePaintSettings {
+  allow_chatters_set_paint: string;
 }
