@@ -17,7 +17,7 @@
     "release": "wxt zip && wxt zip -b firefox"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^6.0.0",
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
     "@tsconfig/svelte": "^5.0.4",
     "@wxt-dev/module-svelte": "2.0.3",
     "autoprefixer": "^10.4.20",
