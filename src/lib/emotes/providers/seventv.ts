@@ -11,7 +11,7 @@ export class SevenTv extends Provider {
   override async fetchEmotes(): Promise<Emote[]> {
     try {
       const resp = await deduplicatedFetch(
-        "https://7tv.io/v3/emote-sets/global"
+        "https://7tv.io/v3/emote-sets/global",
       );
       if (resp.status !== 200) {
         console.warn("Failed to fetch", this.name);
@@ -52,7 +52,7 @@ export class SevenTvUser extends Provider {
 
     try {
       const resp = await deduplicatedFetch(
-        `https://7tv.io/v3/users/twitch/${this.userId}`
+        `https://7tv.io/v3/users/twitch/${this.userId}`,
       );
       if (resp.status !== 200) {
         console.warn("Failed to fetch", this.name);

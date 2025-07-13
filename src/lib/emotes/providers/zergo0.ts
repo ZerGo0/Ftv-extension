@@ -16,7 +16,7 @@ export class ZerGo0BotUser extends Provider {
 
       if (emotes.length === 0) {
         console.warn(
-          `ZerGo0_Bot: Failed to fetch emotes for chatroom ${this.chatroomId}`
+          `ZerGo0_Bot: Failed to fetch emotes for chatroom ${this.chatroomId}`,
         );
         return [];
       }

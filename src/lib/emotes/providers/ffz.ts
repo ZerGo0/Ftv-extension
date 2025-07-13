@@ -10,7 +10,7 @@ export class Ffz extends Provider {
 
   override async fetchEmotes(): Promise<Emote[]> {
     const resp = await deduplicatedFetch(
-      "https://api.frankerfacez.com/v1/set/global"
+      "https://api.frankerfacez.com/v1/set/global",
     );
     if (resp.status !== 200) {
       console.warn("Failed to fetch", this.name);
@@ -29,7 +29,7 @@ export class Ffz extends Provider {
     }
 
     const emotes = json.sets[json.default_sets[0]]?.emoticons.map(
-      (e: any) => new Emote(e.name, e.urls["1"])
+      (e: any) => new Emote(e.name, e.urls["1"]),
     );
 
     return emotes;
@@ -51,7 +51,7 @@ export class FfzUser extends Provider {
     }
 
     const resp = await deduplicatedFetch(
-      `https://api.frankerfacez.com/v1/room/id/${this.userId}`
+      `https://api.frankerfacez.com/v1/room/id/${this.userId}`,
     );
     if (resp.status !== 200) {
       console.warn("Failed to fetch", this.name);
@@ -65,7 +65,7 @@ export class FfzUser extends Provider {
     }
 
     const emotes = json.sets[json.room.set].emoticons.map(
-      (e: any) => new Emote(e.name, e.urls["1"])
+      (e: any) => new Emote(e.name, e.urls["1"]),
     );
 
     return emotes;

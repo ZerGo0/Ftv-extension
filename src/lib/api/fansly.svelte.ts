@@ -47,7 +47,7 @@ class FanslyApi {
   private async fanslyRequest<T>(
     url: string,
     method: string = "GET",
-    body: any = null
+    body: any = null,
   ): Promise<T | undefined> {
     if (!this.authToken) {
       console.warn("No auth token found");
@@ -86,7 +86,7 @@ class FanslyApi {
   }
 
   async getFanslyAccount(
-    username: string
+    username: string,
   ): Promise<FanslyAccountResponse | undefined> {
     if (!username) {
       console.warn("No username provided");
@@ -99,7 +99,7 @@ class FanslyApi {
     >(
       `https://apiv3.fansly.com/api/v1/account?${
         isId ? "ids=" : "usernames="
-      }${username}&ngsw-bypass=true`
+      }${username}&ngsw-bypass=true`,
     );
 
     if (!resp || !resp.success) {
@@ -128,8 +128,8 @@ class FanslyApi {
 
   async getCurrentChatroomId(
     mePromise: Promise<FanslyMeResponse | undefined> = Promise.resolve(
-      undefined
-    )
+      undefined,
+    ),
   ): Promise<string | undefined> {
     let localChatroomId: string;
 
@@ -176,7 +176,7 @@ class FanslyApi {
       JSON.stringify({
         chatRoomId: chatroomId,
         content: message,
-      })
+      }),
     );
 
     if (!resp || !resp.success) {
@@ -188,7 +188,7 @@ class FanslyApi {
   }
 
   async getChatroomByChatroomId(
-    chatroomId: string
+    chatroomId: string,
   ): Promise<FanslyChatroomResponse | undefined> {
     if (!chatroomId) {
       console.warn("No chatroom provided");
@@ -198,7 +198,7 @@ class FanslyApi {
     const resp = await this.fanslyRequest<
       FanslyResponse<FanslyChatroomResponse[]>
     >(
-      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`
+      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`,
     );
 
     if (!resp || !resp.success) {
@@ -220,7 +220,7 @@ class FanslyApi {
     const resp = await this.fanslyRequest<
       FanslyResponse<FanslyFollowingStreamsOnlineResponse>
     >(
-      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true"
+      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
     );
 
     if (!resp || !resp.success) {
@@ -233,7 +233,7 @@ class FanslyApi {
 
   async getMe(): Promise<FanslyMeResponse | undefined> {
     const resp = await this.fanslyRequest<FanslyResponse<FanslyMeResponse>>(
-      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true"
+      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true",
     );
 
     if (!resp || !resp.success) {

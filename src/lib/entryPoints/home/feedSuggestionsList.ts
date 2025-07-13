@@ -21,7 +21,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
 
   const preparedLiveCreators = [];
   const feedHeaders = feedSuggestionsList.querySelectorAll(
-    "* .feed-suggestion-header"
+    "* .feed-suggestion-header",
   );
 
   for (const feedHeader of feedHeaders) {
@@ -30,7 +30,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
     }
 
     const usernameElement = feedHeader.querySelector(
-      "* .username-wrapper"
+      "* .username-wrapper",
     ) as HTMLAnchorElement;
     if (!usernameElement || usernameElement.href.length === 0) {
       continue;
@@ -60,7 +60,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
   for (const liveCreator of preparedLiveCreators) {
     const username = liveCreator.url.replaceAll("/", "").toLowerCase();
     const onlineCreator = onlineAccounts.find(
-      (creator) => creator.username.toLowerCase() === username
+      (creator) => creator.username.toLowerCase() === username,
     );
 
     if (!onlineCreator) {
@@ -76,7 +76,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
 async function attachStreamTitle(
   ctx: any,
   liveCreator: { url: string; usernameElement: HTMLAnchorElement },
-  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount
+  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount,
 ) {
   const ui = await createShadowRootUi(ctx, {
     name: "ftv-stream-title",
@@ -105,7 +105,7 @@ async function attachStreamTitle(
 async function attachUptime(
   ctx: any,
   liveCreator: { url: string; usernameElement: HTMLAnchorElement },
-  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount
+  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount,
 ) {
   const ui = await createShadowRootUi(ctx, {
     name: "ftv-uptime",
