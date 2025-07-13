@@ -5,25 +5,25 @@
 
 version: 2
 updates:
-  - package-ecosystem: "docker"
+  - package-ecosystem: 'docker'
     directories:
-      - "**/*"
+      - '**/*'
     schedule:
-      interval: "monthly"
-      day: "saturday"
-      time: "00:00"
+      interval: 'monthly'
+      day: 'saturday'
+      time: '00:00'
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "monthly"
-      day: "saturday"
-      time: "00:00"
+      interval: 'monthly'
+      day: 'saturday'
+      time: '00:00'
 
-  - package-ecosystem: "npm"
+  - package-ecosystem: 'npm'
     directories:
-      - "**/*"
+      - '**/*'
     schedule:
-      interval: "monthly"
-      day: "saturday"
-      time: "00:00"
+      interval: 'monthly'
+      day: 'saturday'
+      time: '00:00'

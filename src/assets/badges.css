@@ -32,12 +32,16 @@
 @keyframes badge-glow {
   0%,
   100% {
-    box-shadow: 0 0 1px var(--glow-color), 0 0 2px var(--glow-color),
+    box-shadow:
+      0 0 1px var(--glow-color),
+      0 0 2px var(--glow-color),
       0 0 3px var(--glow-color);
     filter: drop-shadow(0 0 1px var(--glow-color));
   }
   50% {
-    box-shadow: 0 0 2px var(--glow-color), 0 0 3px var(--glow-color),
+    box-shadow:
+      0 0 2px var(--glow-color),
+      0 0 3px var(--glow-color),
       0 0 4px var(--glow-color);
     filter: drop-shadow(0 0 2px var(--glow-color));
   }
@@ -49,7 +53,7 @@
 }
 
 .ftv-badge-container .badge-sparkle:not(.badge-glow)::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -50%;
   left: -50%;
@@ -217,18 +221,13 @@
 }
 
 .ftv-badge-container .badge-shimmer::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
   animation: badge-shimmer 2s infinite;
 }
 

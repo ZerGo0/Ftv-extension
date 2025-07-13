@@ -14,7 +14,7 @@ Ftv is a browser extension for Fansly that adds emote support from popular platf
 
 ## Rules
 
-- **ALWAYS** run `pnpm check` after making changes!
+- **ALWAYS** run `pnpm check && pnpm lint` after making changes!
 
 ## Architecture
 
