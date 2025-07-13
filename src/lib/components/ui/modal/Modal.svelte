@@ -12,7 +12,7 @@
     header,
     body,
     onClose = () => {},
-    class: className = "",
+    class: className = ''
   }: Props = $props();
 
   let dialog: HTMLDialogElement | null;
@@ -41,13 +41,10 @@
       showModal = false;
     }
   }}
-  class="bg-popover text-fansly-font-1 rounded-lg max-w-[32rem] {className}"
+  class="max-w-[32rem] rounded-lg bg-popover text-fansly-font-1 {className}"
 >
   <div class="p-4 pt-0">
-    <div
-      id="modal-header"
-      class="bg-popover pt-4 text-lg font-bold sticky top-0"
-    >
+    <div id="modal-header" class="sticky top-0 bg-popover pt-4 text-lg font-bold">
       {@render header()}
 
       <hr class="my-2" />

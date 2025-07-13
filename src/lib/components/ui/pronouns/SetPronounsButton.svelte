@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { fanslyApi } from "@/lib/api/fansly.svelte";
-  import { zergo0Api } from "@/lib/api/zergo0";
-  import type { ChatPronoun } from "@/lib/types";
-  import SetPronounsButtonModal from "./SetPronounsButtonModal.svelte";
+  import { fanslyApi } from '@/lib/api/fansly.svelte';
+  import { zergo0Api } from '@/lib/api/zergo0';
+  import type { ChatPronoun } from '@/lib/types';
+  import SetPronounsButtonModal from './SetPronounsButtonModal.svelte';
 
   let showModal = $state(false);
   let errored = $state(false);
@@ -10,19 +10,19 @@
   let subject = $state(1);
   let object = $state(1);
 
-  const botChatroomdId = "408830844350771200";
+  const botChatroomdId = '408830844350771200';
 
   onMount(async () => {
     pronouns = await zergo0Api.getChatPronouns();
     if (pronouns.length === 0) {
-      console.warn("No pronouns found");
+      console.warn('No pronouns found');
       return;
     }
   });
 
   async function handleSetPronouns() {
     if (subject === 0 || object === 0) {
-      console.warn("No pronouns selected");
+      console.warn('No pronouns selected');
       return;
     }
 
@@ -36,7 +36,7 @@
   async function setPronouns(subject: number, object: number) {
     const result = await fanslyApi.sendChatMessage(
       botChatroomdId,
-      `!setpronouns ${subject} ${object}`,
+      `!setpronouns ${subject} ${object}`
     );
     if (!result) {
       errored = true;
@@ -55,7 +55,7 @@
 <div class="w-full" id="set-pronouns-button-container">
   <!-- onclick={openModal} -->
   <button
-    class="set-pronouns-button w-full flex justify-center items-center backdrop-brightness-125 hover:backdrop-brightness-90 active:backdrop-brightness-90 ease-in-out duration-200"
+    class="set-pronouns-button flex w-full items-center justify-center backdrop-brightness-125 duration-200 ease-in-out hover:backdrop-brightness-90 active:backdrop-brightness-90"
     title="Set your chat pronouns"
     aria-label="Set your chat pronouns"
     id="set-pronouns-button"

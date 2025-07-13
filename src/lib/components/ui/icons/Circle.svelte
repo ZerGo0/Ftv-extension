@@ -9,8 +9,8 @@
   let {
     size = 8,
     strokeWidth = 2,
-    class: className = "",
-    stroke = "currentColor",
+    class: className = '',
+    stroke = 'currentColor'
   }: Props = $props();
 </script>
 

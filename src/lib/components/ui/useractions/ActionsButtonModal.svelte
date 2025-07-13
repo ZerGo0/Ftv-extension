@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { sharedState } from "@/lib/state/state.svelte";
-  import { ActionType } from "@/lib/types";
-  import { Button } from "../button";
-  import Modal from "../modal/Modal.svelte";
-  import UpdateDot from "../updatedot/UpdateDot.svelte";
-  import ChangelogModal from "./actions/ChangelogModal.svelte";
-  import ChatPollModal from "./actions/ChatPollModal.svelte";
-  import GiveawayModal from "./actions/GiveawayModal.svelte";
+  import { sharedState } from '@/lib/state/state.svelte';
+  import { ActionType } from '@/lib/types';
+  import { Button } from '../button';
+  import Modal from '../modal/Modal.svelte';
+  import UpdateDot from '../updatedot/UpdateDot.svelte';
+  import ChangelogModal from './actions/ChangelogModal.svelte';
+  import ChatPollModal from './actions/ChatPollModal.svelte';
+  import GiveawayModal from './actions/GiveawayModal.svelte';
 
   interface Props {
     showModal: boolean;
@@ -39,19 +39,15 @@
   {#snippet body()}
     <div class="flex flex-col space-y-2">
       <Button variant="secondary" onclick={handleChangelog} class="relative">
-        <UpdateDot class="-top-1 -right-1" />
+        <UpdateDot class="-right-1 -top-1" />
 
         Changelog
       </Button>
 
       {#if sharedState.isOwner || sharedState.isModerator}
-        <Button variant="secondary" onclick={handleStartPoll}>
-          Start Poll
-        </Button>
+        <Button variant="secondary" onclick={handleStartPoll}>Start Poll</Button>
 
-        <Button variant="secondary" onclick={handleStartGiveaway}>
-          Start Giveaway
-        </Button>
+        <Button variant="secondary" onclick={handleStartGiveaway}>Start Giveaway</Button>
       {/if}
     </div>
   {/snippet}

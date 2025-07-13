@@ -1,4 +1,4 @@
-import { Provider } from "./providers/provider";
+import { Provider } from './providers/provider';
 
 class EmoteProviderStore {
   providers: Provider[] = $state([]);

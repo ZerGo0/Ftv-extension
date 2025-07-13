@@ -1,11 +1,11 @@
-import { fanslyApi } from "../api/fansly.svelte";
-import { zergo0Api } from "../api/zergo0";
-import { checkIfExtensionVersionIsNewer } from "../helpers";
+import { fanslyApi } from '../api/fansly.svelte';
+import { zergo0Api } from '../api/zergo0';
+import { checkIfExtensionVersionIsNewer } from '../helpers';
 import {
   FanslyChatroomResponse,
   FanslyFollowingStreamsOnlineAggregationDataAccount,
-  FanslyMeResponse,
-} from "../types";
+  FanslyMeResponse
+} from '../types';
 
 class SharedState {
   chatroomId: string | undefined = $state(undefined);
@@ -16,9 +16,7 @@ class SharedState {
     setAt: Date;
     accounts: FanslyFollowingStreamsOnlineAggregationDataAccount[];
   } = $state({ setAt: new Date(), accounts: [] });
-  mePromise: Promise<FanslyMeResponse | undefined> = $state(
-    this.initializeMe(),
-  );
+  mePromise: Promise<FanslyMeResponse | undefined> = $state(this.initializeMe());
   chatroom: FanslyChatroomResponse | undefined = $state(undefined);
   newExtensionVersion: boolean = $state(checkIfExtensionVersionIsNewer());
   selectedProvider: number = $state(1);
@@ -59,11 +57,9 @@ class SharedState {
       return;
     }
 
-    const twitchUserIdPromise = zergo0Api
-      .getTwitchId(this.chatroomId)
-      .then((twitchId) => {
-        this.twitchUserId = twitchId;
-      });
+    const twitchUserIdPromise = zergo0Api.getTwitchId(this.chatroomId).then((twitchId) => {
+      this.twitchUserId = twitchId;
+    });
     const chatroomPromise = fanslyApi
       .getChatroomByChatroomId(this.chatroomId)
       .then(async (chatroom) => {
@@ -96,7 +92,7 @@ class SharedState {
 
     this.onlineCreators = {
       setAt: new Date(),
-      accounts: onlineFollowingStreams.aggregationData.accounts,
+      accounts: onlineFollowingStreams.aggregationData.accounts
     };
 
     return this.onlineCreators.accounts;

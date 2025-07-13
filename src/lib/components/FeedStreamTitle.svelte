@@ -1,5 +1,5 @@
 <script lang="ts">
-  import "@/assets/app.pcss";
+  import '@/assets/app.pcss';
 
   interface Props {
     title: string;
@@ -9,7 +9,7 @@
 </script>
 
 <span
-  class="text-xs text-overflow-ellipsis overflow-hidden whitespace-nowrap display-block"
+  class="text-overflow-ellipsis display-block overflow-hidden whitespace-nowrap text-xs"
   {title}
 >
   {title}

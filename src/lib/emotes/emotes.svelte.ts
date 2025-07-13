@@ -1,4 +1,4 @@
-import type { Emote } from "../types";
+import type { Emote } from '../types';
 
 class EmoteStore {
   // NOTE: this has to be a $state,
@@ -11,9 +11,7 @@ class EmoteStore {
   }
 
   search(term: string) {
-    return this.emotes.filter((emote) =>
-      emote.nameLower.includes(term.toLocaleLowerCase()),
-    );
+    return this.emotes.filter((emote) => emote.nameLower.includes(term.toLocaleLowerCase()));
   }
 }
 

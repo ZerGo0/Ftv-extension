@@ -1,53 +1,47 @@
 <script lang="ts">
-  import "@/assets/app.pcss";
-  import { currentSeasonalEmoteButtonType } from "@/lib/consts";
-  import { emoteStore } from "@/lib/emotes/emotes.svelte";
-  import { emoteProviderStore } from "@/lib/emotes/providers.svelte";
-  import { Provider } from "@/lib/emotes/providers/provider";
-  import { sharedState } from "@/lib/state/state.svelte";
-  import { Emote, SeasonalEmoteButtonTypes } from "@/lib/types";
-  import { SmileIcon } from "lucide-svelte";
-  import { Button } from "../ui/button";
-  import EmoteCategory from "../ui/emote/EmoteCategory.svelte";
-  import EmoteSelector from "../ui/emote/EmoteSelector.svelte";
-  import IconParkOutlineFireworks from "../ui/icons/IconParkOutlineFireworks.svelte";
-  import MdiEasterOutline from "../ui/icons/MdiEasterOutline.svelte";
-  import MingcuteChristmasHatLine from "../ui/icons/MingcuteChristmasHatLine.svelte";
-  import MingcutePumpkinLanternLine from "../ui/icons/MingcutePumpkinLanternLine.svelte";
-  import { Input } from "../ui/input";
-  import * as Popover from "../ui/popover";
-  import SetPronounsButton from "../ui/pronouns/SetPronounsButton.svelte";
-  import UpdateDot from "../ui/updatedot/UpdateDot.svelte";
-  import ActionsButton from "../ui/useractions/ActionsButton.svelte";
+  import '@/assets/app.pcss';
+  import { currentSeasonalEmoteButtonType } from '@/lib/consts';
+  import { emoteStore } from '@/lib/emotes/emotes.svelte';
+  import { emoteProviderStore } from '@/lib/emotes/providers.svelte';
+  import { Provider } from '@/lib/emotes/providers/provider';
+  import { sharedState } from '@/lib/state/state.svelte';
+  import { Emote, SeasonalEmoteButtonTypes } from '@/lib/types';
+  import { SmileIcon } from 'lucide-svelte';
+  import { Button } from '../ui/button';
+  import EmoteCategory from '../ui/emote/EmoteCategory.svelte';
+  import EmoteSelector from '../ui/emote/EmoteSelector.svelte';
+  import IconParkOutlineFireworks from '../ui/icons/IconParkOutlineFireworks.svelte';
+  import MdiEasterOutline from '../ui/icons/MdiEasterOutline.svelte';
+  import MingcuteChristmasHatLine from '../ui/icons/MingcuteChristmasHatLine.svelte';
+  import MingcutePumpkinLanternLine from '../ui/icons/MingcutePumpkinLanternLine.svelte';
+  import { Input } from '../ui/input';
+  import * as Popover from '../ui/popover';
+  import SetPronounsButton from '../ui/pronouns/SetPronounsButton.svelte';
+  import UpdateDot from '../ui/updatedot/UpdateDot.svelte';
+  import ActionsButton from '../ui/useractions/ActionsButton.svelte';
 
-  let shadowRoot: ShadowRoot =
-    document.querySelector("ftv-emotes-ui")!.shadowRoot!;
+  let shadowRoot: ShadowRoot = document.querySelector('ftv-emotes-ui')!.shadowRoot!;
   let panelOpen = $state(false);
   let twitchUserIconUrl = $derived(
     emoteProviderStore.providers.length > 0
-      ? emoteProviderStore.providers.find((p) => p.name === "Twitch Sub Emotes")
-          ?.iconUrl
-      : "",
+      ? emoteProviderStore.providers.find((p) => p.name === 'Twitch Sub Emotes')?.iconUrl
+      : ''
   );
   let visibleProviders: number[] = [];
   let emotesContainer: HTMLDivElement;
-  let searchTerm = $state("");
-  let searchResult: Emote[] = $derived(
-    searchTerm.length > 0 ? emoteStore.search(searchTerm) : [],
-  );
+  let searchTerm = $state('');
+  let searchResult: Emote[] = $derived(searchTerm.length > 0 ? emoteStore.search(searchTerm) : []);
   let emoteButtonElm: HTMLButtonElement;
   let bottom = $state(0);
   let right = $state(0);
 
   onMount(() => {
-    emoteButtonElm = shadowRoot.querySelector(
-      "#emote-menu-button",
-    ) as HTMLButtonElement;
+    emoteButtonElm = shadowRoot.querySelector('#emote-menu-button') as HTMLButtonElement;
     readjustPosition();
   });
 
   function isUserProvider(providerName: string): boolean {
-    if (providerName.includes("User")) {
+    if (providerName.includes('User')) {
       return true;
     }
 
@@ -73,7 +67,7 @@
   // TODO: refactor this function...
   function onScrollToProvider(idx: number) {
     if (emotesContainer.children.length === 0) {
-      console.warn("Emote container has no childrens");
+      console.warn('Emote container has no childrens');
       return;
     }
 
@@ -84,18 +78,16 @@
     let childIndex = 0;
     for (let i = 0; i < emotesContainer.children.length; i++) {
       let child = emotesContainer.children[i];
-      if (child.getAttribute("data-index") === idx.toString()) {
+      if (child.getAttribute('data-index') === idx.toString()) {
         childIndex = i;
         break;
       }
     }
 
-    const searchbarInput = shadowRoot.querySelector(
-      "#emote-search",
-    ) as HTMLInputElement;
+    const searchbarInput = shadowRoot.querySelector('#emote-search') as HTMLInputElement;
     if (searchbarInput && searchbarInput.value.length > 0) {
-      searchbarInput.value = "";
-      searchbarInput.dispatchEvent(new Event("input"));
+      searchbarInput.value = '';
+      searchbarInput.dispatchEvent(new Event('input'));
 
       setTimeout(() => {
         onScrollToProvider(idx);
@@ -106,10 +98,8 @@
     const topOffset = (emotesContainer.children[0] as HTMLElement).offsetTop;
 
     emotesContainer.scrollTo({
-      top:
-        (emotesContainer.children[childIndex] as HTMLElement).offsetTop -
-        topOffset,
-      behavior: "smooth",
+      top: (emotesContainer.children[childIndex] as HTMLElement).offsetTop - topOffset,
+      behavior: 'smooth'
     });
   }
 
@@ -146,7 +136,7 @@
 
   function onWindowClick(e: MouseEvent) {
     const targetElement = e.target as HTMLElement;
-    if (panelOpen && targetElement?.tagName !== "FTV-EMOTES-UI") {
+    if (panelOpen && targetElement?.tagName !== 'FTV-EMOTES-UI') {
       panelOpen = false;
     }
   }
@@ -161,17 +151,9 @@
   onOpenChange={readjustPosition}
 >
   <Popover.Trigger asChild let:builder>
-    <div
-      class="ml-1 flex items-center relative"
-      id="emote-menu-button-container"
-    >
-      <Button
-        builders={[builder]}
-        variant="icon"
-        size="clear"
-        id="emote-menu-button"
-      >
-        <UpdateDot class="-top-1 -right-1" />
+    <div class="relative ml-1 flex items-center" id="emote-menu-button-container">
+      <Button builders={[builder]} variant="icon" size="clear" id="emote-menu-button">
+        <UpdateDot class="-right-1 -top-1" />
 
         {#if currentSeasonalEmoteButtonType.type === SeasonalEmoteButtonTypes.NewYears}
           <IconParkOutlineFireworks size="20" />
@@ -189,31 +171,23 @@
   </Popover.Trigger>
   <Popover.Content
     style="position: fixed; bottom: {bottom}px; right: {right}px;"
-    strategy={"fixed"}
+    strategy={'fixed'}
   >
-    <header class="flex justify-between items-center mb-2" id="emote-header">
-      <Input
-        placeholder="Search emotes"
-        class="w-full"
-        id="emote-search"
-        bind:value={searchTerm}
-      />
+    <header class="mb-2 flex items-center justify-between" id="emote-header">
+      <Input placeholder="Search emotes" class="w-full" id="emote-search" bind:value={searchTerm} />
     </header>
 
-    <div
-      class="flex overflow-hidden text-fansly-font-1 h-full"
-      id="emotes-body"
-    >
+    <div class="flex h-full overflow-hidden text-fansly-font-1" id="emotes-body">
       <div
-        class="w-full flex flex-col overflow-y-auto no-scroll border rounded-l-lg"
+        class="no-scroll flex w-full flex-col overflow-y-auto rounded-l-lg border"
         id="emotes-container"
         bind:this={emotesContainer}
       >
         {#if searchTerm.length > 0}
           <EmoteCategory
-            provider={new Provider("Search Result", "", searchResult)}
+            provider={new Provider('Search Result', '', searchResult)}
             index={-1}
-            twitchUserIconUrl={""}
+            twitchUserIconUrl={''}
             onInViewport={() => {}}
           />
         {:else}
@@ -221,21 +195,17 @@
             <EmoteCategory
               {provider}
               index={i}
-              twitchUserIconUrl={isUserProvider(provider.name) &&
-              twitchUserIconUrl
+              twitchUserIconUrl={isUserProvider(provider.name) && twitchUserIconUrl
                 ? twitchUserIconUrl
-                : ""}
+                : ''}
               {onInViewport}
             />
           {/each}
         {/if}
       </div>
-      <div
-        class="flex flex-col border border-l-0 rounded-r-lg"
-        id="emote-selector"
-      >
+      <div class="flex flex-col rounded-r-lg border border-l-0" id="emote-selector">
         <div
-          class="w-12 h-full flex flex-col overflow-y-auto no-scroll"
+          class="no-scroll flex h-full w-12 flex-col overflow-y-auto"
           id="category-selector-container"
         >
           {#each emoteProviderStore.providers as provider, i}
@@ -243,10 +213,9 @@
               category={provider}
               index={i}
               selectedProvider={sharedState.selectedProvider}
-              twitchUserIconUrl={isUserProvider(provider.name) &&
-              twitchUserIconUrl
+              twitchUserIconUrl={isUserProvider(provider.name) && twitchUserIconUrl
                 ? twitchUserIconUrl
-                : ""}
+                : ''}
               onScrollToProvider={(e) => {
                 onScrollToProvider(e.detail.index);
               }}
@@ -254,7 +223,7 @@
           {/each}
         </div>
         <div
-          class="flex flex-col justify-center items-center text-primary border-t"
+          class="flex flex-col items-center justify-center border-t text-primary"
           id="category-selector-actions"
         >
           <ActionsButton />

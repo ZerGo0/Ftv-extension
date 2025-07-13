@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { emoteStore } from "@/lib/emotes/emotes.svelte";
-  import type { Emote } from "@/lib/types";
+  import { emoteStore } from '@/lib/emotes/emotes.svelte';
+  import type { Emote } from '@/lib/types';
 
   interface Props {
     searchTerm: string;
@@ -9,12 +9,7 @@
     onUpdateSelectedIndex: (index: number) => void;
   }
 
-  let {
-    searchTerm,
-    onEmoteSelect,
-    selectedIndex,
-    onUpdateSelectedIndex,
-  }: Props = $props();
+  let { searchTerm, onEmoteSelect, selectedIndex, onUpdateSelectedIndex }: Props = $props();
 
   let suggestedEmotes = $derived.by(() => {
     if (!searchTerm || searchTerm.length === 0) {
@@ -23,10 +18,7 @@
     return emoteStore.search(searchTerm).slice(0, 10); // Show max 10 emotes
   });
 
-  function getMatchIndices(
-    name: string,
-    searchTerm: string,
-  ): [number, number][] {
+  function getMatchIndices(name: string, searchTerm: string): [number, number][] {
     const indices: [number, number][] = [];
     const lowerName = name.toLowerCase();
     const lowerSearchTerm = searchTerm.toLowerCase();
@@ -73,13 +65,16 @@
 {#if suggestedEmotes.length > 0}
   <div
     bind:this={containerRef}
-    class="ftv-emote-suggestions absolute bottom-full mb-6 left-0 right-0 bg-background/95 backdrop-blur-sm border border-border rounded-md shadow-lg overflow-hidden z-50"
+    class="ftv-emote-suggestions absolute bottom-full left-0 right-0 z-50 mb-6 overflow-hidden rounded-md border border-border bg-background/95 shadow-lg backdrop-blur-sm"
   >
-    <div bind:this={scrollContainerRef} class="ftv-emote-list flex flex-col h-[114px] overflow-y-auto overflow-x-hidden">
+    <div
+      bind:this={scrollContainerRef}
+      class="ftv-emote-list flex h-[114px] flex-col overflow-y-auto overflow-x-hidden"
+    >
       {#each suggestedEmotes as emote, index}
         <button
           bind:this={emoteRefs[index]}
-          class="ftv-emote-suggestion-item flex items-center gap-4 p-2 hover:bg-accent/50 transition-colors duration-150 text-left {index ===
+          class="ftv-emote-suggestion-item flex items-center gap-4 p-2 text-left transition-colors duration-150 hover:bg-accent/50 {index ===
           selectedIndex
             ? 'bg-accent'
             : ''}"
@@ -89,12 +84,12 @@
         >
           <img
             loading="lazy"
-            class="h-6 w-6 object-contain flex-shrink-0"
+            class="h-6 w-6 flex-shrink-0 object-contain"
             src={emote.url}
             alt={emote.name}
           />
-          <span class="text-sm truncate flex-1">
-            {#each emote.name.split("") as char, charIndex}
+          <span class="flex-1 truncate text-sm">
+            {#each emote.name.split('') as char, charIndex}
               {#if getMatchIndices(emote.name, searchTerm).some(([start, end]) => charIndex >= start && charIndex < end)}
                 <span class="font-semibold text-primary">{char}</span>
               {:else}
@@ -106,7 +101,7 @@
       {/each}
     </div>
     <div
-      class="border-t border-border px-2 py-1 text-xs text-muted-foreground flex items-center justify-between gap-2"
+      class="flex items-center justify-between gap-2 border-t border-border px-2 py-1 text-xs text-muted-foreground"
     >
       <span>↑↓ Navigate</span>
       <span>Tab Select</span>

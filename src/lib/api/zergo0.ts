@@ -3,10 +3,10 @@ import type {
   ZerGo0Badge,
   ZerGo0Emote,
   ZerGo0Response,
-  ZerGo0UsernamePaint,
-} from "../types";
-import { Cache } from "../utils/cache";
-import { deduplicatedFetch } from "../utils/requestDeduplicator";
+  ZerGo0UsernamePaint
+} from '../types';
+import { Cache } from '../utils/cache';
+import { deduplicatedFetch } from '../utils/requestDeduplicator';
 
 class Zergo0Api {
   pronounsCache = new Cache<string>();
@@ -14,18 +14,16 @@ class Zergo0Api {
   usernamePaintCache = new Cache<ZerGo0UsernamePaint | null>();
 
   async getTwitchId(fanslyId: string): Promise<string> {
-    const resp = await deduplicatedFetch(
-      `https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`,
-    );
+    const resp = await deduplicatedFetch(`https://zergo0_bot.zergo0.dev/ftv/get/${fanslyId}`);
     if (!resp.ok) {
-      console.warn("Twitch Id request failed", resp);
-      return "";
+      console.warn('Twitch Id request failed', resp);
+      return '';
     }
 
     const twitchId = await resp.text();
     if (!twitchId) {
-      console.warn("Could not parse twitch id response");
-      return "";
+      console.warn('Could not parse twitch id response');
+      return '';
     }
 
     return twitchId;
@@ -33,23 +31,21 @@ class Zergo0Api {
 
   async getChatPronouns(): Promise<ChatPronoun[]> {
     try {
-      const response = await deduplicatedFetch(
-        "https://zergo0_bot.zergo0.dev/ftv/pronouns",
-      );
+      const response = await deduplicatedFetch('https://zergo0_bot.zergo0.dev/ftv/pronouns');
       if (!response.ok) {
-        console.warn("Could not fetch pronouns");
+        console.warn('Could not fetch pronouns');
         return [];
       }
 
       const json = await response.json();
       if (!json || !json.success) {
-        console.warn("Invalid pronouns response");
+        console.warn('Invalid pronouns response');
         return [];
       }
 
       return json.response as ChatPronoun[];
     } catch (error) {
-      console.warn("Could not fetch pronouns", error);
+      console.warn('Could not fetch pronouns', error);
       return [];
     }
   }
@@ -61,11 +57,11 @@ class Zergo0Api {
 
     const pronounsPromise = (async () => {
       const resp = await deduplicatedFetch(
-        `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`,
+        `https://zergo0_bot.zergo0.dev/ftv/pronouns/user/${username}`
       );
       if (!resp.ok) {
-        console.warn("User pronouns request failed", resp);
-        return "";
+        console.warn('User pronouns request failed', resp);
+        return '';
       }
 
       return await resp.text();
@@ -78,22 +74,22 @@ class Zergo0Api {
   async getPublicEmotes(chatroomId: string): Promise<ZerGo0Emote[]> {
     try {
       const resp = await deduplicatedFetch(
-        `https://zergo0_bot.zergo0.dev/api/public/v1/emotes/${chatroomId}`,
+        `https://zergo0_bot.zergo0.dev/api/public/v1/emotes/${chatroomId}`
       );
       if (!resp.ok) {
-        console.warn("Public emotes request failed", resp);
+        console.warn('Public emotes request failed', resp);
         return [];
       }
 
       const json = (await resp.json()) as ZerGo0Response<ZerGo0Emote[]>;
       if (!json || !json.success) {
-        console.warn("Could not parse public emotes response");
+        console.warn('Could not parse public emotes response');
         return [];
       }
 
       return json.response;
     } catch (error) {
-      console.warn("Public emotes request failed", error);
+      console.warn('Public emotes request failed', error);
       return [];
     }
   }
@@ -106,22 +102,22 @@ class Zergo0Api {
     const badgesPromise = (async () => {
       try {
         const resp = await deduplicatedFetch(
-          `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`,
+          `https://zergo0_bot.zergo0.dev/ftv/badges/user/${username}`
         );
         if (!resp.ok) {
-          console.warn("User badges request failed", resp);
+          console.warn('User badges request failed', resp);
           return [];
         }
 
         const json = (await resp.json()) as ZerGo0Response<ZerGo0Badge[]>;
         if (!json || !json.success) {
-          console.warn("Could not parse user badges response");
+          console.warn('Could not parse user badges response');
           return [];
         }
 
         return json.response;
       } catch (error) {
-        console.warn("User badges request failed", error);
+        console.warn('User badges request failed', error);
         return [];
       }
     })();
@@ -132,33 +128,31 @@ class Zergo0Api {
 
   async getUsernamePaint(
     chatroomId: string,
-    username: string,
+    username: string
   ): Promise<ZerGo0UsernamePaint | null> {
     if (this.usernamePaintCache.has(username)) {
-      return this.usernamePaintCache.get(
-        username,
-      ) as Promise<ZerGo0UsernamePaint | null>;
+      return this.usernamePaintCache.get(username) as Promise<ZerGo0UsernamePaint | null>;
     }
 
     const paintPromise = (async () => {
       try {
         const resp = await deduplicatedFetch(
-          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${chatroomId}/user/${username}`,
+          `https://zergo0_bot.zergo0.dev/ftv/username-paint/${chatroomId}/user/${username}`
         );
         if (!resp.ok) {
-          console.warn("Username paint request failed", resp);
+          console.warn('Username paint request failed', resp);
           return null;
         }
 
         const json = (await resp.json()) as ZerGo0Response<ZerGo0UsernamePaint>;
         if (!json || !json.success) {
-          console.warn("Could not parse username paint response");
+          console.warn('Could not parse username paint response');
           return null;
         }
 
         return json.response;
       } catch (error) {
-        console.warn("Username paint request failed", error);
+        console.warn('Username paint request failed', error);
         return null;
       }
     })();

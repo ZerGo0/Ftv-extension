@@ -1,20 +1,16 @@
 const activeRequests = new Map<string, Promise<Response>>();
 
-function createRequestKey(
-  method: string,
-  url: string,
-  body?: BodyInit | null,
-): string {
-  const bodyStr = body ? JSON.stringify(body) : "";
+function createRequestKey(method: string, url: string, body?: BodyInit | null): string {
+  const bodyStr = body ? JSON.stringify(body) : '';
   return `${method}:${url}:${bodyStr}`;
 }
 
 export async function deduplicatedFetch(
   input: RequestInfo | URL,
-  init?: RequestInit,
+  init?: RequestInit
 ): Promise<Response> {
-  const url = typeof input === "string" ? input : input.toString();
-  const method = init?.method || "GET";
+  const url = typeof input === 'string' ? input : input.toString();
+  const method = init?.method || 'GET';
   const body = init?.body;
 
   const requestKey = createRequestKey(method, url, body);
@@ -28,7 +24,7 @@ export async function deduplicatedFetch(
 
   // Create new request
   const request = fetch(input, init);
-  if (method === "GET") {
+  if (method === 'GET') {
     activeRequests.set(requestKey, request);
   }
 

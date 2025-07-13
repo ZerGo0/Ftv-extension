@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { setExtensionVersion } from "@/lib/helpers";
-  import type { Changelog } from "@/lib/types";
-  import { ActionType } from "@/lib/types";
-  import { changelog } from "../../../../../../changelog";
-  import Codeblock from "../../codeblock/codeblock.svelte";
-  import Modal from "../../modal/Modal.svelte";
+  import { setExtensionVersion } from '@/lib/helpers';
+  import type { Changelog } from '@/lib/types';
+  import { ActionType } from '@/lib/types';
+  import { changelog } from '../../../../../../changelog';
+  import Codeblock from '../../codeblock/codeblock.svelte';
+  import Modal from '../../modal/Modal.svelte';
 
   interface Props {
     action: ActionType;
@@ -15,8 +15,8 @@
   const sortedChangelog = changelog
     .sort((a, b) => {
       // Split version numbers into parts
-      const aParts = a.version.split(".").map(Number);
-      const bParts = b.version.split(".").map(Number);
+      const aParts = a.version.split('.').map(Number);
+      const bParts = b.version.split('.').map(Number);
 
       // Compare each version part
       for (let i = 0; i < Math.max(aParts.length, bParts.length); i++) {
@@ -35,17 +35,17 @@
     });
 
   function cleanupChangelog(change: Changelog): Changelog {
-    const changeSplit = change.changes.split("\n");
-    if (changeSplit[0].trim() !== "") {
+    const changeSplit = change.changes.split('\n');
+    if (changeSplit[0].trim() !== '') {
       // add a new line before the first line to fix code/pre spacing
-      changeSplit.unshift("");
+      changeSplit.unshift('');
     }
 
-    if (changeSplit[changeSplit.length - 1].trim() === "") {
+    if (changeSplit[changeSplit.length - 1].trim() === '') {
       changeSplit.pop();
     }
 
-    change.changes = changeSplit.join("\n");
+    change.changes = changeSplit.join('\n');
 
     return change;
   }

@@ -25,10 +25,10 @@ export class ChatPronoun {
 }
 
 export enum ActionType {
-  None = "none",
-  Changelog = "changelog",
-  ChatPoll = "chatPoll",
-  Giveaway = "giveaway",
+  None = 'none',
+  Changelog = 'changelog',
+  ChatPoll = 'chatPoll',
+  Giveaway = 'giveaway'
 }
 
 export type FanslyResponse<T> = {
@@ -670,11 +670,11 @@ export type Changelog = {
 };
 
 export enum SeasonalEmoteButtonTypes {
-  Default = "default",
-  NewYears = "newYears",
-  Easter = "easter",
-  Halloween = "halloween",
-  Christmas = "christmas",
+  Default = 'default',
+  NewYears = 'newYears',
+  Easter = 'easter',
+  Halloween = 'halloween',
+  Christmas = 'christmas'
 }
 
 export type SeasonalEmoteButton = {

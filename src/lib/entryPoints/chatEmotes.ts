@@ -1,17 +1,15 @@
-import { emoteStore } from "../emotes/emotes.svelte";
-import { Emote } from "../types";
+import { emoteStore } from '../emotes/emotes.svelte';
+import { Emote } from '../types';
 
-const attachedClass = "ftv-chat-emotes-attached";
+const attachedClass = 'ftv-chat-emotes-attached';
 
 export function chatEmotes(ctx: any, mutation: MutationRecord) {
   const element = mutation.target as HTMLElement;
-  if (!element || !element.tagName || element.tagName !== "APP-CHAT-ROOM") {
+  if (!element || !element.tagName || element.tagName !== 'APP-CHAT-ROOM') {
     return;
   }
 
-  const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container"
-  );
+  const chatContainer = element.querySelector('app-chat-room > * .chat-container');
   if (!chatContainer) {
     return;
   }
@@ -22,11 +20,12 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
 
   chatContainer.classList.add(attachedClass);
 
-  new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations)
-  ).observe(chatContainer, {
-    childList: true,
-  });
+  new MutationObserver(async (mutations) => await chatMessageHandler(mutations)).observe(
+    chatContainer,
+    {
+      childList: true
+    }
+  );
 }
 
 async function chatMessageHandler(mutations: MutationRecord[]) {
@@ -34,7 +33,7 @@ async function chatMessageHandler(mutations: MutationRecord[]) {
   await waitForEmoteStore();
 
   mutations.forEach((mutation) => {
-    if (mutation.type !== "childList") {
+    if (mutation.type !== 'childList') {
       return;
     }
 
@@ -67,24 +66,21 @@ function parseChatMessageNode(node: Node) {
   }
 
   const element = node as HTMLElement;
-  if (element.tagName !== "APP-CHAT-ROOM-MESSAGE") {
+  if (element.tagName !== 'APP-CHAT-ROOM-MESSAGE') {
     return;
   }
 
   // Find all message-text spans inside the nested structure
-  const messageTextElements = element.querySelectorAll(".message-text");
+  const messageTextElements = element.querySelectorAll('.message-text');
   if (!messageTextElements || messageTextElements.length === 0) {
-    console.warn("Could not get message");
+    console.warn('Could not get message');
     return;
   }
 
   const messageNodes = Array.from(messageTextElements);
 
   for (const messageNode of messageNodes) {
-    if (
-      messageNode.nodeType !== Node.ELEMENT_NODE ||
-      !messageNode.textContent
-    ) {
+    if (messageNode.nodeType !== Node.ELEMENT_NODE || !messageNode.textContent) {
       continue;
     }
 
@@ -105,22 +101,22 @@ function parseChatMessageNode(node: Node) {
       elementTextSplit[idx] = emoteHtml;
     }
 
-    messageElement.innerHTML = elementTextSplit.join("");
+    messageElement.innerHTML = elementTextSplit.join('');
   }
 }
 
 function prepareTextSplit(elementText: string): string[] {
   let elementTextSplit = [];
-  let currentWord = "";
+  let currentWord = '';
   for (let i = 0; i < elementText.length; i++) {
     const currentChar = elementText[i];
 
     // Check if current character is a line break
-    if (currentChar === "\n") {
+    if (currentChar === '\n') {
       // Push current word if it exists
       if (currentWord.length > 0) {
         elementTextSplit.push(currentWord);
-        currentWord = "";
+        currentWord = '';
       }
       // Push the line break as its own element
       elementTextSplit.push(currentChar);
@@ -132,25 +128,25 @@ function prepareTextSplit(elementText: string): string[] {
     if (elementText.length - 1 === i) {
       // last character
       elementTextSplit.push(currentWord);
-      currentWord = "";
+      currentWord = '';
       continue;
     }
 
     const nextChar = elementText[i + 1];
 
-    if (currentChar === " " && nextChar !== " ") {
+    if (currentChar === ' ' && nextChar !== ' ') {
       // currentWord contains space right now,
       // but next character is not a space
       elementTextSplit.push(currentWord);
-      currentWord = "";
+      currentWord = '';
       continue;
     }
 
-    if (currentChar !== " " && nextChar === " ") {
+    if (currentChar !== ' ' && nextChar === ' ') {
       // currentWord does not contain space right now,
       // but next character is a space
       elementTextSplit.push(currentWord);
-      currentWord = "";
+      currentWord = '';
       continue;
     }
   }
@@ -158,15 +154,13 @@ function prepareTextSplit(elementText: string): string[] {
   return elementTextSplit;
 }
 
-function getEmotes(
-  elementTextSplit: string[]
-): Array<{ idx: number; emote: Emote }> {
+function getEmotes(elementTextSplit: string[]): Array<{ idx: number; emote: Emote }> {
   const emotePositions: Array<{ idx: number; emote: Emote }> = [];
 
   for (let i = 0; i < elementTextSplit.length; i++) {
     const word = elementTextSplit[i];
 
-    if (word.length === 0 || word[0] === " " || word === "\n") {
+    if (word.length === 0 || word[0] === ' ' || word === '\n') {
       continue;
     }
 
@@ -183,20 +177,20 @@ function getEmotes(
 }
 
 function prepareEmoteHtml(emote: Emote): string {
-  const emoteContElement = document.createElement("div");
-  emoteContElement.id = "emote-container";
-  emoteContElement.className = "emote-container";
-  emoteContElement.style.display = "inline-block";
+  const emoteContElement = document.createElement('div');
+  emoteContElement.id = 'emote-container';
+  emoteContElement.className = 'emote-container';
+  emoteContElement.style.display = 'inline-block';
   emoteContElement.title = emote.name;
 
-  const emoteImgElement = document.createElement("img");
-  emoteImgElement.id = "emote";
-  emoteImgElement.className = "emote";
-  emoteImgElement.loading = "lazy";
+  const emoteImgElement = document.createElement('img');
+  emoteImgElement.id = 'emote';
+  emoteImgElement.className = 'emote';
+  emoteImgElement.loading = 'lazy';
   emoteImgElement.src = emote.url;
   emoteImgElement.title = emote.name;
   emoteImgElement.alt = emote.name;
-  emoteImgElement.style.maxHeight = "32px";
+  emoteImgElement.style.maxHeight = '32px';
 
   emoteContElement.appendChild(emoteImgElement);
 

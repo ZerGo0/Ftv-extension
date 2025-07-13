@@ -3,42 +3,42 @@ import {
   FanslyChatroomResponse,
   FanslyFollowingStreamsOnlineResponse,
   FanslyMeResponse,
-  FanslyResponse,
-} from "../types";
-import { deduplicatedFetch } from "../utils/requestDeduplicator";
+  FanslyResponse
+} from '../types';
+import { deduplicatedFetch } from '../utils/requestDeduplicator';
 
 class FanslyApi {
   // NOTE: This class needs to called the first time outside of the shadow root
   // because it needs to access the proper window object
   private window: Window = window;
   private localStorage: Storage = localStorage;
-  private authToken: string = "";
+  private authToken: string = '';
 
   constructor() {
     this.authToken = this.getAuthToken();
   }
 
   getAuthToken(): string {
-    if (this.authToken && this.authToken !== "") {
+    if (this.authToken && this.authToken !== '') {
       return this.authToken;
     }
 
-    const session = this.localStorage.getItem("session_active_session");
+    const session = this.localStorage.getItem('session_active_session');
     if (!session) {
-      console.warn("Could not find session in local storage");
-      return "";
+      console.warn('Could not find session in local storage');
+      return '';
     }
 
     const sessionJson = JSON.parse(session);
     if (!sessionJson || !sessionJson.token) {
-      console.warn("Could not parse session JSON");
-      return "";
+      console.warn('Could not parse session JSON');
+      return '';
     }
 
     const authToken = sessionJson.token;
     if (!authToken) {
-      console.warn("Could not find auth token in session");
-      return "";
+      console.warn('Could not find auth token in session');
+      return '';
     }
 
     return authToken;
@@ -46,11 +46,11 @@ class FanslyApi {
 
   private async fanslyRequest<T>(
     url: string,
-    method: string = "GET",
-    body: any = null,
+    method: string = 'GET',
+    body: any = null
   ): Promise<T | undefined> {
     if (!this.authToken) {
-      console.warn("No auth token found");
+      console.warn('No auth token found');
       return;
     }
 
@@ -60,50 +60,46 @@ class FanslyApi {
       try {
         const resp = await deduplicatedFetch(url, {
           headers: {
-            accept: "application/json, text/plain, */*",
-            authorization: this.authToken,
+            accept: 'application/json, text/plain, */*',
+            authorization: this.authToken
           },
-          referrer: "https://fansly.com/",
-          referrerPolicy: "strict-origin-when-cross-origin",
+          referrer: 'https://fansly.com/',
+          referrerPolicy: 'strict-origin-when-cross-origin',
           body: body ? body : null,
           method: method,
-          mode: "cors",
-          credentials: "include",
+          mode: 'cors',
+          credentials: 'include'
         });
 
         if (!resp.ok) {
-          console.warn("Fansly request failed", resp);
+          console.warn('Fansly request failed', resp);
           return;
         }
 
         return resp.json() as T;
       } catch (error) {
-        console.warn("Fansly request failed", error);
+        console.warn('Fansly request failed', error);
         tryCount++;
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
     }
   }
 
-  async getFanslyAccount(
-    username: string,
-  ): Promise<FanslyAccountResponse | undefined> {
+  async getFanslyAccount(username: string): Promise<FanslyAccountResponse | undefined> {
     if (!username) {
-      console.warn("No username provided");
+      console.warn('No username provided');
       return;
     }
 
     const isId = username.length === 18 && !isNaN(Number.parseInt(username));
-    const resp = await this.fanslyRequest<
-      FanslyResponse<FanslyAccountResponse[]>
-    >(
+    const resp = await this.fanslyRequest<FanslyResponse<FanslyAccountResponse[]>>(
       `https://apiv3.fansly.com/api/v1/account?${
-        isId ? "ids=" : "usernames="
-      }${username}&ngsw-bypass=true`,
+        isId ? 'ids=' : 'usernames='
+      }${username}&ngsw-bypass=true`
     );
 
     if (!resp || !resp.success) {
-      console.warn("Request failed", resp);
+      console.warn('Request failed', resp);
       return;
     }
 
@@ -113,45 +109,43 @@ class FanslyApi {
   async getFanslyIdByUsername(username: string): Promise<string> {
     const accountResp = await this.getFanslyAccount(username);
     if (!accountResp) {
-      console.warn("Could not get account response");
-      return "";
+      console.warn('Could not get account response');
+      return '';
     }
 
     const chatRoomId = accountResp.streaming?.channel?.chatRoomId;
     if (chatRoomId === undefined) {
-      console.warn("Could not find chatroomID", username);
-      return "";
+      console.warn('Could not find chatroomID', username);
+      return '';
     }
 
     return chatRoomId;
   }
 
   async getCurrentChatroomId(
-    mePromise: Promise<FanslyMeResponse | undefined> = Promise.resolve(
-      undefined,
-    ),
+    mePromise: Promise<FanslyMeResponse | undefined> = Promise.resolve(undefined)
   ): Promise<string | undefined> {
     let localChatroomId: string;
 
-    if (this.window.location.pathname.includes("/live/")) {
+    if (this.window.location.pathname.includes('/live/')) {
       // https://fansly.com/live/zergo0_bot
       // https://fansly.com/live/407996034761891840
-      const username = this.window.location.pathname.split("/")[2];
+      const username = this.window.location.pathname.split('/')[2];
       localChatroomId = await this.getFanslyIdByUsername(username);
-    } else if (this.window.location.pathname.includes("/chatroom/")) {
+    } else if (this.window.location.pathname.includes('/chatroom/')) {
       // https://fansly.com/chatroom/408830844350771200
-      const urlSplit = this.window.location.pathname.split("/");
+      const urlSplit = this.window.location.pathname.split('/');
       if (urlSplit.length !== 3) {
-        console.warn("Invalid chatroom URL");
+        console.warn('Invalid chatroom URL');
         return;
       }
 
       localChatroomId = urlSplit[2];
-    } else if (this.window.location.pathname.endsWith("/creator/streaming")) {
+    } else if (this.window.location.pathname.endsWith('/creator/streaming')) {
       // https://fansly.com/creator/streaming
       const me = await mePromise;
       if (!me) {
-        console.warn("Could not get me");
+        console.warn('Could not get me');
         return;
       }
 
@@ -166,65 +160,57 @@ class FanslyApi {
 
   async sendChatMessage(chatroomId: string, message: string): Promise<boolean> {
     if (!chatroomId || !message) {
-      console.warn("No chatroom or message provided");
+      console.warn('No chatroom or message provided');
       return false;
     }
 
     const resp = await this.fanslyRequest<FanslyResponse<any>>(
-      "https://apiv3.fansly.com/api/v1/chatroom/message",
-      "POST",
+      'https://apiv3.fansly.com/api/v1/chatroom/message',
+      'POST',
       JSON.stringify({
         chatRoomId: chatroomId,
-        content: message,
-      }),
+        content: message
+      })
     );
 
     if (!resp || !resp.success) {
-      console.warn("Request failed", resp);
+      console.warn('Request failed', resp);
       return false;
     }
 
     return true;
   }
 
-  async getChatroomByChatroomId(
-    chatroomId: string,
-  ): Promise<FanslyChatroomResponse | undefined> {
+  async getChatroomByChatroomId(chatroomId: string): Promise<FanslyChatroomResponse | undefined> {
     if (!chatroomId) {
-      console.warn("No chatroom provided");
+      console.warn('No chatroom provided');
       return;
     }
 
-    const resp = await this.fanslyRequest<
-      FanslyResponse<FanslyChatroomResponse[]>
-    >(
-      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`,
+    const resp = await this.fanslyRequest<FanslyResponse<FanslyChatroomResponse[]>>(
+      `https://apiv3.fansly.com/api/v1/chatrooms?ids=${chatroomId}&ngsw-bypass=true`
     );
 
     if (!resp || !resp.success) {
-      console.warn("Request failed", resp);
+      console.warn('Request failed', resp);
       return;
     }
 
     if (!resp?.response || resp?.response.length === 0) {
-      console.warn("No chatroom found");
+      console.warn('No chatroom found');
       return;
     }
 
     return resp?.response[0];
   }
 
-  async getOnlineFollowingStreams(): Promise<
-    FanslyFollowingStreamsOnlineResponse | undefined
-  > {
-    const resp = await this.fanslyRequest<
-      FanslyResponse<FanslyFollowingStreamsOnlineResponse>
-    >(
-      "https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true",
+  async getOnlineFollowingStreams(): Promise<FanslyFollowingStreamsOnlineResponse | undefined> {
+    const resp = await this.fanslyRequest<FanslyResponse<FanslyFollowingStreamsOnlineResponse>>(
+      'https://apiv3.fansly.com/api/v1/streaming/followingstreams/online?ngsw-bypass=true'
     );
 
     if (!resp || !resp.success) {
-      console.warn("Request failed", resp);
+      console.warn('Request failed', resp);
       return;
     }
 
@@ -233,11 +219,11 @@ class FanslyApi {
 
   async getMe(): Promise<FanslyMeResponse | undefined> {
     const resp = await this.fanslyRequest<FanslyResponse<FanslyMeResponse>>(
-      "https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true",
+      'https://apiv3.fansly.com/api/v1/account/me?ngsw-bypass=true'
     );
 
     if (!resp || !resp.success) {
-      console.warn("Request failed", resp);
+      console.warn('Request failed', resp);
       return;
     }
 
