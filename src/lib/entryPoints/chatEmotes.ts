@@ -10,7 +10,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   }
 
   const chatContainer = element.querySelector(
-    "app-chat-room > * .chat-container",
+    "app-chat-room > * .chat-container"
   );
   if (!chatContainer) {
     return;
@@ -23,7 +23,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
 
   new MutationObserver(
-    async (mutations) => await chatMessageHandler(mutations),
+    async (mutations) => await chatMessageHandler(mutations)
   ).observe(chatContainer, {
     childList: true,
   });
@@ -71,33 +71,33 @@ function parseChatMessageNode(node: Node) {
     return;
   }
 
-  // Find the message-text span inside the nested structure
-  const messageTextElement = element.querySelector(".message-text");
-  if (!messageTextElement) {
+  // Find all message-text spans inside the nested structure
+  const messageTextElements = element.querySelectorAll(".message-text");
+  if (!messageTextElements || messageTextElements.length === 0) {
     console.warn("Could not get message");
     return;
   }
 
-  const messageNodes = [messageTextElement];
+  const messageNodes = Array.from(messageTextElements);
 
   for (const messageNode of messageNodes) {
     if (
       messageNode.nodeType !== Node.ELEMENT_NODE ||
       !messageNode.textContent
     ) {
-      return;
+      continue;
     }
 
     const messageElement = messageNode as HTMLElement;
     if (!messageElement) {
-      return;
+      continue;
     }
 
     let elementTextSplit = prepareTextSplit(messageNode.textContent!);
 
     const emotePositions = getEmotes(elementTextSplit);
     if (emotePositions.length === 0) {
-      return;
+      continue;
     }
 
     for (const { idx, emote } of emotePositions) {
@@ -114,6 +114,19 @@ function prepareTextSplit(elementText: string): string[] {
   let currentWord = "";
   for (let i = 0; i < elementText.length; i++) {
     const currentChar = elementText[i];
+
+    // Check if current character is a line break
+    if (currentChar === "\n") {
+      // Push current word if it exists
+      if (currentWord.length > 0) {
+        elementTextSplit.push(currentWord);
+        currentWord = "";
+      }
+      // Push the line break as its own element
+      elementTextSplit.push(currentChar);
+      continue;
+    }
+
     currentWord += currentChar;
 
     if (elementText.length - 1 === i) {
@@ -146,14 +159,14 @@ function prepareTextSplit(elementText: string): string[] {
 }
 
 function getEmotes(
-  elementTextSplit: string[],
+  elementTextSplit: string[]
 ): Array<{ idx: number; emote: Emote }> {
   const emotePositions: Array<{ idx: number; emote: Emote }> = [];
 
   for (let i = 0; i < elementTextSplit.length; i++) {
     const word = elementTextSplit[i];
 
-    if (word.length === 0 || word[0] === " ") {
+    if (word.length === 0 || word[0] === " " || word === "\n") {
       continue;
     }
 

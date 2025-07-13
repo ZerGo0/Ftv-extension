@@ -7,6 +7,7 @@ export const changelog: Changelog[] = [
     changes: `
 - added support for Fansly stream titles and uptimes in feed suggestions list
 - added emote suggestions to chat input
+- fixed emotes not showing up in chat when using new lines
 `,
   },
   {
