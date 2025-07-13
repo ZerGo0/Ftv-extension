@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "@/assets/app.pcss";
+
   interface Props {
     title: string;
   }
@@ -7,8 +9,17 @@
 </script>
 
 <span
-  class="font-base-l-caps text-text-white-1 text-overflow-ellipsis overflow-hidden whitespace-nowrap display-block"
-  title={title}
+  class="text-xs text-overflow-ellipsis overflow-hidden whitespace-nowrap display-block"
+  {title}
 >
   {title}
 </span>
+
+<style>
+  :global(body) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.1rem;
+  }
+</style>
