@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { zergo0Api } from '@/lib/api/zergo0';
   import { sharedState } from '@/lib/state/state.svelte';
   import { ActionType } from '@/lib/types';
   import { Button } from '../button';
@@ -7,6 +8,7 @@
   import ChangelogModal from './actions/ChangelogModal.svelte';
   import ChatPollModal from './actions/ChatPollModal.svelte';
   import GiveawayModal from './actions/GiveawayModal.svelte';
+  import UsernamePaintModal from './actions/UsernamePaintModal.svelte';
 
   interface Props {
     showModal: boolean;
@@ -17,6 +19,16 @@
   let actionModal: any;
 
   let action: ActionType = $state(ActionType.None);
+  let hasUsernamePaintPermission: boolean = $state(false);
+
+  // Check for username paint permissions when modal opens
+  $effect(() => {
+    if (showModal && sharedState.chatroomId) {
+      zergo0Api.getUsernamePaintSettings(sharedState.chatroomId).then((hasPermission) => {
+        hasUsernamePaintPermission = hasPermission;
+      });
+    }
+  });
 
   function handleChangelog() {
     action = ActionType.Changelog;
@@ -29,6 +41,10 @@
   function handleStartGiveaway() {
     action = ActionType.Giveaway;
   }
+
+  function handleSetUsernamePaint() {
+    action = ActionType.UsernamePaint;
+  }
 </script>
 
 <Modal bind:showModal bind:this={actionModal}>
@@ -40,9 +56,11 @@
     <div class="flex flex-col space-y-2">
       <Button variant="secondary" onclick={handleChangelog} class="relative">
         <UpdateDot class="-right-1 -top-1" />
-
         Changelog
       </Button>
+      {#if hasUsernamePaintPermission}
+        <Button variant="secondary" onclick={handleSetUsernamePaint}>Set Username Paint</Button>
+      {/if}
 
       {#if sharedState.isOwner || sharedState.isModerator}
         <Button variant="secondary" onclick={handleStartPoll}>Start Poll</Button>
@@ -59,4 +77,6 @@
   <ChatPollModal bind:action />
 {:else if action === ActionType.Giveaway}
   <GiveawayModal bind:action />
+{:else if action === ActionType.UsernamePaint}
+  <UsernamePaintModal bind:action />
 {/if}

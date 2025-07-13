@@ -3,7 +3,8 @@ import type {
   ZerGo0Badge,
   ZerGo0Emote,
   ZerGo0Response,
-  ZerGo0UsernamePaint
+  ZerGo0UsernamePaint,
+  ZerGo0UsernamePaintSettings
 } from '../types';
 import { Cache } from '../utils/cache';
 import { deduplicatedFetch } from '../utils/requestDeduplicator';
@@ -159,6 +160,30 @@ class Zergo0Api {
 
     this.usernamePaintCache.set(username, paintPromise);
     return paintPromise;
+  }
+
+  async getUsernamePaintSettings(creatorId: string): Promise<boolean> {
+    try {
+      const resp = await deduplicatedFetch(
+        `https://zergo0_bot.zergo0.dev/ftv/username-paint/usersettings?creatorId=${creatorId}`
+      );
+      if (!resp.ok) {
+        console.warn('Username paint settings request failed', resp);
+        return false;
+      }
+
+      const json = (await resp.json()) as ZerGo0Response<ZerGo0UsernamePaintSettings>;
+      if (!json || !json.success) {
+        console.warn('Could not parse username paint settings response');
+        return false;
+      }
+
+      // Check if allow_chatters_set_paint is enabled
+      return json.response.allow_chatters_set_paint === 'true';
+    } catch (error) {
+      console.warn('Username paint settings request failed', error);
+      return false;
+    }
   }
 }
 
