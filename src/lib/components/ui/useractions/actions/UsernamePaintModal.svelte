@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fanslyApi } from '@/lib/api/fansly.svelte';
+  import { usernamePaintDesigns } from '@/lib/entryPoints/accountCard';
   import { sharedState } from '@/lib/state/state.svelte';
   import { ActionType } from '@/lib/types';
-  import { usernamePaintDesigns } from '@/lib/entryPoints/accountCard';
   import Button from '../../button/button.svelte';
   import Label from '../../label/label.svelte';
   import Modal from '../../modal/Modal.svelte';
@@ -81,7 +81,7 @@
           bind:value={selectedPaintId}
         >
           {#each usernamePaintDesigns as design}
-            <option value={design.id}>{design.id} - {design.name}</option>
+            <option value={design.id}>{design.id}</option>
           {/each}
         </select>
       </div>

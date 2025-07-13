@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { zergo0Api } from '@/lib/api/zergo0';
   import { sharedState } from '@/lib/state/state.svelte';
   import { ActionType } from '@/lib/types';
-  import { zergo0Api } from '@/lib/api/zergo0';
   import { Button } from '../button';
   import Modal from '../modal/Modal.svelte';
   import UpdateDot from '../updatedot/UpdateDot.svelte';
@@ -56,18 +56,16 @@
     <div class="flex flex-col space-y-2">
       <Button variant="secondary" onclick={handleChangelog} class="relative">
         <UpdateDot class="-right-1 -top-1" />
-
         Changelog
       </Button>
+      {#if hasUsernamePaintPermission}
+        <Button variant="secondary" onclick={handleSetUsernamePaint}>Set Username Paint</Button>
+      {/if}
 
       {#if sharedState.isOwner || sharedState.isModerator}
         <Button variant="secondary" onclick={handleStartPoll}>Start Poll</Button>
 
         <Button variant="secondary" onclick={handleStartGiveaway}>Start Giveaway</Button>
-      {/if}
-
-      {#if hasUsernamePaintPermission}
-        <Button variant="secondary" onclick={handleSetUsernamePaint}>Set Username Paint</Button>
       {/if}
     </div>
   {/snippet}
