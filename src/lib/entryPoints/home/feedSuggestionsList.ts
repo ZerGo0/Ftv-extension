@@ -1,4 +1,5 @@
-import FeedSuggestionsList from "@/lib/components/app/FeedSuggestionsList.svelte";
+import FeedStreamTitle from "@/lib/components/FeedStreamTitle.svelte";
+import FeedStreamUptime from "@/lib/components/FeedStreamUptime.svelte";
 import { sharedState } from "@/lib/state/state.svelte";
 import { FanslyFollowingStreamsOnlineAggregationDataAccount } from "@/lib/types";
 import { mount, unmount } from "svelte";
@@ -20,7 +21,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
 
   const preparedLiveCreators = [];
   const feedHeaders = feedSuggestionsList.querySelectorAll(
-    "* .feed-suggestion-header",
+    "* .feed-suggestion-header"
   );
 
   for (const feedHeader of feedHeaders) {
@@ -29,7 +30,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
     }
 
     const usernameElement = feedHeader.querySelector(
-      "* .username-wrapper",
+      "* .username-wrapper"
     ) as HTMLAnchorElement;
     if (!usernameElement || usernameElement.href.length === 0) {
       continue;
@@ -59,7 +60,7 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
   for (const liveCreator of preparedLiveCreators) {
     const username = liveCreator.url.replaceAll("/", "").toLowerCase();
     const onlineCreator = onlineAccounts.find(
-      (creator) => creator.username.toLowerCase() === username,
+      (creator) => creator.username.toLowerCase() === username
     );
 
     if (!onlineCreator) {
@@ -67,22 +68,52 @@ export async function feedSuggestionsList(ctx: any, mutation: MutationRecord) {
       continue;
     }
 
-    await attachFeedSuggestionsList(ctx, liveCreator, onlineCreator);
+    await attachStreamTitle(ctx, liveCreator, onlineCreator);
+    await attachUptime(ctx, liveCreator, onlineCreator);
   }
 }
 
-async function attachFeedSuggestionsList(
+async function attachStreamTitle(
   ctx: any,
   liveCreator: { url: string; usernameElement: HTMLAnchorElement },
-  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount,
+  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount
 ) {
   const ui = await createShadowRootUi(ctx, {
-    name: "ftv-feed-suggestions-list",
+    name: "ftv-stream-title",
+    position: "inline",
+    append: "first",
+    anchor: liveCreator.usernameElement,
+    onMount: (container) => {
+      const app = mount(FeedStreamTitle, {
+        target: container,
+        props: {
+          title: onlineCreator.streaming.channel.stream.title,
+        },
+      });
+
+      return app;
+    },
+    onRemove: (app: any) => {
+      unmount(app);
+    },
+  });
+
+  ui.uiContainer.classList.add("dark");
+  ui.mount();
+}
+
+async function attachUptime(
+  ctx: any,
+  liveCreator: { url: string; usernameElement: HTMLAnchorElement },
+  onlineCreator: FanslyFollowingStreamsOnlineAggregationDataAccount
+) {
+  const ui = await createShadowRootUi(ctx, {
+    name: "ftv-uptime",
     position: "inline",
     append: "last",
     anchor: liveCreator.usernameElement,
     onMount: (container) => {
-      const app = mount(FeedSuggestionsList, {
+      const app = mount(FeedStreamUptime, {
         target: container,
         props: {
           startedAt: onlineCreator.streaming.channel.stream.startedAt,
