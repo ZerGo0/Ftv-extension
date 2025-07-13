@@ -2,6 +2,20 @@ import { Changelog } from "@/lib/types";
 
 export const changelog: Changelog[] = [
   {
+    version: "2.0.18",
+    date: "7/13/2025",
+    changes: `
+- added support for Fansly stream titles and uptimes in feed suggestions list
+`,
+  },
+  {
+    version: "2.0.17",
+    date: "7/6/2025",
+    changes: `
+- fixed extension icon
+`,
+  },
+  {
     version: "2.0.16",
     date: "7/6/2025",
     changes: `
