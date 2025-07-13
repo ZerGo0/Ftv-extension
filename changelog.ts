@@ -6,6 +6,7 @@ export const changelog: Changelog[] = [
     date: "7/13/2025",
     changes: `
 - added support for Fansly stream titles and uptimes in feed suggestions list
+- added emote suggestions to chat input
 `,
   },
   {
