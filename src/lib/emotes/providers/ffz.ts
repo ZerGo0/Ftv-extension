@@ -27,7 +27,7 @@ export class Ffz extends Provider {
     }
 
     const emotes = json.sets[json.default_sets[0]]?.emoticons.map(
-      (e: any) => new Emote(e.name, e.urls['1'])
+      (e: any) => new Emote(e.name, e.urls['2'] || e.urls['1'])
     );
 
     return emotes;
@@ -61,7 +61,7 @@ export class FfzUser extends Provider {
     }
 
     const emotes = json.sets[json.room.set].emoticons.map(
-      (e: any) => new Emote(e.name, e.urls['1'])
+      (e: any) => new Emote(e.name, e.urls['2'] || e.urls['1'])
     );
 
     return emotes;

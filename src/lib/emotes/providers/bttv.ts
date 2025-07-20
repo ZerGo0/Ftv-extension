@@ -26,7 +26,7 @@ export class Bttv extends Provider {
     }
 
     const emotes = json.map((e: any) => {
-      return new Emote(e.code, 'https://cdn.betterttv.net/emote/' + e.id + '/1x');
+      return new Emote(e.code, 'https://cdn.betterttv.net/emote/' + e.id + '/2x');
     });
 
     return emotes;
@@ -67,7 +67,7 @@ export class BttvUser extends Provider {
     }
 
     const emotes = json.channelEmotes.map((e: any) => {
-      return new Emote(e.code, 'https://cdn.betterttv.net/emote/' + e.id + '/1x');
+      return new Emote(e.code, 'https://cdn.betterttv.net/emote/' + e.id + '/2x');
     });
 
     return emotes;

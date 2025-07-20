@@ -83,8 +83,8 @@ export class TwitchUser extends Provider {
             new Emote(
               emote.token,
               emote.id.startsWith('emotesv2')
-                ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
+                ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/2.0`
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/2.0`
             )
           );
         }
@@ -98,8 +98,8 @@ export class TwitchUser extends Provider {
             new Emote(
               emote.token,
               emote.id.startsWith('emotesv2')
-                ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/1.0`
-                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/1.0`
+                ? `https://static-cdn.jtvnw.net/emoticons/v2/${emote.id}/default/light/2.0`
+                : `https://static-cdn.jtvnw.net/emoticons/v1/${emote.id}/2.0`
             )
           );
         }
