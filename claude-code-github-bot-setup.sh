@@ -75,31 +75,23 @@ echo ""
 print_success "Setup complete!"
 
 # Optional verification step
-echo ""
-read -p "$(echo -e ${BLUE}Would you like to run verification checks now? \(y/N\): ${NC})" -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    print_info "Running verification checks..."
-    echo ""
-    
-    print_info "Running Svelte type checking..."
-    if pnpm check; then
-        print_success "Type checking passed"
-    else
-        print_warning "Type checking failed - you may need to fix type errors"
-    fi
-    
-    echo ""
-    print_info "Running code formatting..."
-    if pnpm lint; then
-        print_success "Code formatting completed"
-    else
-        print_warning "Code formatting encountered issues"
-    fi
-    
-    echo ""
-    print_success "Verification complete!"
+print_info "Running verification checks..."
+
+print_info "Running Svelte type checking..."
+if pnpm check; then
+    print_success "Type checking passed"
+else
+    print_warning "Type checking failed - you may need to fix type errors"
 fi
+
+print_info "Running code formatting..."
+if pnpm lint; then
+    print_success "Code formatting completed"
+else
+    print_warning "Code formatting encountered issues"
+fi
+    
+print_success "Verification complete!"
 
 echo ""
 echo -e "${BLUE}Available commands:${NC}"

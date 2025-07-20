@@ -13,7 +13,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "postinstall": "wxt prepare",
-    "lint": "npx prettier --write . --plugin 'prettier-plugin-svelte' --cache | { grep -v '(unchanged)' || true; }",
+    "lint": "prettier --write . --plugin 'prettier-plugin-svelte' --cache | { grep -v '(unchanged)' || true; }",
     "release": "wxt zip && wxt zip -b firefox"
   },
   "devDependencies": {
