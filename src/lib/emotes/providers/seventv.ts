@@ -23,7 +23,7 @@ export class SevenTv extends Provider {
       }
 
       const emotes = json.emotes.map((e: any) => {
-        return new Emote(e.name, `https:${e.data.host.url}/1x.webp`);
+        return new Emote(e.name, `https:${e.data.host.url}/4x.webp`);
       });
 
       return emotes;
@@ -66,7 +66,7 @@ export class SevenTvUser extends Provider {
       }
 
       const emotes = json.emote_set.emotes.map((e: any) => {
-        return new Emote(e.name, `https:${e.data.host.url}/1x.webp`);
+        return new Emote(e.name, `https:${e.data.host.url}/4x.webp`);
       });
 
       return emotes;
