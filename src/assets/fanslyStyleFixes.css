@@ -29,3 +29,31 @@ app-chat-room-chatter-list {
   text-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
   font-weight: 700;
 }
+
+.ftv-goal-blurred {
+  filter: blur(8px);
+  transition: filter 0.3s ease;
+}
+
+.ftv-goal-blurred:hover {
+  filter: blur(4px);
+}
+
+.ftv-goal-amount-hidden {
+  position: relative;
+}
+
+.ftv-goal-pseudo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-weight: bold;
+  filter: blur(0);
+}

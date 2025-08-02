@@ -16,6 +16,7 @@ import {
 import { emoteMenuButton } from '@/lib/entryPoints/emoteMenuButton';
 import { emoteSuggestions } from '@/lib/entryPoints/emoteSuggestions';
 import { viewCount } from '@/lib/entryPoints/viewCount';
+import { hideGoals } from '@/lib/entryPoints/hideGoals';
 import { fanslyStyleFixes } from '@/lib/fanslyStyleFixes';
 import { sharedState } from '@/lib/state/state.svelte';
 
@@ -45,6 +46,7 @@ export default defineContentScript({
         emoteSuggestions(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
         viewCount(ctx, mutation);
+        hideGoals(ctx, mutation);
       });
     }).observe(document.body, { childList: true, subtree: true });
   }
