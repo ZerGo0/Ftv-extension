@@ -12,11 +12,12 @@ const attachedClass = 'ftv-pronouns-attached';
 const entryAttachedClass = 'ftv-pronouns-entry-attached';
 const bootstrapChunkSize = 25;
 const bootstrapMessageLimit = 120;
+const animatedRecentMessageCount = 25;
+const pausedMessageSelector = `.chat-container app-chat-room-message:nth-last-of-type(n + ${
+  animatedRecentMessageCount + 1
+})`;
 const chatDecorationAnimationsEnabled =
   localStorage.getItem('ftv-chat-decorations-animations') !== 'false';
-const decorationManagedMessageClass = 'ftv-decoration-managed';
-const decorationPausedMessageClass = 'ftv-decoration-paused';
-const decorationViewportMarginPx = 900;
 const badgeSizeMap: { [key: string]: number } = {
   xs: 12,
   sm: 14,
@@ -31,9 +32,6 @@ const badgeSize = badgeSizeMap.md ?? 16;
 let badgesCssInjected = false;
 let userpaintCssInjected = false;
 let decorationPerformanceCssInjected = false;
-let activeChatContainer: HTMLElement | null = null;
-let managedDecoratedMessages = new Set<HTMLElement>();
-let decorationVisibilityObserver: IntersectionObserver | null = null;
 
 type UserDecorations = {
   badges: ZerGo0Badge[];
@@ -61,8 +59,8 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   chatContainer.classList.add(attachedClass);
   userDecorationsCache.clear();
 
-  if (chatContainer instanceof HTMLElement) {
-    setupDecorationAnimationManagement(chatContainer);
+  if (chatDecorationAnimationsEnabled) {
+    ensureDecorationPerformanceCssInjected();
   }
 
   observeSerializedMutations({
@@ -81,50 +79,6 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
   bootstrapExistingChatMessages(chatContainer);
 }
 
-function setupDecorationAnimationManagement(chatContainer: HTMLElement) {
-  if (decorationVisibilityObserver) {
-    decorationVisibilityObserver.disconnect();
-    decorationVisibilityObserver = null;
-  }
-
-  activeChatContainer = chatContainer;
-  managedDecoratedMessages.clear();
-
-  if (!chatDecorationAnimationsEnabled) {
-    return;
-  }
-
-  ensureDecorationPerformanceCssInjected();
-
-  decorationVisibilityObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        const messageElement = entry.target;
-        if (!(messageElement instanceof HTMLElement)) {
-          continue;
-        }
-
-        if (!messageElement.isConnected) {
-          decorationVisibilityObserver?.unobserve(messageElement);
-          managedDecoratedMessages.delete(messageElement);
-          continue;
-        }
-
-        const isVisible =
-          entry.isIntersecting &&
-          entry.intersectionRect.height > 0 &&
-          entry.intersectionRect.width > 0;
-        messageElement.classList.toggle(decorationPausedMessageClass, !isVisible);
-      }
-    },
-    {
-      root: chatContainer,
-      rootMargin: `${decorationViewportMarginPx}px 0px ${decorationViewportMarginPx}px 0px`,
-      threshold: 0
-    }
-  );
-}
-
 function ensureDecorationPerformanceCssInjected() {
   if (decorationPerformanceCssInjected) {
     return;
@@ -140,20 +94,20 @@ function ensureDecorationPerformanceCssInjected() {
   style.id = 'ftv-decoration-performance-css';
   style.media = 'screen';
   style.innerHTML = `
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} .badge-item,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} .badge-item *,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} .badge-item::before,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} .badge-item::after,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} [class*='userpaints-'],
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} [class*='userpaints-'] *,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} [class*='userpaints-']::before,
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} [class*='userpaints-']::after {
+    ${pausedMessageSelector} .badge-item,
+    ${pausedMessageSelector} .badge-item *,
+    ${pausedMessageSelector} .badge-item::before,
+    ${pausedMessageSelector} .badge-item::after,
+    ${pausedMessageSelector} [class*='userpaints-'],
+    ${pausedMessageSelector} [class*='userpaints-'] *,
+    ${pausedMessageSelector} [class*='userpaints-']::before,
+    ${pausedMessageSelector} [class*='userpaints-']::after {
       animation-play-state: paused !important;
       transition: none !important;
       filter: none !important;
     }
 
-    .${decorationManagedMessageClass}.${decorationPausedMessageClass} .userpaints-effect-overlay {
+    ${pausedMessageSelector} .userpaints-effect-overlay {
       visibility: hidden !important;
     }
   `;
@@ -164,10 +118,6 @@ function ensureDecorationPerformanceCssInjected() {
 function chatMessageHandler(mutation: MutationRecord) {
   if (mutation.type !== 'childList') {
     return;
-  }
-
-  for (const node of mutation.removedNodes) {
-    unregisterDecoratedMessages(node);
   }
 
   for (const node of mutation.addedNodes) {
@@ -267,14 +217,6 @@ async function applyDecorations(
   if (decorations.pronouns && decorations.pronouns.length > 0) {
     appendPronouns(parent, decorations.pronouns, usernameElement);
   }
-
-  if (
-    chatDecorationAnimationsEnabled &&
-    (decorations.usernamePaint !== null ||
-      decorations.badges.some((badge) => badgeHasAnimation(badge)))
-  ) {
-    registerDecoratedMessage(messageElement);
-  }
 }
 
 function getUserDecorations(chatroomId: string, usernameLower: string): Promise<UserDecorations> {
@@ -365,54 +307,6 @@ function setUsernamePaint(element: HTMLElement, usernamePaint: ZerGo0UsernamePai
     img.alt = 'Username paint effect';
     img.classList.add('userpaints-effect-overlay');
     element.appendChild(img);
-  }
-}
-
-function registerDecoratedMessage(messageElement: HTMLElement) {
-  if (!chatDecorationAnimationsEnabled) {
-    return;
-  }
-
-  if (managedDecoratedMessages.has(messageElement)) {
-    return;
-  }
-
-  messageElement.classList.add(decorationManagedMessageClass, decorationPausedMessageClass);
-  managedDecoratedMessages.add(messageElement);
-
-  if (decorationVisibilityObserver) {
-    decorationVisibilityObserver.observe(messageElement);
-    return;
-  }
-
-  if (
-    activeChatContainer &&
-    activeChatContainer.contains(messageElement) &&
-    messageElement.offsetParent !== null
-  ) {
-    messageElement.classList.remove(decorationPausedMessageClass);
-  }
-}
-
-function unregisterDecoratedMessages(node: Node) {
-  if (!(node instanceof Element)) {
-    return;
-  }
-
-  if (managedDecoratedMessages.has(node as HTMLElement)) {
-    const messageElement = node as HTMLElement;
-    decorationVisibilityObserver?.unobserve(messageElement);
-    managedDecoratedMessages.delete(messageElement);
-  }
-
-  const nestedDecoratedMessages = node.querySelectorAll(`.${decorationManagedMessageClass}`);
-  for (const decoratedElement of nestedDecoratedMessages) {
-    if (!(decoratedElement instanceof HTMLElement)) {
-      continue;
-    }
-
-    decorationVisibilityObserver?.unobserve(decoratedElement);
-    managedDecoratedMessages.delete(decoratedElement);
   }
 }
 
