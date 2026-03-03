@@ -2,6 +2,14 @@ import { Changelog } from '@/lib/types';
 
 export const changelog: Changelog[] = [
   {
+    version: '2.0.19',
+    date: '3/3/2026',
+    changes: `
+- you can now toggle emote providers in the user actions modal > config
+- performance improvements across the extension
+`
+  },
+  {
     version: '2.0.18',
     date: '7/13/2025',
     changes: `
