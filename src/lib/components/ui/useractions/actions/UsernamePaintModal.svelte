@@ -1,4 +1,5 @@
 <script lang="ts">
+  import '@/assets/userpaint.css';
   import { fanslyApi } from '@/lib/api/fansly.svelte';
   import { usernamePaintDesigns } from '@/lib/entryPoints/accountCard';
   import { sharedState } from '@/lib/state/state.svelte';
@@ -46,20 +47,6 @@
       console.error('Error setting username paint:', err);
     }
   }
-
-  $effect(() => {
-    // Load userpaint CSS if not already loaded
-    const head = document.head;
-    if (!head.querySelector('style#ftv-userpaint-css')) {
-      import('@/assets/userpaint.css?inline').then((module) => {
-        const style = document.createElement('style');
-        style.id = 'ftv-userpaint-css';
-        style.media = 'screen';
-        style.innerHTML = module.default;
-        document.head.appendChild(style);
-      });
-    }
-  });
 
   const selectedDesign = $derived(
     usernamePaintDesigns.find((design) => design.id === selectedPaintId) || usernamePaintDesigns[0]

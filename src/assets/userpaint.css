@@ -98,11 +98,11 @@
   0%,
   100% {
     opacity: 0.92;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -121,11 +121,11 @@
   0%,
   100% {
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -172,12 +172,12 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -199,12 +199,12 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -226,12 +226,12 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -253,17 +253,17 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   33% {
     background-position: 50% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0);
   }
   66% {
     background-position: 100% 50%;
     opacity: 0.95;
-    transform: translate3d(0, 0, 0) scale(1.01);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -307,17 +307,17 @@
   0% {
     background-position: 0% 50%;
     opacity: 0.88;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1.01);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -356,11 +356,11 @@
 @keyframes synthwave-glow {
   0% {
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   100% {
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -373,7 +373,7 @@
   -webkit-text-fill-color: transparent;
   animation: glitch-wave 3s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.8));
-  will-change: transform, opacity;
+  will-change: opacity;
   transform: translateZ(0);
 }
 
@@ -382,22 +382,18 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.92;
-    transform: translate3d(0, 0, 0);
   }
   25% {
     background-position: 25% 50%;
     opacity: 1;
-    transform: translate3d(0.8px, 0.8px, 0);
   }
   50% {
     background-position: 50% 50%;
     opacity: 0.95;
-    transform: translate3d(-0.8px, -0.8px, 0);
   }
   75% {
     background-position: 75% 50%;
     opacity: 1;
-    transform: translate3d(0.5px, -0.5px, 0);
   }
 }
 
@@ -419,12 +415,12 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.02);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -446,12 +442,12 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -494,13 +490,13 @@
     -webkit-text-stroke: 2px #ff00ff;
     text-stroke: 2px #ff00ff;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     -webkit-text-stroke: 2px #00ffff;
     text-stroke: 2px #00ffff;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -513,7 +509,7 @@
   -webkit-text-fill-color: transparent;
   animation: magic-shimmer 3s ease-in-out infinite;
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
-  will-change: transform, opacity;
+  will-change: opacity;
   transform: translateZ(0);
 }
 
@@ -522,20 +518,16 @@
   100% {
     background-position: 0% 50%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
   }
   25% {
     opacity: 0.95;
-    transform: translate3d(0.4px, 0, 0) scale(1.01);
   }
   50% {
     background-position: 100% 50%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
   }
   75% {
     opacity: 0.95;
-    transform: translate3d(-0.4px, 0, 0) scale(1.01);
   }
 }
 
@@ -617,12 +609,12 @@
   100% {
     background-position: 0% 0%;
     opacity: 0.9;
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0);
   }
   50% {
     background-position: 100% 100%;
     opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1.03);
+    transform: translate3d(0, 0, 0);
   }
 }
 
