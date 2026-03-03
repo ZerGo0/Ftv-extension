@@ -5,7 +5,7 @@ import { Provider } from './provider';
 
 export class Twitch extends Provider {
   constructor() {
-    super('Twitch Global', TwitchIcon);
+    super('Twitch Global', TwitchIcon, [], 'twitchGlobal');
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -34,7 +34,7 @@ export class TwitchUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super('Twitch Sub', TwitchIcon);
+    super('Twitch Sub', TwitchIcon, [], 'twitchUser');
     this.userId = userId;
   }
 

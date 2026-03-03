@@ -1,13 +1,20 @@
 import type { Emote } from '../types';
 
 class EmoteStore {
-  // NOTE: this has to be a $state,
-  // because we want to re-render the UI when the content of this array changes.
-  // This makes it way easier compared to using a store :)
   emotes: Emote[] = $state([]);
+  ready: boolean = $state(false);
 
   reset() {
     this.emotes = [];
+    this.ready = false;
+  }
+
+  setEmotes(emotes: Emote[]) {
+    this.emotes = emotes;
+  }
+
+  setReady(ready: boolean) {
+    this.ready = ready;
   }
 
   search(term: string) {

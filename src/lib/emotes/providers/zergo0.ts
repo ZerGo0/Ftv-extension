@@ -6,7 +6,7 @@ export class ZerGo0BotUser extends Provider {
   chatroomId: string;
 
   constructor(chatroomId: string) {
-    super('ZerGo0_Bot', 'https://zergo0_bot.zergo0.dev/favicon.png');
+    super('ZerGo0_Bot', 'https://zergo0_bot.zergo0.dev/favicon.png', [], 'zergo0Bot');
     this.chatroomId = chatroomId;
   }
 

@@ -1,6 +1,7 @@
 import { zergo0Api } from '@/lib/api/zergo0';
 import { emoteStore } from '@/lib/emotes/emotes.svelte';
 import { emoteProviderStore } from '@/lib/emotes/providers.svelte';
+import { applyEmoteProviderTweaks } from '@/lib/emotes/tweaks.svelte';
 import { Bttv, BttvUser } from '@/lib/emotes/providers/bttv';
 import { Ffz, FfzUser } from '@/lib/emotes/providers/ffz';
 import { Provider as EmoteProvider } from '@/lib/emotes/providers/provider';
@@ -80,13 +81,21 @@ async function handleFirstInit(mutation: MutationRecord) {
     zergo0Api.badgesCache.clear();
     zergo0Api.usernamePaintCache.clear();
 
-    await sharedState.initialize();
+    try {
+      await sharedState.initialize();
 
-    const providers = await getEmoteProviders(sharedState.twitchUserId, sharedState.chatroomId);
-    emoteProviderStore.providers = providers;
-    emoteStore.emotes = providers.flatMap((provider) => provider.emotes);
+      const providers = await getEmoteProviders(sharedState.twitchUserId, sharedState.chatroomId);
+      emoteProviderStore.allProviders = providers;
+      applyEmoteProviderTweaks();
 
-    initializedChatRoomElement = chatRoomElement;
+      initializedChatRoomElement = chatRoomElement;
+    } catch (error) {
+      console.error('chat.content emote initialization failed', error);
+      emoteProviderStore.allProviders = [];
+      applyEmoteProviderTweaks();
+    } finally {
+      emoteStore.setReady(true);
+    }
   })();
 
   try {

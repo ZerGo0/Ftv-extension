@@ -5,7 +5,7 @@ import { Provider } from './provider';
 
 export class Ffz extends Provider {
   constructor() {
-    super('FFZ Global', FfzIcon);
+    super('FFZ Global', FfzIcon, [], 'ffzGlobal');
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -38,7 +38,7 @@ export class FfzUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super('FFZ User', FfzIcon);
+    super('FFZ User', FfzIcon, [], 'ffzUser');
     this.userId = userId;
   }
 

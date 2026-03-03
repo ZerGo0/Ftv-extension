@@ -5,7 +5,7 @@ import { Provider } from './provider';
 
 export class SevenTv extends Provider {
   constructor() {
-    super('7TV Global', SevenTvIcon);
+    super('7TV Global', SevenTvIcon, [], 'sevenTvGlobal');
   }
 
   override async fetchEmotes(): Promise<Emote[]> {
@@ -38,7 +38,7 @@ export class SevenTvUser extends Provider {
   userId: string;
 
   constructor(userId: string) {
-    super('7TV User', SevenTvIcon);
+    super('7TV User', SevenTvIcon, [], 'sevenTvUser');
     this.userId = userId;
   }
 

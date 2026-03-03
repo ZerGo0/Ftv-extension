@@ -55,14 +55,14 @@ async function chatMessageHandler(mutation: MutationRecord) {
 }
 
 async function waitForEmoteStore() {
-  if (emoteStore.emotes.length > 0) {
+  if (emoteStore.ready) {
     return;
   }
 
   if (!emoteStoreReadyPromise) {
     emoteStoreReadyPromise = new Promise<void>((resolve) => {
       const interval = setInterval(() => {
-        if (emoteStore.emotes.length > 0) {
+        if (emoteStore.ready) {
           clearInterval(interval);
           resolve();
         }

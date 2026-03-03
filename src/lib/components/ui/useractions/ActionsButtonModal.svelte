@@ -7,6 +7,7 @@
   import UpdateDot from '../updatedot/UpdateDot.svelte';
   import ChangelogModal from './actions/ChangelogModal.svelte';
   import ChatPollModal from './actions/ChatPollModal.svelte';
+  import ConfigModal from './actions/ConfigModal.svelte';
   import GiveawayModal from './actions/GiveawayModal.svelte';
   import UsernamePaintModal from './actions/UsernamePaintModal.svelte';
 
@@ -34,6 +35,10 @@
     action = ActionType.Changelog;
   }
 
+  function handleConfig() {
+    action = ActionType.Config;
+  }
+
   function handleStartPoll() {
     action = ActionType.ChatPoll;
   }
@@ -54,6 +59,7 @@
 
   {#snippet body()}
     <div class="flex flex-col space-y-2">
+      <Button variant="secondary" onclick={handleConfig}>Config</Button>
       <Button variant="secondary" onclick={handleChangelog} class="relative">
         <UpdateDot class="-right-1 -top-1" />
         Changelog
@@ -71,7 +77,9 @@
   {/snippet}
 </Modal>
 
-{#if action === ActionType.Changelog}
+{#if action === ActionType.Config}
+  <ConfigModal bind:action />
+{:else if action === ActionType.Changelog}
   <ChangelogModal bind:action />
 {:else if action === ActionType.ChatPoll}
   <ChatPollModal bind:action />

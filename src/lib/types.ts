@@ -26,6 +26,7 @@ export class ChatPronoun {
 
 export enum ActionType {
   None = 'none',
+  Config = 'config',
   Changelog = 'changelog',
   ChatPoll = 'chatPoll',
   Giveaway = 'giveaway',
