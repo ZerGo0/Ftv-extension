@@ -1,19 +1,31 @@
 .userpaints-username {
   position: relative;
   display: inline-block;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+[class^='userpaints-'],
+[class*=' userpaints-'] {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
 .userpaints-effect-overlay {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate3d(-50%, -50%, 0);
   width: 150%;
   height: 150%;
   pointer-events: none;
   mix-blend-mode: screen;
   opacity: 0.8;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 /* Rainbow Wave */
@@ -56,7 +68,7 @@
   -webkit-text-fill-color: transparent;
   animation: fire-burn 2s ease infinite;
   filter: drop-shadow(0 0 3px #ff6600);
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -78,17 +90,19 @@
   -webkit-text-fill-color: transparent;
   animation: ocean-wave 4s ease-in-out infinite;
   filter: drop-shadow(0 2px 4px rgba(0, 102, 204, 0.5));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
 @keyframes ocean-wave {
   0%,
   100% {
-    filter: brightness(1) saturate(1);
+    opacity: 0.92;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    filter: brightness(1.1) saturate(1.2);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
 }
 
@@ -99,17 +113,19 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: sunset-glow 3s ease-in-out infinite;
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
 @keyframes sunset-glow {
   0%,
   100% {
-    filter: brightness(1) drop-shadow(0 0 5px #ff8e53);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    filter: brightness(1.2) drop-shadow(0 0 10px #ff6b6b);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -147,7 +163,7 @@
   -webkit-text-fill-color: transparent;
   animation: iridescent-flow 3s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.5));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -155,11 +171,13 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.5)) brightness(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 30px rgba(64, 224, 208, 0.7)) brightness(1.2);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -172,7 +190,7 @@
   -webkit-text-fill-color: transparent;
   animation: foil-reflect 2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) contrast(1.2);
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -180,11 +198,13 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) contrast(1.2) brightness(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 15px rgba(255, 237, 75, 0.8)) contrast(1.4) brightness(1.3);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -197,7 +217,7 @@
   -webkit-text-fill-color: transparent;
   animation: pearl-shimmer 4s ease-in-out infinite;
   filter: drop-shadow(0 0 15px rgba(255, 248, 220, 0.6));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -205,11 +225,13 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 15px rgba(255, 248, 220, 0.6)) brightness(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 20px rgba(255, 240, 245, 0.8)) brightness(1.1);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
 }
 
@@ -222,7 +244,7 @@
   -webkit-text-fill-color: transparent;
   animation: opal-shift 5s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -230,15 +252,18 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5)) saturate(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   33% {
     background-position: 50% 50%;
-    filter: drop-shadow(0 0 25px rgba(78, 205, 196, 0.6)) saturate(1.2);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
   66% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 25px rgba(69, 183, 209, 0.6)) saturate(1.2);
+    opacity: 0.95;
+    transform: translate3d(0, 0, 0) scale(1.01);
   }
 }
 
@@ -274,22 +299,25 @@
   -webkit-text-fill-color: transparent;
   animation: neon-ink-flow 2s linear infinite;
   filter: drop-shadow(0 0 20px currentColor) saturate(2);
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
 @keyframes neon-ink-flow {
   0% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 20px #ff00ff) saturate(2) hue-rotate(0deg);
+    opacity: 0.88;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 30px #00ffff) saturate(2.5) hue-rotate(90deg);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 20px #ff00ff) saturate(2) hue-rotate(180deg);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1.01);
   }
 }
 
@@ -307,11 +335,9 @@
   0%,
   100% {
     opacity: 1;
-    text-shadow: 0 0 5px #00ff00;
   }
   50% {
     opacity: 0.8;
-    text-shadow: 0 0 8px #00ff00;
   }
 }
 
@@ -323,16 +349,18 @@
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 20px #ff006e);
   animation: synthwave-glow 2s ease-in-out infinite alternate;
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
 @keyframes synthwave-glow {
   0% {
-    filter: drop-shadow(0 0 20px #ff006e);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   100% {
-    filter: drop-shadow(0 0 30px #8338ec);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -345,7 +373,7 @@
   -webkit-text-fill-color: transparent;
   animation: glitch-wave 3s ease-in-out infinite;
   filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.8));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -353,19 +381,23 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.8)) contrast(1);
+    opacity: 0.92;
+    transform: translate3d(0, 0, 0);
   }
   25% {
     background-position: 25% 50%;
-    filter: drop-shadow(2px 2px 10px rgba(131, 56, 236, 0.8)) contrast(1.1);
+    opacity: 1;
+    transform: translate3d(0.8px, 0.8px, 0);
   }
   50% {
     background-position: 50% 50%;
-    filter: drop-shadow(-2px -2px 10px rgba(58, 134, 255, 0.8)) contrast(1.2);
+    opacity: 0.95;
+    transform: translate3d(-0.8px, -0.8px, 0);
   }
   75% {
     background-position: 75% 50%;
-    filter: drop-shadow(0 0 15px rgba(18, 216, 250, 0.8)) contrast(1.1);
+    opacity: 1;
+    transform: translate3d(0.5px, -0.5px, 0);
   }
 }
 
@@ -378,7 +410,7 @@
   -webkit-text-fill-color: transparent;
   animation: duotone-shift 4s ease-in-out infinite;
   filter: drop-shadow(0 0 15px rgba(255, 0, 110, 0.6));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -386,11 +418,13 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 15px rgba(255, 0, 110, 0.6));
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 20px rgba(255, 221, 0, 0.8));
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.02);
   }
 }
 
@@ -403,7 +437,7 @@
   -webkit-text-fill-color: transparent;
   animation: thermal-scan 3s ease-in-out infinite;
   filter: drop-shadow(0 0 20px rgba(255, 164, 0, 0.7));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -411,11 +445,13 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: drop-shadow(0 0 20px rgba(0, 159, 253, 0.7)) brightness(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 50%;
-    filter: drop-shadow(0 0 30px rgba(255, 164, 0, 0.9)) brightness(1.2);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -448,7 +484,7 @@
   text-stroke: 2px #ff00ff;
   animation: neon-outline-pulse 2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px #ff00ff);
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -457,12 +493,14 @@
   100% {
     -webkit-text-stroke: 2px #ff00ff;
     text-stroke: 2px #ff00ff;
-    filter: drop-shadow(0 0 10px #ff00ff);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     -webkit-text-stroke: 2px #00ffff;
     text-stroke: 2px #00ffff;
-    filter: drop-shadow(0 0 20px #00ffff);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -475,7 +513,7 @@
   -webkit-text-fill-color: transparent;
   animation: magic-shimmer 3s ease-in-out infinite;
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -483,17 +521,21 @@
   0%,
   100% {
     background-position: 0% 50%;
-    filter: brightness(1) hue-rotate(0deg);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   25% {
-    filter: brightness(1.1) hue-rotate(10deg);
+    opacity: 0.95;
+    transform: translate3d(0.4px, 0, 0) scale(1.01);
   }
   50% {
     background-position: 100% 50%;
-    filter: brightness(1.2) hue-rotate(-10deg);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
   75% {
-    filter: brightness(1.1) hue-rotate(5deg);
+    opacity: 0.95;
+    transform: translate3d(-0.4px, 0, 0) scale(1.01);
   }
 }
 
@@ -566,7 +608,7 @@
   -webkit-text-fill-color: transparent;
   animation: glitter-shine 3s ease-in-out infinite;
   filter: drop-shadow(0 0 12px rgba(221, 160, 221, 0.6));
-  will-change: transform, filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -574,11 +616,13 @@
   0%,
   100% {
     background-position: 0% 0%;
-    filter: drop-shadow(0 0 12px rgba(221, 160, 221, 0.6)) brightness(1);
+    opacity: 0.9;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     background-position: 100% 100%;
-    filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8)) brightness(1.2);
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.03);
   }
 }
 
@@ -621,7 +665,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 8px rgba(255, 192, 203, 0.6));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -634,7 +678,7 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(255, 192, 203, 0.5);
   filter: drop-shadow(0 2px 8px rgba(255, 105, 180, 0.4));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -655,7 +699,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(255, 23, 68, 0.4));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -670,7 +714,7 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 15px rgba(139, 0, 0, 0.8);
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -682,7 +726,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 6px rgba(224, 187, 255, 0.5));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -694,7 +738,7 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(62, 39, 35, 0.6);
   filter: drop-shadow(0 2px 4px rgba(62, 39, 35, 0.7));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -707,7 +751,7 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(145, 70, 255, 0.5);
   filter: drop-shadow(0 2px 8px rgba(145, 70, 255, 0.6));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -723,7 +767,7 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.6));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -736,7 +780,7 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 15px rgba(72, 61, 139, 0.4);
   filter: drop-shadow(0 2px 6px rgba(47, 79, 79, 0.6));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }
 
@@ -756,6 +800,6 @@
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
   filter: drop-shadow(0 0 15px rgba(255, 0, 229, 0.6));
-  will-change: filter;
+  will-change: transform, opacity;
   transform: translateZ(0);
 }

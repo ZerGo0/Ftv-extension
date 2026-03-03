@@ -1,5 +1,6 @@
 import EmoteSuggestionsContainer from '@/lib/components/ui/emote/EmoteSuggestionsContainer.svelte';
 import { mount, unmount } from 'svelte';
+import { findChatInput } from '../utils/chatDom';
 import { findElementFromMutation } from '../utils/findElementFromMutation';
 
 const attachedClass = 'ftv-emote-suggestions-attached';
@@ -10,9 +11,7 @@ export async function emoteSuggestions(ctx: any, mutation: MutationRecord) {
     return;
   }
 
-  const chatInput = chatRoomElement.querySelector(
-    'app-chat-room > .chat-footer > * > .message-input-container > textarea'
-  ) as HTMLTextAreaElement;
+  const chatInput = findChatInput(chatRoomElement);
 
   if (!chatInput || chatInput.classList.contains(attachedClass)) {
     return;

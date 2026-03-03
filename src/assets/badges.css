@@ -11,6 +11,8 @@
   position: relative;
   overflow: visible;
   border-radius: calc(0.5rem - 2px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .ftv-badge-container .badge-item:not(.badge-sparkle.badge-glow) {
@@ -25,25 +27,38 @@
 
 /* Glow animation with dynamic color */
 .ftv-badge-container .badge-glow {
-  --glow-color: #ffd700; /* Default fallback gold color */
+  --glow-color: #ffd700;
+  box-shadow:
+    0 0 1px var(--glow-color),
+    0 0 2px var(--glow-color),
+    0 0 3px var(--glow-color);
+}
+
+.ftv-badge-container .badge-glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    0 0 2px var(--glow-color),
+    0 0 3px var(--glow-color),
+    0 0 4px var(--glow-color);
+  opacity: 0.35;
+  transform: scale(0.98);
+  will-change: opacity, transform;
   animation: badge-glow 2s ease-in-out infinite;
 }
 
 @keyframes badge-glow {
   0%,
   100% {
-    box-shadow:
-      0 0 1px var(--glow-color),
-      0 0 2px var(--glow-color),
-      0 0 3px var(--glow-color);
-    filter: drop-shadow(0 0 1px var(--glow-color));
+    opacity: 0.35;
+    transform: scale(0.98);
   }
   50% {
-    box-shadow:
-      0 0 2px var(--glow-color),
-      0 0 3px var(--glow-color),
-      0 0 4px var(--glow-color);
-    filter: drop-shadow(0 0 2px var(--glow-color));
+    opacity: 0.75;
+    transform: scale(1.04);
   }
 }
 
@@ -65,6 +80,7 @@
     rgba(255, 255, 255, 0.5) 50%,
     transparent 70%
   );
+  will-change: transform;
   animation: badge-sparkle 3s ease-in-out infinite;
 }
 
@@ -78,6 +94,8 @@
   pointer-events: none;
   opacity: 0;
   z-index: 20;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 /* Position each sparkle */
@@ -224,18 +242,20 @@
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: translate3d(-100%, 0, 0);
+  will-change: transform;
   animation: badge-shimmer 2s infinite;
 }
 
 @keyframes badge-shimmer {
   0% {
-    left: -100%;
+    transform: translate3d(-100%, 0, 0);
   }
   100% {
-    left: 100%;
+    transform: translate3d(100%, 0, 0);
   }
 }

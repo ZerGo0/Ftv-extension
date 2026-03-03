@@ -1,9 +1,12 @@
 import { emoteStore } from '../emotes/emotes.svelte';
 import { Emote } from '../types';
+import { findChatContainer } from '../utils/chatDom';
 import { findElementFromMutation } from '../utils/findElementFromMutation';
 import { observeSerializedMutations } from '../utils/observeSerializedMutations';
 
 const attachedClass = 'ftv-chat-emotes-attached';
+const bootstrapChunkSize = 25;
+const bootstrapMessageLimit = 120;
 let emoteStoreReadyPromise: Promise<void> | null = null;
 
 export function chatEmotes(ctx: any, mutation: MutationRecord) {
@@ -12,7 +15,7 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
     return;
   }
 
-  const chatContainer = chatRoomElement.querySelector('app-chat-room > * .chat-container');
+  const chatContainer = findChatContainer(chatRoomElement);
   if (!chatContainer) {
     return;
   }
@@ -35,6 +38,8 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
       console.error('chatEmotes mutation queue failed', error);
     }
   });
+
+  void bootstrapExistingChatMessages(chatContainer);
 }
 
 async function chatMessageHandler(mutation: MutationRecord) {
@@ -68,6 +73,42 @@ async function waitForEmoteStore() {
   }
 
   await emoteStoreReadyPromise;
+}
+
+async function bootstrapExistingChatMessages(chatContainer: Element) {
+  await waitForEmoteStore();
+
+  const existingMessages = Array.from(chatContainer.querySelectorAll('app-chat-room-message'));
+  if (existingMessages.length === 0) {
+    return;
+  }
+
+  const bootstrapMessages = existingMessages.slice(
+    Math.max(0, existingMessages.length - bootstrapMessageLimit)
+  );
+
+  let index = 0;
+  const processChunk = () => {
+    const maxIndex = Math.min(index + bootstrapChunkSize, bootstrapMessages.length);
+    for (; index < maxIndex; index += 1) {
+      parseChatMessageNode(bootstrapMessages[index]);
+    }
+
+    if (index < bootstrapMessages.length) {
+      requestAnimationFrame(processChunk);
+    }
+  };
+
+  processChunk();
+}
+
+function maybeReplaceMessageText(messageElement: HTMLElement, elementTextSplit: string[]) {
+  const nextHtml = elementTextSplit.join('');
+  if (messageElement.innerHTML === nextHtml) {
+    return;
+  }
+
+  messageElement.innerHTML = nextHtml;
 }
 
 function parseChatMessageNode(node: Node) {
@@ -111,7 +152,7 @@ function parseChatMessageNode(node: Node) {
       elementTextSplit[idx] = emoteHtml;
     }
 
-    messageElement.innerHTML = elementTextSplit.join('');
+    maybeReplaceMessageText(messageElement, elementTextSplit);
   }
 }
 

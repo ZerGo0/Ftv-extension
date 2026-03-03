@@ -1,3 +1,4 @@
+import { findChatInput } from '../utils/chatDom';
 import { findElementFromMutation } from '../utils/findElementFromMutation';
 
 const attachedClass = 'ftv-chat-username-auto-complete-attached';
@@ -11,9 +12,7 @@ export async function chatUsernameAutoComplete(ctx: any, mutation: MutationRecor
     return;
   }
 
-  const chatInput = chatRoomElement.querySelector(
-    'app-chat-room > .chat-footer > * > .message-input-container > textarea'
-  ) as HTMLTextAreaElement;
+  const chatInput = findChatInput(chatRoomElement);
 
   if (!chatInput || chatInput.classList.contains(attachedClass)) {
     return;

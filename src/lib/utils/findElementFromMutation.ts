@@ -8,6 +8,11 @@ export function findElementFromMutation(
     return targetMatch;
   }
 
+  const targetDescendantMatch = targetElement?.querySelector(selector);
+  if (targetDescendantMatch instanceof HTMLElement) {
+    return targetDescendantMatch;
+  }
+
   for (const node of mutation.addedNodes) {
     if (!(node instanceof Element)) {
       continue;

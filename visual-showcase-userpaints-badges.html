@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FTV Visual Showcase</title>
+    <link rel="stylesheet" href="./src/assets/userpaint.css" />
+    <link rel="stylesheet" href="./src/assets/badges.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 24px;
+        background: radial-gradient(circle at top right, #1f2538 0%, #111522 55%, #0c0f19 100%);
+        color: #f3f6ff;
+        font-family: 'SF Pro Text', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      main {
+        width: min(1400px, 100%);
+        margin: 0 auto;
+        display: grid;
+        gap: 24px;
+      }
+
+      .card {
+        background: rgba(9, 14, 26, 0.82);
+        border: 1px solid rgba(173, 190, 255, 0.2);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .subtitle {
+        margin-top: 8px;
+        color: #b9c8ef;
+        font-size: 14px;
+      }
+
+      .paint-grid {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .paint-row,
+      .badge-row {
+        border: 1px solid rgba(150, 169, 255, 0.18);
+        border-radius: 10px;
+        background: rgba(8, 12, 22, 0.8);
+        overflow: hidden;
+      }
+
+      .row-head {
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #b3c3ee;
+        border-bottom: 1px solid rgba(150, 169, 255, 0.16);
+      }
+
+      .preview-line {
+        min-height: 52px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+      }
+
+      .chat-text {
+        color: #d2dcf7;
+        font-size: 14px;
+      }
+
+      .badge-grid {
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .badge-line {
+        min-height: 52px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .meta {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #9eb0e0;
+      }
+
+      .username {
+        line-height: 1.2;
+      }
+
+      .fallback-name {
+        color: #f3f6ff;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <h1>FTV Userpaint + zergo0_bot Icon Showcase</h1>
+        <p class="subtitle">
+          Current local CSS preview for every username paint and all badge animation variants.
+        </p>
+        <p class="meta">
+          File: <code>visual-showcase-userpaints-badges.html</code> | CSS:
+          <code>src/assets/userpaint.css</code>, <code>src/assets/badges.css</code>
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Userpaints</h2>
+        <div id="userpaint-grid" class="paint-grid"></div>
+      </section>
+
+      <section class="card">
+        <h2>zergo0_bot Icons</h2>
+        <div id="badge-grid" class="badge-grid"></div>
+      </section>
+    </main>
+
+    <script>
+      const userPaintDesigns = [
+        { id: 0, name: 'None', class: '' },
+        { id: 1, name: 'Rainbow Wave', class: 'rainbow-wave' },
+        { id: 2, name: 'Fire Gradient', class: 'fire-gradient' },
+        { id: 3, name: 'Ocean Depths', class: 'ocean-depths' },
+        { id: 4, name: 'Sunset Sky', class: 'sunset-sky' },
+        { id: 5, name: 'Aurora Borealis', class: 'aurora-borealis' },
+        { id: 6, name: 'Iridescent Sheen', class: 'iridescent-sheen' },
+        { id: 7, name: 'Metallic Foil', class: 'metallic-foil' },
+        { id: 8, name: 'Pearlescent', class: 'pearlescent' },
+        { id: 9, name: 'Opal Shimmer', class: 'opal-shimmer' },
+        { id: 10, name: 'Lava Flow', class: 'lava-flow' },
+        { id: 11, name: 'Neon Ink', class: 'neon-ink' },
+        { id: 12, name: 'Digital Matrix', class: 'digital-matrix' },
+        {
+          id: 13,
+          name: 'Sparkle Effect',
+          class: 'sparkle-effect',
+          gif: 'effect1',
+          textClass: 'sparkle-text'
+        },
+        {
+          id: 14,
+          name: 'Electric Sparks',
+          class: 'electric-sparks',
+          gif: 'effect2',
+          textClass: 'electric-text'
+        },
+        {
+          id: 15,
+          name: 'Glitter Shine',
+          class: 'glitter-shine',
+          gif: 'effect3',
+          textClass: 'glitter-text'
+        },
+        {
+          id: 16,
+          name: 'Falling Hearts',
+          class: 'falling-hearts',
+          gif: 'effect4',
+          textClass: 'hearts-text'
+        },
+        {
+          id: 17,
+          name: 'Heart Rain',
+          class: 'heart-rain',
+          gif: 'effect5',
+          textClass: 'heart-rain-text'
+        },
+        { id: 18, name: 'Retro Synthwave', class: 'retro-synthwave' },
+        { id: 19, name: 'Glitch Wave', class: 'glitch-wave' },
+        { id: 20, name: 'Duotone Split', class: 'duotone-split' },
+        { id: 21, name: 'Thermal Vision', class: 'thermal-vision' },
+        { id: 22, name: 'Gradient Shift', class: 'gradient-shift' },
+        { id: 23, name: 'Neon Outline', class: 'neon-outline' },
+        { id: 24, name: 'Magic Shimmer', class: 'magic-shimmer' },
+        { id: 25, name: 'Sakura Blossom', class: 'sakura-blossom' },
+        { id: 26, name: 'Kawaii Dream', class: 'kawaii-dream' },
+        { id: 27, name: 'Candy Cane', class: 'candy-cane' },
+        { id: 28, name: 'Gothic Rose', class: 'gothic-rose' },
+        { id: 29, name: 'Pastel Princess', class: 'pastel-princess' },
+        { id: 30, name: 'Dark Academia', class: 'dark-academia' },
+        { id: 31, name: 'Twitch Purple', class: 'twitch-purple' },
+        { id: 32, name: 'E-Girl Aesthetic', class: 'egirl-aesthetic' },
+        { id: 33, name: 'Soft Grunge', class: 'soft-grunge' },
+        { id: 34, name: 'Streamer Vibes', class: 'streamer-vibes' }
+      ];
+
+      const badgeSamples = [
+        {
+          name: 'Static',
+          animationType: '',
+          gradientColors: ['#5865f2', '#4f46e5'],
+          textColor: '#ffffff',
+          borderColor: '#3b3ca6'
+        },
+        {
+          name: 'Glow',
+          animationType: 'glow',
+          gradientColors: ['#ffd700', '#ff8c00'],
+          textColor: '#221a00',
+          borderColor: '#eab308'
+        },
+        {
+          name: 'Sparkle',
+          animationType: 'sparkle',
+          gradientColors: ['#56ccf2', '#2f80ed'],
+          textColor: '#ffffff',
+          borderColor: '#1e3a8a'
+        },
+        {
+          name: 'Glow + Sparkle',
+          animationType: 'glow-sparkle',
+          gradientColors: ['#00f5ff', '#ff00e5'],
+          textColor: '#ffffff',
+          borderColor: '#7c3aed'
+        },
+        {
+          name: 'Pulse',
+          animationType: 'pulse',
+          gradientColors: ['#34d399', '#10b981'],
+          textColor: '#042f2e',
+          borderColor: '#0f766e'
+        },
+        {
+          name: 'Shimmer',
+          animationType: 'shimmer',
+          gradientColors: ['#f5f3ff', '#c4b5fd'],
+          textColor: '#312e81',
+          borderColor: '#7c3aed'
+        }
+      ];
+
+      function createPaintRow(design) {
+        const row = document.createElement('article');
+        row.className = 'paint-row';
+
+        const head = document.createElement('div');
+        head.className = 'row-head';
+        head.textContent = `#${design.id} ${design.name}`;
+
+        const line = document.createElement('div');
+        line.className = 'preview-line';
+
+        const username = document.createElement('span');
+        username.className = 'userpaints-username username';
+        if (design.class) {
+          username.classList.add(`userpaints-${design.class}`);
+        }
+        if (design.textClass) {
+          username.classList.add(`userpaints-${design.textClass}`);
+        }
+        if (!design.class) {
+          username.classList.add('fallback-name');
+        }
+        username.textContent = 'zergo0_bot';
+
+        if (design.gif) {
+          const overlay = document.createElement('img');
+          overlay.className = 'userpaints-effect-overlay';
+          overlay.alt = `${design.name} overlay`;
+          overlay.src = `https://zergo0botcdn.zergo0.dev/assets/${design.gif}.gif`;
+          username.appendChild(overlay);
+        }
+
+        const text = document.createElement('span');
+        text.className = 'chat-text';
+        text.textContent = 'sample chat message';
+
+        line.append(username, text);
+        row.append(head, line);
+
+        return row;
+      }
+
+      function buildBadgeClass(animationType) {
+        const classes = ['badge-item'];
+        if (!animationType) {
+          return classes.join(' ');
+        }
+
+        if (animationType.includes('-')) {
+          for (const part of animationType.split('-')) {
+            classes.push(`badge-${part}`);
+          }
+        } else {
+          classes.push(`badge-${animationType}`);
+        }
+
+        return classes.join(' ');
+      }
+
+      function createBadgeNode(sample) {
+        const container = document.createElement('span');
+        container.className = 'ftv-badge-container';
+
+        const badgeItem = document.createElement('span');
+        badgeItem.className = buildBadgeClass(sample.animationType);
+
+        let style = 'width: 16px; height: 16px;';
+
+        if (sample.gradientColors && sample.gradientColors.length > 0) {
+          style += ` background: linear-gradient(135deg, ${sample.gradientColors.join(', ')});`;
+          if (sample.animationType === 'glow') {
+            style += ` --glow-color: ${sample.gradientColors[0]};`;
+          }
+        }
+
+        if (sample.borderColor) {
+          style += ` border: 1px solid ${sample.borderColor};`;
+        }
+
+        if (sample.textColor) {
+          style += ` color: ${sample.textColor};`;
+        }
+
+        badgeItem.style.cssText = style;
+        badgeItem.title = sample.name;
+
+        const badgeText = document.createElement('span');
+        badgeText.className = 'badge-text';
+        badgeText.textContent = ' Z ';
+        badgeItem.appendChild(badgeText);
+
+        if (sample.animationType === 'glow-sparkle') {
+          for (let index = 1; index <= 16; index += 1) {
+            const sparkle = document.createElement('span');
+            sparkle.className = `sparkle sparkle-${index}`;
+            badgeItem.appendChild(sparkle);
+          }
+        }
+
+        container.appendChild(badgeItem);
+
+        return container;
+      }
+
+      function createBadgeRow(sample) {
+        const row = document.createElement('article');
+        row.className = 'badge-row';
+
+        const head = document.createElement('div');
+        head.className = 'row-head';
+        head.textContent = sample.name;
+
+        const line = document.createElement('div');
+        line.className = 'badge-line';
+
+        const badge = createBadgeNode(sample);
+
+        const username = document.createElement('span');
+        username.className = 'userpaints-username fallback-name';
+        username.textContent = 'zergo0_bot';
+
+        const text = document.createElement('span');
+        text.className = 'chat-text';
+        text.textContent = `animationType=${sample.animationType || 'none'}`;
+
+        line.append(badge, username, text);
+        row.append(head, line);
+
+        return row;
+      }
+
+      const userpaintGrid = document.getElementById('userpaint-grid');
+      for (const design of userPaintDesigns) {
+        userpaintGrid.appendChild(createPaintRow(design));
+      }
+
+      const badgeGrid = document.getElementById('badge-grid');
+      for (const sample of badgeSamples) {
+        badgeGrid.appendChild(createBadgeRow(sample));
+      }
+    </script>
+  </body>
+</html>

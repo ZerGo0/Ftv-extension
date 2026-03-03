@@ -1,5 +1,6 @@
 import { mount, unmount } from 'svelte';
 import EmoteMenuButton from '../components/app/EmoteMenuButton.svelte';
+import { findChatFooterItems } from '../utils/chatDom';
 import { findElementFromMutation } from '../utils/findElementFromMutation';
 
 const attachedClass = 'ftv-emotes-attached';
@@ -10,8 +11,8 @@ export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
     return;
   }
 
-  const chatInputElements = chatRoomElement.querySelectorAll('app-chat-room > .chat-footer > *');
-  if (!chatInputElements || chatInputElements.length === 0) {
+  const chatInputElements = findChatFooterItems(chatRoomElement);
+  if (chatInputElements.length === 0) {
     return;
   }
 
