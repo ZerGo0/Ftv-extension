@@ -6,17 +6,19 @@
   }
 
   let { startedAt }: Props = $props();
-  let uptime: number | undefined = $state(Date.now() - startedAt);
-  let uptimeInterval: ReturnType<typeof setInterval>;
+  let uptime: number | undefined = $state(undefined);
 
-  onMount(async () => {
-    uptimeInterval = setInterval(() => {
+  $effect(() => {
+    const updateUptime = () => {
       uptime = Date.now() - startedAt;
-    }, 1000);
-  });
+    };
 
-  onDestroy(() => {
-    clearInterval(uptimeInterval);
+    updateUptime();
+    const uptimeInterval = setInterval(updateUptime, 1000);
+
+    return () => {
+      clearInterval(uptimeInterval);
+    };
   });
 
   function formatUptime(uptime: number): string {
@@ -27,7 +29,7 @@
   }
 </script>
 
-{#if uptime}
+{#if uptime !== undefined}
   <span class="text-xs" id="uptime-text">
     {formatUptime(uptime)}
   </span>

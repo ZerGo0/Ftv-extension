@@ -130,19 +130,11 @@
     selectedIndex = index;
   }
 
-  // Handle all cursor changes (typing, clicking, arrow keys, etc.)
-  chatInput.addEventListener('input', handleCursorChange);
-  chatInput.addEventListener('click', handleCursorChange);
-  chatInput.addEventListener('keyup', handleCursorChange);
-  chatInput.addEventListener('selectionchange', handleCursorChange);
-
-  // Handle keyboard navigation
-  chatInput.addEventListener('keydown', (e) => {
+  function handleKeyDown(e: KeyboardEvent) {
     if (!suggestionsVisible) {
       return;
     }
 
-    // Get the current filtered emotes count from the child component
     const suggestionsElement = containerElement?.querySelector('.ftv-emote-suggestions');
     if (!suggestionsElement) {
       return;
@@ -187,8 +179,6 @@
 
       case 'Enter':
         if (!e.shiftKey) {
-          // Hide suggestions when Enter is pressed (without Shift)
-          // Fansly will send the message and clear the input
           hideSuggestions();
         }
         break;
@@ -198,6 +188,24 @@
         hideSuggestions();
         break;
     }
+  }
+
+  $effect(() => {
+    const input = chatInput;
+
+    input.addEventListener('input', handleCursorChange);
+    input.addEventListener('click', handleCursorChange);
+    input.addEventListener('keyup', handleCursorChange);
+    input.addEventListener('selectionchange', handleCursorChange);
+    input.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      input.removeEventListener('input', handleCursorChange);
+      input.removeEventListener('click', handleCursorChange);
+      input.removeEventListener('keyup', handleCursorChange);
+      input.removeEventListener('selectionchange', handleCursorChange);
+      input.removeEventListener('keydown', handleKeyDown);
+    };
   });
 
   // Hide suggestions when clicking outside

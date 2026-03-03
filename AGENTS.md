@@ -24,6 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **NEVER** cut corners, don't leave comments like `TODO: Implement X in the future here`! Always fully implement everything!
 - **NEVER** revert/delete any changes that you don't know about! Always assume that we are in the middle of a task and that the changes are intentional!
 - **ALWAYS** at the end of your turn, ask a follow-up question for the next logical step (**DON'T** ask questions like "Should I run tests?" or "Should I lint?", only ask questions that are relevant to the task at hand)
+
 ## Refactor Using Established Engineering Principles
 
 After generating or editing code, you must always refactor your changes using well-established software engineering principles. These apply every time, without relying on diff inspection.
