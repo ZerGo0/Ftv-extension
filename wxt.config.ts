@@ -14,7 +14,6 @@ export default defineConfig({
   },
   manifest: ({ browser, manifestVersion, mode, command }) => {
     return {
-      manifest_version: manifestVersion,
       name: 'Ftv',
       description: 'Ftv adds support for Twitch, 7TV, BTTV, and FFZ emotes to your fansly chat.',
       // version: "0.0.0", package.json version is used by default
