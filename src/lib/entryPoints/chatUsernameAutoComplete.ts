@@ -1,15 +1,17 @@
+import { findElementFromMutation } from '../utils/findElementFromMutation';
+
 const attachedClass = 'ftv-chat-username-auto-complete-attached';
 export const usernamesCache = new Map<string, string>();
 
 let originalUsername: string | null = null;
 
 export async function chatUsernameAutoComplete(ctx: any, mutation: MutationRecord) {
-  const element = mutation.target as HTMLElement;
-  if (!element || !element.tagName || element.tagName !== 'APP-CHAT-ROOM') {
+  const chatRoomElement = findElementFromMutation(mutation, 'app-chat-room');
+  if (!chatRoomElement) {
     return;
   }
 
-  const chatInput = element.querySelector(
+  const chatInput = chatRoomElement.querySelector(
     'app-chat-room > .chat-footer > * > .message-input-container > textarea'
   ) as HTMLTextAreaElement;
 

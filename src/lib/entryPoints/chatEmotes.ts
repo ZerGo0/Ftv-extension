@@ -1,15 +1,18 @@
 import { emoteStore } from '../emotes/emotes.svelte';
 import { Emote } from '../types';
+import { findElementFromMutation } from '../utils/findElementFromMutation';
+import { observeSerializedMutations } from '../utils/observeSerializedMutations';
 
 const attachedClass = 'ftv-chat-emotes-attached';
+let emoteStoreReadyPromise: Promise<void> | null = null;
 
 export function chatEmotes(ctx: any, mutation: MutationRecord) {
-  const element = mutation.target as HTMLElement;
-  if (!element || !element.tagName || element.tagName !== 'APP-CHAT-ROOM') {
+  const chatRoomElement = findElementFromMutation(mutation, 'app-chat-room');
+  if (!chatRoomElement) {
     return;
   }
 
-  const chatContainer = element.querySelector('app-chat-room > * .chat-container');
+  const chatContainer = chatRoomElement.querySelector('app-chat-room > * .chat-container');
   if (!chatContainer) {
     return;
   }
@@ -20,27 +23,30 @@ export function chatEmotes(ctx: any, mutation: MutationRecord) {
 
   chatContainer.classList.add(attachedClass);
 
-  new MutationObserver(async (mutations) => await chatMessageHandler(mutations)).observe(
-    chatContainer,
-    {
+  observeSerializedMutations({
+    target: chatContainer,
+    config: {
       childList: true
+    },
+    processMutation: async (chatMutation) => {
+      await chatMessageHandler(chatMutation);
+    },
+    onError: (error) => {
+      console.error('chatEmotes mutation queue failed', error);
     }
-  );
+  });
 }
 
-async function chatMessageHandler(mutations: MutationRecord[]) {
-  // wait until emoteStore is populated asynchonously
+async function chatMessageHandler(mutation: MutationRecord) {
   await waitForEmoteStore();
 
-  mutations.forEach((mutation) => {
-    if (mutation.type !== 'childList') {
-      return;
-    }
+  if (mutation.type !== 'childList') {
+    return;
+  }
 
-    mutation.addedNodes.forEach((node) => {
-      parseChatMessageNode(node);
-    });
-  });
+  for (const node of mutation.addedNodes) {
+    parseChatMessageNode(node);
+  }
 }
 
 async function waitForEmoteStore() {
@@ -48,16 +54,20 @@ async function waitForEmoteStore() {
     return;
   }
 
-  const initializedPromise = new Promise<void>((resolve) => {
-    const interval = setInterval(() => {
-      if (emoteStore.emotes.length > 0) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 100);
-  });
+  if (!emoteStoreReadyPromise) {
+    emoteStoreReadyPromise = new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        if (emoteStore.emotes.length > 0) {
+          clearInterval(interval);
+          resolve();
+        }
+      }, 100);
+    }).finally(() => {
+      emoteStoreReadyPromise = null;
+    });
+  }
 
-  await initializedPromise;
+  await emoteStoreReadyPromise;
 }
 
 function parseChatMessageNode(node: Node) {

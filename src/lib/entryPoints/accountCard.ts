@@ -5,17 +5,19 @@ import { zergo0Api } from '../api/zergo0';
 import ZerGo0BotSubBadge from '../components/ui/badges/ZerGo0BotSubBadge.svelte';
 import { sharedState } from '../state/state.svelte';
 import { ZerGo0Badge, ZerGo0UsernamePaint } from '../types';
+import { findElementFromMutation } from '../utils/findElementFromMutation';
+import { observeSerializedMutations } from '../utils/observeSerializedMutations';
 import { usernamesCache } from './chatUsernameAutoComplete';
 
 const attachedClass = 'ftv-pronouns-attached';
 
 export function accountCard(ctx: any, mutation: MutationRecord) {
-  const element = mutation.target as HTMLElement;
-  if (!element || !element.tagName || element.tagName !== 'APP-CHAT-ROOM') {
+  const chatRoomElement = findElementFromMutation(mutation, 'app-chat-room');
+  if (!chatRoomElement) {
     return;
   }
 
-  const chatContainer = element.querySelector('app-chat-room > * .chat-container');
+  const chatContainer = chatRoomElement.querySelector('app-chat-room > * .chat-container');
   if (!chatContainer) {
     return;
   }
@@ -26,24 +28,28 @@ export function accountCard(ctx: any, mutation: MutationRecord) {
 
   chatContainer.classList.add(attachedClass);
 
-  new MutationObserver(async (mutations) => await chatMessageHandler(mutations)).observe(
-    chatContainer,
-    {
+  observeSerializedMutations({
+    target: chatContainer,
+    config: {
       childList: true
+    },
+    processMutation: (chatMutation) => {
+      chatMessageHandler(chatMutation);
+    },
+    onError: (error) => {
+      console.error('accountCard mutation queue failed', error);
     }
-  );
+  });
 }
 
-async function chatMessageHandler(mutations: MutationRecord[]) {
-  mutations.forEach((mutation) => {
-    if (mutation.type !== 'childList') {
-      return;
-    }
+function chatMessageHandler(mutation: MutationRecord) {
+  if (mutation.type !== 'childList') {
+    return;
+  }
 
-    mutation.addedNodes.forEach((node) => {
-      parseChatMessageNode(node);
-    });
-  });
+  for (const node of mutation.addedNodes) {
+    parseChatMessageNode(node);
+  }
 }
 
 function parseChatMessageNode(node: Node) {

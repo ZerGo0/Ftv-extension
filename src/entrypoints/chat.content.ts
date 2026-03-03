@@ -18,26 +18,25 @@ import { emoteSuggestions } from '@/lib/entryPoints/emoteSuggestions';
 import { viewCount } from '@/lib/entryPoints/viewCount';
 import { fanslyStyleFixes } from '@/lib/fanslyStyleFixes';
 import { sharedState } from '@/lib/state/state.svelte';
+import { findElementFromMutation } from '@/lib/utils/findElementFromMutation';
+import { observeSerializedMutations } from '@/lib/utils/observeSerializedMutations';
 
 const attachedClass = 'ftv-attached';
-const mutationUrlPathWhitelist = ['/live/.*', '/chatroom/.*', '/creator/streaming'];
+const mutationUrlPathWhitelist = [/\/live\/.*/, /\/chatroom\/.*/, /\/creator\/streaming/];
+let firstInitPromise: Promise<void> | null = null;
+let initializedChatRoomElement: HTMLElement | null = null;
 
 export default defineContentScript({
   matches: ['https://fansly.com/*'],
   cssInjectionMode: 'ui',
   async main(ctx) {
-    // This needs to be a MutationObserver because of client-side routing
-    // When a user navigates to a new page, the actual page is not reloaded
-    new MutationObserver(async (mutations) => {
-      const urlPath = window.location.pathname;
-      const isWhitelisted = mutationUrlPathWhitelist.some((path) => new RegExp(path).test(urlPath));
-      if (!isWhitelisted) {
-        return;
-      }
-
-      mutations.forEach(async (mutation) => {
+    observeSerializedMutations({
+      pathWhitelist: mutationUrlPathWhitelist,
+      target: document.body,
+      config: { childList: true, subtree: true },
+      processMutation: async (mutation) => {
         fanslyStyleFixes(ctx);
-        handleFirstInit(mutation);
+        await handleFirstInit(mutation);
 
         chatEmotes(ctx, mutation);
         accountCard(ctx, mutation);
@@ -45,35 +44,56 @@ export default defineContentScript({
         emoteSuggestions(ctx, mutation);
         chatUsernameAutoComplete(ctx, mutation);
         viewCount(ctx, mutation);
-      });
-    }).observe(document.body, { childList: true, subtree: true });
+      },
+      onError: (error) => {
+        console.error('chat.content mutation queue failed', error);
+      }
+    });
   }
 });
 
 async function handleFirstInit(mutation: MutationRecord) {
-  const elem = mutation.target as HTMLElement;
-  if (!elem || elem.tagName !== 'APP-CHAT-ROOM' || elem.classList.contains(attachedClass)) {
+  if (firstInitPromise) {
+    await firstInitPromise;
     return;
   }
 
-  elem.classList.add(attachedClass);
+  const chatRoomElement = findElementFromMutation(mutation, 'app-chat-room');
+  if (!chatRoomElement) {
+    return;
+  }
 
-  emoteStore.reset();
-  emoteProviderStore.reset();
-  usernamesCache.clear();
-  zergo0Api.pronounsCache.clear();
-  zergo0Api.badgesCache.clear();
-  zergo0Api.usernamePaintCache.clear();
+  if (
+    chatRoomElement.classList.contains(attachedClass) &&
+    initializedChatRoomElement === chatRoomElement
+  ) {
+    return;
+  }
 
-  await sharedState.initialize();
+  chatRoomElement.classList.add(attachedClass);
 
-  console.log(
-    `Loaded (ChatroomId: ${sharedState.chatroomId} | TwitchId: ${sharedState.twitchUserId})`
-  );
+  firstInitPromise = (async () => {
+    emoteStore.reset();
+    emoteProviderStore.reset();
+    usernamesCache.clear();
+    zergo0Api.pronounsCache.clear();
+    zergo0Api.badgesCache.clear();
+    zergo0Api.usernamePaintCache.clear();
 
-  const providers = await getEmoteProviders(sharedState.twitchUserId, sharedState.chatroomId);
-  emoteProviderStore.providers = providers;
-  emoteStore.emotes = providers.flatMap((c) => c.emotes);
+    await sharedState.initialize();
+
+    const providers = await getEmoteProviders(sharedState.twitchUserId, sharedState.chatroomId);
+    emoteProviderStore.providers = providers;
+    emoteStore.emotes = providers.flatMap((provider) => provider.emotes);
+
+    initializedChatRoomElement = chatRoomElement;
+  })();
+
+  try {
+    await firstInitPromise;
+  } finally {
+    firstInitPromise = null;
+  }
 }
 
 async function getEmoteProviders(

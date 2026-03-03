@@ -1,15 +1,16 @@
 import { mount, unmount } from 'svelte';
 import EmoteMenuButton from '../components/app/EmoteMenuButton.svelte';
+import { findElementFromMutation } from '../utils/findElementFromMutation';
 
 const attachedClass = 'ftv-emotes-attached';
 
 export async function emoteMenuButton(ctx: any, mutation: MutationRecord) {
-  const element = mutation.target as HTMLElement;
-  if (!element || !element.tagName || element.tagName !== 'APP-CHAT-ROOM') {
+  const chatRoomElement = findElementFromMutation(mutation, 'app-chat-room');
+  if (!chatRoomElement) {
     return;
   }
 
-  const chatInputElements = element.querySelectorAll('app-chat-room > .chat-footer > *');
+  const chatInputElements = chatRoomElement.querySelectorAll('app-chat-room > .chat-footer > *');
   if (!chatInputElements || chatInputElements.length === 0) {
     return;
   }

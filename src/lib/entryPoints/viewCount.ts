@@ -1,16 +1,13 @@
+import { findElementFromMutation } from '../utils/findElementFromMutation';
+
 const attachedClass = 'ftv-view-count-attached';
 
 let hidden = localStorage.getItem('ftv-view-count-hidden') === 'true';
 
 export async function viewCount(ctx: any, mutation: MutationRecord) {
-  const elem = mutation.target as HTMLElement;
+  const elem = findElementFromMutation(mutation, '.stream-info');
 
-  if (
-    !elem ||
-    !elem.classList.contains('stream-info') ||
-    elem.querySelector('.fa-users') === null ||
-    elem.classList.contains(attachedClass)
-  ) {
+  if (!elem || elem.querySelector('.fa-users') === null || elem.classList.contains(attachedClass)) {
     return;
   }
 
